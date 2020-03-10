@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".dashboard.StartSplashFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_splash"
+        android:scaleType="fitXY" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/loginGif"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginEnd="30dp"
+        android:layout_gravity="center"
+        android:src="@drawable/cart_anim" />
+
+</FrameLayout>
