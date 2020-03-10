@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,19 +17,12 @@ import android.view.ViewGroup;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.database.DatabaseQuery;
 import com.wstcon.gov.bd.esellers.mainApp.adapter.MixedAdapter;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.RecyclerViewItem;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.Slider;
+import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderImage;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.VerticalModel;
-import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
-import com.wstcon.gov.bd.esellers.product.productModel.Product;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class HomeFragment extends Fragment {
@@ -41,7 +33,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<VerticalModel> vmList;
     private MixedAdapter mixedAdapter;
     private ArrayList<RecyclerViewItem> items;
-    private List<Slider> sliders;
+    private List<SliderImage> sliders;
 
 
     public HomeFragment() {

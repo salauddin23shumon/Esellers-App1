@@ -57,11 +57,11 @@ public class ProductFragment extends Fragment {
 //        });
 //
 //
-//        Call<Categories> categoriesCall=RetrofitClient.getInstance().getApiInterface().getAllCategories();
-//        categoriesCall.enqueue(new Callback<Categories>() {
+//        Call<CategoryResponse> categoriesCall=RetrofitClient.getInstance().getApiInterface().getAllCategories();
+//        categoriesCall.enqueue(new Callback<CategoryResponse>() {
 //            @Override
-//            public void onResponse(Call<Categories> call, Response<Categories> response) {
-//                Categories categories=response.body();
+//            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+//                CategoryResponse categories=response.body();
 //                if (categories!=null && categories.getStatus()==1){
 //                   Category category=categories.getCategories().get(1);
 //                    outputTV2.setText(category.getCategoryName());
@@ -71,7 +71,7 @@ public class ProductFragment extends Fragment {
 //            }
 //
 //            @Override
-//            public void onFailure(Call<Categories> call, Throwable t) {
+//            public void onFailure(Call<CategoryResponse> call, Throwable t) {
 //
 //            }
 //        });

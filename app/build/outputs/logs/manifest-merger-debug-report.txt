@@ -13,7 +13,7 @@ MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\PC-sss\.gradle\c
 MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\ccc4f60e4549c263b614feec2a027fa2\cardview-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\ce65b35bd7fa77ecabae93fcb8bf5adb\jetified-circleimageview-2.2.0\AndroidManifest.xml:2:1-11:12
 MERGED from [pl.droidsonroids.gif:android-gif-drawable:1.2.19] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\89496ae03c4da888823cb701e0b860d7\jetified-android-gif-drawable-1.2.19\AndroidManifest.xml:2:1-9:12
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\9e7badfec47de45e84e05a4df666a0e7\jetified-glide-4.9.0\AndroidManifest.xml:2:1-12:12
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\46f007804c4dec0b54bcd070e8224aaa\glide-4.11.0\AndroidManifest.xml:2:1-12:12
 MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:2:1-14:12
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\aa91d8d2653c363bbd5da9d9892260d3\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\add2bdb41de46d90e5d3bd4e75929820\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
@@ -28,7 +28,7 @@ MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\PC-sss\.grad
 MERGED from [androidx.loader:loader:1.0.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\331f61861c2d3a925f2252286afb1f53\loader-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.activity:activity:1.0.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\daa47187fb0f0a7c419d1b10e1677cdd\activity-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.core:core:1.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\302daf4f7d1b898f2c497b4300121e72\core-1.2.0\AndroidManifest.xml:17:1-26:12
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\4d1b78e94e6d12e79de6c90d17dc42f4\jetified-gifdecoder-4.9.0\AndroidManifest.xml:2:1-11:12
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\e90be152f08ce99fb09048a87e58bfc3\gifdecoder-4.11.0\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.exifinterface:exifinterface:1.0.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\ae8b971b40c132101f87c0e7d5e73037\exifinterface-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\c9c8616d74aa0ab3eb457d24b669c685\versionedparcelable-1.1.0\AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\0554424e228349ffc3db0700d1324aa1\lifecycle-runtime-2.1.0\AndroidManifest.xml:17:1-22:12
@@ -79,14 +79,14 @@ MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\PC-sss\.
 MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\8392647ca9531c13a8f0d6b7ad086e7e\constraintlayout-1.1.3\AndroidManifest.xml:9:5-20
 MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\ce65b35bd7fa77ecabae93fcb8bf5adb\jetified-circleimageview-2.2.0\AndroidManifest.xml:9:5-20
 MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\ce65b35bd7fa77ecabae93fcb8bf5adb\jetified-circleimageview-2.2.0\AndroidManifest.xml:9:5-20
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\9e7badfec47de45e84e05a4df666a0e7\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\9e7badfec47de45e84e05a4df666a0e7\jetified-glide-4.9.0\AndroidManifest.xml:10:5-20
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\46f007804c4dec0b54bcd070e8224aaa\glide-4.11.0\AndroidManifest.xml:10:5-20
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\46f007804c4dec0b54bcd070e8224aaa\glide-4.11.0\AndroidManifest.xml:10:5-20
 MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:7:5-12:19
 MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:7:5-12:19
 MERGED from [androidx.core:core:1.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\302daf4f7d1b898f2c497b4300121e72\core-1.2.0\AndroidManifest.xml:24:5-89
 MERGED from [androidx.core:core:1.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\302daf4f7d1b898f2c497b4300121e72\core-1.2.0\AndroidManifest.xml:24:5-89
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\4d1b78e94e6d12e79de6c90d17dc42f4\jetified-gifdecoder-4.9.0\AndroidManifest.xml:9:5-20
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\4d1b78e94e6d12e79de6c90d17dc42f4\jetified-gifdecoder-4.9.0\AndroidManifest.xml:9:5-20
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\e90be152f08ce99fb09048a87e58bfc3\gifdecoder-4.11.0\AndroidManifest.xml:9:5-20
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\e90be152f08ce99fb09048a87e58bfc3\gifdecoder-4.11.0\AndroidManifest.xml:9:5-20
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\c9c8616d74aa0ab3eb457d24b669c685\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\c9c8616d74aa0ab3eb457d24b669c685\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
 	android:appComponentFactory
@@ -157,8 +157,8 @@ MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\PC-sss\.gradle\caches\
 MERGED from [de.hdodenhof:circleimageview:2.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\ce65b35bd7fa77ecabae93fcb8bf5adb\jetified-circleimageview-2.2.0\AndroidManifest.xml:5:5-7:41
 MERGED from [pl.droidsonroids.gif:android-gif-drawable:1.2.19] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\89496ae03c4da888823cb701e0b860d7\jetified-android-gif-drawable-1.2.19\AndroidManifest.xml:5:5-7:41
 MERGED from [pl.droidsonroids.gif:android-gif-drawable:1.2.19] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\89496ae03c4da888823cb701e0b860d7\jetified-android-gif-drawable-1.2.19\AndroidManifest.xml:5:5-7:41
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\9e7badfec47de45e84e05a4df666a0e7\jetified-glide-4.9.0\AndroidManifest.xml:6:5-8:41
-MERGED from [com.github.bumptech.glide:glide:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\9e7badfec47de45e84e05a4df666a0e7\jetified-glide-4.9.0\AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\46f007804c4dec0b54bcd070e8224aaa\glide-4.11.0\AndroidManifest.xml:6:5-8:41
+MERGED from [com.github.bumptech.glide:glide:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\46f007804c4dec0b54bcd070e8224aaa\glide-4.11.0\AndroidManifest.xml:6:5-8:41
 MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:5:5-44
 MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:5:5-44
 MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\aa91d8d2653c363bbd5da9d9892260d3\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
@@ -187,8 +187,8 @@ MERGED from [androidx.activity:activity:1.0.0] C:\Users\PC-sss\.gradle\caches\tr
 MERGED from [androidx.activity:activity:1.0.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\daa47187fb0f0a7c419d1b10e1677cdd\activity-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core:1.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\302daf4f7d1b898f2c497b4300121e72\core-1.2.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.core:core:1.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\302daf4f7d1b898f2c497b4300121e72\core-1.2.0\AndroidManifest.xml:20:5-22:41
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\4d1b78e94e6d12e79de6c90d17dc42f4\jetified-gifdecoder-4.9.0\AndroidManifest.xml:5:5-7:41
-MERGED from [com.github.bumptech.glide:gifdecoder:4.9.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\4d1b78e94e6d12e79de6c90d17dc42f4\jetified-gifdecoder-4.9.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\e90be152f08ce99fb09048a87e58bfc3\gifdecoder-4.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.github.bumptech.glide:gifdecoder:4.11.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\e90be152f08ce99fb09048a87e58bfc3\gifdecoder-4.11.0\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.exifinterface:exifinterface:1.0.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\ae8b971b40c132101f87c0e7d5e73037\exifinterface-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.exifinterface:exifinterface:1.0.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\ae8b971b40c132101f87c0e7d5e73037\exifinterface-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\c9c8616d74aa0ab3eb457d24b669c685\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41

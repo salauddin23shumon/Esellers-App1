@@ -1,121 +1,254 @@
+
 package com.wstcon.gov.bd.esellers.product.productModel;
 
+import java.io.Serializable;
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
 
 public class Product implements Serializable {
 
     @SerializedName("id")
     @Expose
-    private String id;
-    @SerializedName("category")
+    private Integer id;
+    @SerializedName("category_id")
     @Expose
-    private String category;
-    @SerializedName("manufacturer")
+    private String categoryId;
+    @SerializedName("manufacturer_id")
     @Expose
-    private String manufacturer;
-    @SerializedName("name")
+    private String manufacturerId;
+    @SerializedName("vendor_id")
     @Expose
-    private String name;
-    @SerializedName("price")
+    private String vendorId;
+    @SerializedName("product_name")
     @Expose
-    private String price;
-    @SerializedName("quantity")
+    private String productName;
+    @SerializedName("product_price")
     @Expose
-    private String quantity;
-    @SerializedName("status")
+    private String productPrice;
+    @SerializedName("rating")
     @Expose
-    private String status;
-    @SerializedName("short_dec")
+    private String rating;
+    @SerializedName("rating_count")
     @Expose
-    private String shortDec;
-    @SerializedName("long_dec")
+    private String ratingCount;
+    @SerializedName("product_code")
     @Expose
-    private String longDec;
-    @SerializedName("image")
+    private String productCode;
+    @SerializedName("status_id")
     @Expose
-    private String image;
+    private String statusId;
+    @SerializedName("short_description")
+    @Expose
+    private String shortDescription;
+    @SerializedName("long_description")
+    @Expose
+    private String longDescription;
+    @SerializedName("product_image")
+    @Expose
+    private String productImage;
+    @SerializedName("publication_status")
+    @Expose
+    private String publicationStatus;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
+    @SerializedName("category_name")
+    @Expose
+    private String categoryName;
+    @SerializedName("manufacturer_name")
+    @Expose
+    private String manufacturerName;
+    @SerializedName("vendor_name")
+    @Expose
+    private Object vendorName;
+    @SerializedName("product_status_name")
+    @Expose
+    private String productStatusName;
+    @SerializedName("attributes")
+    @Expose
+    private List<Attribute> attributes = null;
+    @SerializedName("reviews")
+    @Expose
+    private List<Review> reviews = null;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getManufacturer() {
-        return manufacturer;
+    public String getManufacturerId() {
+        return manufacturerId;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setManufacturerId(String manufacturerId) {
+        this.manufacturerId = manufacturerId;
     }
 
-    public String getName() {
-        return name;
+    public String getVendorId() {
+        return vendorId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVendorId(String vendorId) {
+        this.vendorId = vendorId;
     }
 
-    public String getPrice() {
-        return price;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getQuantity() {
-        return quantity;
+    public String getProductPrice() {
+        return productPrice;
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
+    public void setProductPrice(String productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public String getStatus() {
-        return status;
+    public String getRating() {
+        return rating;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
-    public String getShortDec() {
-        return shortDec;
+    public String getRatingCount() {
+        return ratingCount;
     }
 
-    public void setShortDec(String shortDec) {
-        this.shortDec = shortDec;
+    public void setRatingCount(String ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
-    public String getLongDec() {
-        return longDec;
+    public String getProductCode() {
+        return productCode;
     }
 
-    public void setLongDec(String longDec) {
-        this.longDec = longDec;
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
-    public String getImage() {
-        return image;
+    public String getStatusId() {
+        return statusId;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setStatusId(String statusId) {
+        this.statusId = statusId;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
+
+    public String getPublicationStatus() {
+        return publicationStatus;
+    }
+
+    public void setPublicationStatus(String publicationStatus) {
+        this.publicationStatus = publicationStatus;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getManufacturerName() {
+        return manufacturerName;
+    }
+
+    public void setManufacturerName(String manufacturerName) {
+        this.manufacturerName = manufacturerName;
+    }
+
+    public Object getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(Object vendorName) {
+        this.vendorName = vendorName;
+    }
+
+    public String getProductStatusName() {
+        return productStatusName;
+    }
+
+    public void setProductStatusName(String productStatusName) {
+        this.productStatusName = productStatusName;
+    }
+
+    public List<Attribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
 }

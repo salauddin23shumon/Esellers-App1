@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 2019. $1$1$1. All Rights Reserved.
- *  <p>
- *  Save to the extent permitted by law, you may not use, copy, modify, distribute or create derivative works of this material  or any part of it without the prior written consent of $1$1$1.
- *  <p>
- *  The above Copyright notice  and the permission notice shall be included in all copies or substantial portions of the Software.
- */
-
 package com.wstcon.gov.bd.esellers.utility;
 
 import android.content.Context;
@@ -29,6 +21,12 @@ public class Utils {
     public static byte[] getImageBOA(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+        return outputStream.toByteArray();
+    }
+
+    public static byte[] getImageBOA2(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         return outputStream.toByteArray();
     }
 

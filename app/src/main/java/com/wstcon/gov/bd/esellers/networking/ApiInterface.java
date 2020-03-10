@@ -1,12 +1,11 @@
 package com.wstcon.gov.bd.esellers.networking;
 
+import com.wstcon.gov.bd.esellers.category.categoryModel.CategoryResponse;
 import com.wstcon.gov.bd.esellers.mainApp.Users;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.Slider;
-import com.wstcon.gov.bd.esellers.product.productModel.Product;
+import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderResponse;
+import com.wstcon.gov.bd.esellers.product.productModel.ProductResponse;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.AuthResponse;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.LogoutResponse;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -35,24 +34,38 @@ public interface ApiInterface {
     @POST("auth/logout")
     Call<LogoutResponse> userLogout();
 
+
+    @GET("api/product/show_product")
+    Call<ProductResponse> getAllProducts();
+
+
+    @GET("api/category/show_category")
+    Call<CategoryResponse> getAllCategories();
+
+
+    @GET("api/slider/show")
+    Call<SliderResponse> getSliders();
+
+
+
 //
 //    @GET("product/show_product")
 //    Call<Products> getAllProducts();
 //
 //
 //    @GET("category/show_category")
-//    Call<Categories> getAllCategories();
+//    Call<CategoryResponse> getAllCategories();
 
 
 
     //////////////////////////*****///////////////////////
 
 
-    @GET("getslider.php")
-    Call<List<Slider>> getSlider();
-
-    @GET("getproductsview.php")
-    Call<List<Product>> getProducts();
+//    @GET("getslider.php")
+//    Call<List<Slider>> getSlider();
+//
+//    @GET("getproductsview.php")
+//    Call<List<Product>> getProducts();
 
 
 }

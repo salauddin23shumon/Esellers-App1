@@ -15,7 +15,8 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.Slider;
+import com.wstcon.gov.bd.esellers.category.categoryModel.Category;
+import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderImage;
 import com.wstcon.gov.bd.esellers.utility.Utils;
 
 import java.util.ArrayList;
@@ -30,15 +31,15 @@ public class DatabaseQuery {
         helper = new DatabaseOpenHelper(context);
     }
 
-    public void open() {
+    private void open() {
         db = helper.getWritableDatabase();
     }
 
-    public void close() {
+    private void close() {
         db.close();
     }
 
-    public void insertSlider(Slider slider) {
+    public void insertSlider(SliderImage slider) {
 
         this.open();
         ContentValues values = new ContentValues();
@@ -57,15 +58,54 @@ public class DatabaseQuery {
         this.close();
     }
 
-    public List<Slider> getSlider() {
+    public void insertCategory(Category category){
         this.open();
-        List<Slider> sliders = new ArrayList<>();
+        ContentValues values = new ContentValues();
+        values.put(DatabaseOpenHelper.CATEGORY_ID, category.getId());
+        values.put(DatabaseOpenHelper.CATEGORY_NAME, category.getCategoryName());
+        values.put(DatabaseOpenHelper.CATEGORY_URL, category.getCategoryIcon());
+        values.put(DatabaseOpenHelper.CATEGORY_STATUS, category.getPublicationStatus());
+        values.put(DatabaseOpenHelper.CATEGORY_PHOTO, Utils.getImageBOA2(category.getBitmap()));
+        try {
+            db.insert(DatabaseOpenHelper.CATEGORY_TBL, null, values);
+        } catch (Exception e) {
+            Log.e("DatabaseQuery", "insertCategory: " + e.getMessage());
+        }
+
+        this.close();
+    }
+
+
+    public List<Category> getCategory(){
+        this.open();
+        List<Category> categories = new ArrayList<>();
+        Cursor cursor = db.rawQuery(DatabaseOpenHelper.READ_CAT_TBL, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                Category category = new Category();
+                category.setId(cursor.getInt(cursor.getColumnIndex(DatabaseOpenHelper.CATEGORY_ID)));
+                category.setCategoryName(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.CATEGORY_NAME)));
+                category.setUrl(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.CATEGORY_URL)));
+                category.setPublicationStatus(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.CATEGORY_STATUS)));
+                category.setBitmap(Utils.getImageBitmap(cursor.getBlob(cursor.getColumnIndex(DatabaseOpenHelper.CATEGORY_PHOTO))));
+                categories.add(category);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        this.close();
+        return categories;
+    }
+
+    public List<SliderImage> getSlider() {
+        this.open();
+        List<SliderImage> sliders = new ArrayList<>();
         Cursor cursor = db.rawQuery(DatabaseOpenHelper.READ_SLIDER_TBL, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             do {
-                Slider slider = new Slider();
-                slider.setId(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.SLIDER_ID)));
+                SliderImage slider = new SliderImage();
+                slider.setId(cursor.getInt(cursor.getColumnIndex(DatabaseOpenHelper.SLIDER_ID)));
                 slider.setSliderImage(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.SLIDER_URL)));
                 slider.setPublicationStatus(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.SLIDER_STATUS)));
                 slider.setCreatedAt(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.SLIDER_CREATED_AT)));
@@ -80,16 +120,23 @@ public class DatabaseQuery {
     }
 
 
-    public long getRowCount() {
+    public long getSliderCount() {
         this.open();
         long count = DatabaseUtils.queryNumEntries(db, DatabaseOpenHelper.SLIDER_TBL);
         this.close();
         return count;
     }
 
+    public long getCatIconCount() {
+        this.open();
+        long count = DatabaseUtils.queryNumEntries(db, DatabaseOpenHelper.CATEGORY_TBL);
+        this.close();
+        return count;
+    }
+
     public void deleteAll(){
         this.open();
-        db.execSQL(DatabaseOpenHelper.DELETE_TABLE);
+        db.execSQL(DatabaseOpenHelper.DELETE_SLIDER_TABLE);
         this.close();
     }
 }

@@ -41,6 +41,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
+
 
 public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.HorizontalViewHolder> {
 
@@ -65,7 +67,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
     public void onBindViewHolder(@NonNull final HorizontalViewHolder horizontalViewHolder, int i) {
 
         final HorizontalModel horizontalModel = hmList.get(i);
-        final String id =horizontalModel.getProduct().getId();
+        final String id =String.valueOf(horizontalModel.getProduct().getId());
         File dir = new File(imgFilePath+"/thumb/");
         final File thumbImageFile = new File(dir,  id + ".jpg");
 
@@ -78,7 +80,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         if (!thumbImageFile.exists()) {
             Glide.with(context)
                     .asBitmap()
-                    .load(horizontalModel.getProduct().getImage())
+                    .load(BASE_URL+horizontalModel.getProduct().getProductImage())
                     .listener(new RequestListener<Bitmap>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
@@ -111,8 +113,8 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
             horizontalViewHolder.imageView.setImageBitmap(bitmap);
         }
 
-        horizontalViewHolder.productTV.setText(horizontalModel.getProduct().getName());
-        horizontalViewHolder.priceTV.setText(horizontalModel.getProduct().getPrice());
+        horizontalViewHolder.productTV.setText(horizontalModel.getProduct().getProductName());
+        horizontalViewHolder.priceTV.setText(horizontalModel.getProduct().getProductPrice());
 
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.alpha);
         horizontalViewHolder.imageView.startAnimation(animation);
@@ -134,10 +136,10 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
         Button closeBtn = fullScreenDilog.findViewById(R.id.btnClose);
         ImageView fullScreenView = fullScreenDilog.findViewById(R.id.fullView);
-        Log.e("", "fullView: " + horizontalModel.getProduct().getImage());
+//        Log.e("", "fullView: " + horizontalModel.getProduct().getImage());
 //        fullScreenView.setImageResource(horizontalModel.getImage());
 //        Glide.with(context).load(horizontalModel.getImgUrl()).into(fullScreenView);
-        Glide.with(context).load(horizontalModel.getProduct().getImage()).centerCrop().into(fullScreenView);
+//        Glide.with(context).load(horizontalModel.getProduct().getImage()).centerCrop().into(fullScreenView);
 //        Picasso.get().load(horizontalModel.getImgUrl()).fit().centerCrop().into(fullScreenView);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override

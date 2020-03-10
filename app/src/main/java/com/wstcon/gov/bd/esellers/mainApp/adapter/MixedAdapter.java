@@ -1,6 +1,7 @@
 package com.wstcon.gov.bd.esellers.mainApp.adapter;
 
 import android.content.Context;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -18,10 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.category.categoryModel.Category;
+import com.wstcon.gov.bd.esellers.database.DatabaseQuery;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.Footer;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.RecyclerViewItem;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.Slider;
+import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderImage;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.VerticalModel;
 
 import java.util.ArrayList;
@@ -31,9 +34,11 @@ import static com.wstcon.gov.bd.esellers.utility.ImageHelper.getRoundedCornerBit
 
 public class MixedAdapter extends RecyclerView.Adapter {
 
+    private String TAG="MixedAdapter ";
+
     private List<RecyclerViewItem> recyclerViewItems;
 
-    private List<Slider> sliders = new ArrayList<>();
+    private List<SliderImage> sliders = new ArrayList<>();
     //Header Item Type
     private static final int HEADER_ITEM = 0;
     //Footer Item Type
@@ -43,7 +48,7 @@ public class MixedAdapter extends RecyclerView.Adapter {
 
     private static final int CATEGORY_ITEM = 3;
     private Context context;
-    private Slider slider = new Slider();
+    private SliderImage slider = new SliderImage();
 
     public MixedAdapter(List<RecyclerViewItem> recyclerViewItems, Context context) {
         this.recyclerViewItems = recyclerViewItems;
@@ -113,7 +118,7 @@ public class MixedAdapter extends RecyclerView.Adapter {
         //here we can set view type
         RecyclerViewItem recyclerViewItem = recyclerViewItems.get(position);
         //if its header then return header item
-        if (recyclerViewItem instanceof Slider)
+        if (recyclerViewItem instanceof SliderImage)
             return HEADER_ITEM;
             //if its Footer then return Footer item
         else if (recyclerViewItem instanceof Footer)
@@ -158,12 +163,12 @@ public class MixedAdapter extends RecyclerView.Adapter {
             viewFlipper = itemView.findViewById(R.id.flipper);
             params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
             Log.e("if header", "onBindViewHolder: " + sliders.size());
-            for (Slider s : sliders) {
+            for (SliderImage s : sliders) {
                 setImageInFlipper(s);
             }
         }
 
-        private void setImageInFlipper(Slider slider) {
+        private void setImageInFlipper(SliderImage slider) {
             ImageView image = new ImageView(context);
 //            image.setBackgroundResource(R.drawable.image_round_border);
 //            image.setClipToOutline(true);
@@ -189,18 +194,25 @@ public class MixedAdapter extends RecyclerView.Adapter {
 
     private class CategoryHolder extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
-        ImageView imageView;
+//        ImageView imageView;
         TextView textView;
 
         public CategoryHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.catImg);
+//            imageView = itemView.findViewById(R.id.catImg);
             textView = itemView.findViewById(R.id.catTxt);
             linearLayout = itemView.findViewById(R.id.imgLayout);
-            for (int j = 1; j <= 7; j++) {
-                int b1 = j;
-                create_img1("drawable/a" + j, b1);
+
+            DatabaseQuery query=new DatabaseQuery(context);
+            List<Category> categories=query.getCategory();
+            for (Category c: categories){
+                setCatIcon(c);
             }
+//
+//            for (int j = 1; j <= 7; j++) {
+//                int b1 = j;
+//                create_img1("drawable/a" + j, b1);
+//            }
         }
 
         public void create_img1(String ss, int ID) {
@@ -218,6 +230,36 @@ public class MixedAdapter extends RecyclerView.Adapter {
             Log.e("", "create_img1: ID:" + ID + " id:" + id + " ss:" + ss);
             imageView.setId(ID);
 
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        public void setCatIcon(Category category) {
+            View view = LayoutInflater.from(context).inflate(R.layout.single_cat, null, false);
+            ImageView imageView = view.findViewById(R.id.catImg);
+            TextView textView = view.findViewById(R.id.catTxt);
+            textView.setMaxLines(2);
+            textView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
+            textView.setText(category.getCategoryName());
+            Log.e(TAG, "setCatIcon: "+category.getCategoryName() );
+            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            parms.setMargins(20, 0, 20, 0);
+            view.setLayoutParams(parms);
+
+            imageView.setImageBitmap(category.getBitmap());
+            linearLayout.addView(view);
+            imageView.setId(category.getId());
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -244,7 +286,7 @@ public class MixedAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public void updateSlider(List<Slider> sliders) {
+    public void updateSlider(List<SliderImage> sliders) {
         List<RecyclerViewItem> recyclerViewItems = new ArrayList<>();
         this.slider = sliders.get(0);
         recyclerViewItems.add(slider);

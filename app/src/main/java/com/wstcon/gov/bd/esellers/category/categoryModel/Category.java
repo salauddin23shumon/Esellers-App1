@@ -1,12 +1,15 @@
 
 package com.wstcon.gov.bd.esellers.category.categoryModel;
 
+import android.graphics.Bitmap;
+
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.RecyclerViewItem;
 
-public class Category extends RecyclerViewItem {
+public class Category extends RecyclerViewItem implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -41,6 +44,8 @@ public class Category extends RecyclerViewItem {
     @SerializedName("sub_categories")
     @Expose
     private List<SubCategory> subCategories = null;
+
+    private Bitmap bitmap;
 
     public Integer getId() {
         return id;
@@ -130,4 +135,11 @@ public class Category extends RecyclerViewItem {
         this.subCategories = subCategories;
     }
 
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 }

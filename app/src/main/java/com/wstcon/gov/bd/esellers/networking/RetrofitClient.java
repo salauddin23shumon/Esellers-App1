@@ -13,9 +13,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
+
 public class RetrofitClient {
 //    public static final String BASE_URL = "https://esellers.againwish.com/api/";
-    public static final String BASE_URL = "http://192.168.0.103/searching/";
+//    public static final String BASE_URL = "http://192.168.0.103/searching/";
     private static Retrofit retrofit;
     private static RetrofitClient retrofitClient;
 //    private String token;

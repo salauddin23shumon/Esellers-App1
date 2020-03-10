@@ -5,12 +5,10 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.dashboard.HomeFragment;
 import com.wstcon.gov.bd.esellers.dashboard.StartSplashFragment;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.Slider;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.VerticalModel;
 import com.wstcon.gov.bd.esellers.product.ProductFragment;
 import com.wstcon.gov.bd.esellers.userAuth.AuthActivity;

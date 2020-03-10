@@ -11,8 +11,8 @@ public class HorizontalModel extends RecyclerViewItem implements Serializable {
 
     public HorizontalModel(Product product) {
         this.product = product;
-        category = product.getCategory();
-        status = product.getStatus();
+        category = product.getCategoryName();
+        status = product.getProductStatusName();
     }
 
     public Product getProduct() {

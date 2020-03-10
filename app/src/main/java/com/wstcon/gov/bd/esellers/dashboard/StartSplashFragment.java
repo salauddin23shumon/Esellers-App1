@@ -19,17 +19,17 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.wstcon.gov.bd.esellers.R;
+import com.wstcon.gov.bd.esellers.category.categoryModel.Category;
+import com.wstcon.gov.bd.esellers.category.categoryModel.CategoryResponse;
 import com.wstcon.gov.bd.esellers.database.DatabaseQuery;
-import com.wstcon.gov.bd.esellers.mainApp.adapter.MixedAdapter;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.RecyclerViewItem;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.Slider;
+import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderImage;
+import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderResponse;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.VerticalModel;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.product.productModel.Product;
+import com.wstcon.gov.bd.esellers.product.productModel.ProductResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +38,8 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,7 +50,8 @@ public class StartSplashFragment extends Fragment {
     private SplashAction action;
     private ArrayList<VerticalModel> vmList=new ArrayList<>();
     private DatabaseQuery query;
-    private int size=0;
+    private int sliderSize =0;
+    private int catSize =0;
     private Context context;
 
 
@@ -69,7 +72,7 @@ public class StartSplashFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fetchSlider();
+        getCategory();
 
         return inflater.inflate(R.layout.fragment_start_splash, container, false);
     }
@@ -87,16 +90,17 @@ public class StartSplashFragment extends Fragment {
     }
 
     private void fetchSlider() {
-        Call<List<Slider>> call = RetrofitClient.getInstance().getApiInterface().getSlider();
-        call.enqueue(new Callback<List<Slider>>() {
+        Call<SliderResponse> call = RetrofitClient.getInstance().getApiInterface().getSliders();
+        call.enqueue(new Callback<SliderResponse>() {
             @Override
-            public void onResponse(Call<List<Slider>> call, Response<List<Slider>> response) {
+            public void onResponse(Call<SliderResponse> call, Response<SliderResponse> response) {
 
-                Log.e(TAG, "onResponse: " + response.body().size());
-                size=response.body().size();
-                if (query.getRowCount()<size) {
+                List<SliderImage> sliderImages=response.body().getSliderImages();
+                Log.e(TAG, "onResponse: " + sliderImages.size());
+                sliderSize =sliderImages.size();
+                if (query.getSliderCount()< sliderSize) {
                     query.deleteAll();
-                    for (Slider s : response.body()) {
+                    for (SliderImage s : sliderImages) {
                         getSliderPhoto(s);
                     }
                 }else {
@@ -105,25 +109,25 @@ public class StartSplashFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Slider>> call, Throwable t) {
+            public void onFailure(Call<SliderResponse> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
             }
         });
 
     }
 
-    public void getSliderPhoto(final Slider slider){
+    private void getSliderPhoto(final SliderImage slider){
 
-        Glide.with(context).asBitmap().load(slider.getSliderImage()).into(new CustomTarget<Bitmap>() {
+        Glide.with(context).asBitmap().load(BASE_URL+slider.getSliderImage()).into(new CustomTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 slider.setBitmap(resource);
                 Log.e(TAG, "onResourceReady: "+slider.getSliderImage() );
                 query.insertSlider(slider);
 
-                Log.e(TAG, "onResourceReady: "+query.getRowCount() );
+                Log.e(TAG, "onResourceReady: "+query.getSliderCount() );
 
-                if (query.getRowCount()==size){
+                if (query.getSliderCount()== sliderSize){
                     addData();
                 }
             }
@@ -136,6 +140,28 @@ public class StartSplashFragment extends Fragment {
 
     }
 
+    private void getCatIcon(final Category category){
+        Glide.with(context).asBitmap().load(BASE_URL+category.getCategoryIcon()).into(new CustomTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                category.setBitmap(resource);
+                Log.e(TAG, "onResourceReady: "+category.getCategoryIcon() );
+                query.insertCategory(category);
+
+                Log.e(TAG, "onResourceReady: "+query.getCatIconCount() );
+
+                if (query.getCatIconCount()== catSize){
+                    fetchSlider();
+                }
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+            }
+        });
+    }
+
     private void addData() {
 
         final ArrayList<HorizontalModel> horizontalModels1 = new ArrayList<>();
@@ -143,20 +169,20 @@ public class StartSplashFragment extends Fragment {
         final ArrayList<HorizontalModel> horizontalModels3 = new ArrayList<>();
         final ArrayList<HorizontalModel> horizontalModels4 = new ArrayList<>();
 
-        Call<List<Product>> call = RetrofitClient.getInstance().getApiInterface().getProducts();
-        call.enqueue(new Callback<List<Product>>() {
+        Call<ProductResponse> call = RetrofitClient.getInstance().getApiInterface().getAllProducts();
+        call.enqueue(new Callback<ProductResponse>() {
             @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                List<Product> products = response.body();
+            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                List<Product> products = response.body().getProducts();
                 Log.e(TAG, "onResponse: " + products.size());
                 for (Product p : products) {
-                    if (p.getStatus().equals("Featured"))
+                    if (p.getProductStatusName().equals("Featured"))
                         horizontalModels1.add(new HorizontalModel(p));
-                    else if (p.getStatus().equals("Offer"))
+                    else if (p.getProductStatusName().equals("Offer"))
                         horizontalModels2.add(new HorizontalModel(p));
-                    else if (p.getStatus().equals("Latest"))
+                    else if (p.getProductStatusName().equals("Latest"))
                         horizontalModels3.add(new HorizontalModel(p));
-                    else if (p.getStatus().equals("Popular"))
+                    else if (p.getProductStatusName().equals("Popular"))
                         horizontalModels4.add(new HorizontalModel(p));
                 }
 
@@ -169,12 +195,37 @@ public class StartSplashFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
+            public void onFailure(Call<ProductResponse> call, Throwable t) {
 
                 Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
             }
         });
 
+    }
+
+
+    private void getCategory(){
+        Call<CategoryResponse> call =RetrofitClient.getInstance().getApiInterface().getAllCategories();
+        call.enqueue(new Callback<CategoryResponse>() {
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                List<Category> categoryList=response.body().getCategories();
+                catSize=categoryList.size();
+                Log.e(TAG, "onResponse: "+categoryList.size() );
+                if (query.getCatIconCount()<categoryList.size()) {
+                    for (Category c : categoryList) {
+                        getCatIcon(c);
+                    }
+                }else
+                    addData();
+
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     public interface SplashAction{

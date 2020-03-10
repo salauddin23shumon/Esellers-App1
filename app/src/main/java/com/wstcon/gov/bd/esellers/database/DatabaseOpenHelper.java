@@ -28,8 +28,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String SLIDER_UPDATED_AT = "updated_at";
     public static final String SLIDER_PHOTO = "photo";
 
-
-    public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + SLIDER_TBL + " ( " +
+    public static final String CREATE_SLIDER_TABLE = "CREATE TABLE IF NOT EXISTS " + SLIDER_TBL + " ( " +
             SLIDER_ID + " TEXT, " +
             SLIDER_URL + " TEXT, " +
             SLIDER_STATUS + " TEXT, " +
@@ -39,9 +38,33 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     public static final String READ_SLIDER_TBL = "SELECT * FROM " + SLIDER_TBL;
 
-    public static final String DROP_TABLE = "DROP TABLE IF EXISTS " + SLIDER_TBL;
+    public static final String DROP_SLIDER_TABLE = "DROP TABLE IF EXISTS " + SLIDER_TBL;
 
-    public static final String DELETE_TABLE = "DELETE FROM " + SLIDER_TBL;
+    public static final String DELETE_SLIDER_TABLE = "DELETE FROM " + SLIDER_TBL;
+
+
+    //Category Table
+    public static final String CATEGORY_TBL = "Category";
+    public static final String CATEGORY_ID = "id";
+    public static final String CATEGORY_NAME = "name";
+    public static final String CATEGORY_URL = "url";
+    public static final String CATEGORY_STATUS = "status";
+    public static final String CATEGORY_PHOTO = "photo";
+
+    public static final String CREATE_CAT_TABLE = "CREATE TABLE IF NOT EXISTS " + CATEGORY_TBL + " ( " +
+            CATEGORY_ID + " INTEGER, " +
+            CATEGORY_NAME + " TEXT, " +
+            CATEGORY_URL + " TEXT, " +
+            CATEGORY_STATUS + " TEXT, " +
+            CATEGORY_PHOTO + " BLOB );";
+
+    public static final String READ_CAT_TBL = "SELECT * FROM " + CATEGORY_TBL;
+
+    public static final String DROP_CAT_TABLE = "DROP TABLE IF EXISTS " + CATEGORY_TBL;
+
+    public static final String DELETE_CAT_TABLE = "DELETE FROM " + CATEGORY_TBL;
+
+
 
 
     public DatabaseOpenHelper(Context context) {
@@ -51,7 +74,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
-            db.execSQL(CREATE_TABLE);
+            db.execSQL(CREATE_SLIDER_TABLE);
+            db.execSQL(CREATE_CAT_TABLE);
         }catch (SQLException ex){
             Log.e("DatabaseOpenHelper", "onCreate: "+ex.getMessage() );
         }
@@ -60,7 +84,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DROP_TABLE);
+        db.execSQL(DROP_SLIDER_TABLE);
+        db.execSQL(DROP_CAT_TABLE);
         onCreate(db);
     }
 }
