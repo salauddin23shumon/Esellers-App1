@@ -134,9 +134,15 @@ public class DatabaseQuery {
         return count;
     }
 
-    public void deleteAll(){
+    public void deleteSlider(){
         this.open();
         db.execSQL(DatabaseOpenHelper.DELETE_SLIDER_TABLE);
+        this.close();
+    }
+
+    public void deleteCat(){
+        this.open();
+        db.execSQL(DatabaseOpenHelper.DELETE_CAT_TABLE);
         this.close();
     }
 }

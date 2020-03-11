@@ -34,6 +34,9 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.wstcon.gov.bd.esellers.R;
+import com.wstcon.gov.bd.esellers.dashboard.HomeFragment;
+import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
+import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
 
 import java.io.File;
@@ -115,6 +118,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
         horizontalViewHolder.productTV.setText(horizontalModel.getProduct().getProductName());
         horizontalViewHolder.priceTV.setText(horizontalModel.getProduct().getProductPrice());
+        horizontalViewHolder.ratingBar.setRating(Float.parseFloat(horizontalModel.getProduct().getRating()));
 
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.alpha);
         horizontalViewHolder.imageView.startAnimation(animation);
@@ -124,6 +128,28 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
             public void onClick(View v) {
 //                fullView(horizontalModel);
 //                context.startActivity(new Intent(context, ProductDetailsActivity.class).putExtra("item", horizontalModel));
+            }
+        });
+
+        horizontalViewHolder.cartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!horizontalModel.getProduct().isAddedToCart())
+                {
+                    horizontalModel.getProduct().setAddedToCart(true);
+                    horizontalViewHolder.cartBtn.setText("Remove");
+                    if(context instanceof MainActivity)
+                    {
+                        ((AddorRemoveCallbacks)context).onAddProduct();
+                    }
+
+                }
+                else
+                {
+                    horizontalModel.getProduct().setAddedToCart(false);
+                    horizontalViewHolder.cartBtn.setText("Add");
+                    ((AddorRemoveCallbacks)context).onRemoveProduct();
+                }
             }
         });
     }
@@ -175,5 +201,10 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
             wishBtn = itemView.findViewById(R.id.wishBtn);
             ratingBar = itemView.findViewById(R.id.rating);
         }
+    }
+
+
+    public interface HorizontalAdapterAction{
+
     }
 }

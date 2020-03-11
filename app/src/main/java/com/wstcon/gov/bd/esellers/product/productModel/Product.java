@@ -75,6 +75,8 @@ public class Product implements Serializable {
     @Expose
     private List<Review> reviews = null;
 
+    private boolean addedToCart = false;
+
     public Integer getId() {
         return id;
     }
@@ -251,4 +253,11 @@ public class Product implements Serializable {
         this.reviews = reviews;
     }
 
+    public boolean isAddedToCart() {
+        return addedToCart;
+    }
+
+    public void setAddedToCart(boolean addedToCart) {
+        this.addedToCart = addedToCart;
+    }
 }

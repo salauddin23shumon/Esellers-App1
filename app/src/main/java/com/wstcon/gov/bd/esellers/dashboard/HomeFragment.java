@@ -11,11 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.database.DatabaseQuery;
+import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
 import com.wstcon.gov.bd.esellers.mainApp.adapter.MixedAdapter;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.RecyclerViewItem;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderImage;
@@ -25,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements AddorRemoveCallbacks {
 
     private static final String TAG = "HomeFragment ";
     private RecyclerView verticalRV;
@@ -34,6 +38,7 @@ public class HomeFragment extends Fragment {
     private MixedAdapter mixedAdapter;
     private ArrayList<RecyclerViewItem> items;
     private List<SliderImage> sliders;
+    private int cart_count=0;
 
 
     public HomeFragment() {
@@ -43,6 +48,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        setHasOptionsMenu(true);
         this.context = context;
         Bundle bundle = this.getArguments();
         DatabaseQuery query=new DatabaseQuery(context);
@@ -73,4 +79,22 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onAddProduct() {
+        cart_count++;
+        getActivity().invalidateOptionsMenu();
+        Toast.makeText(context, "added", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRemoveProduct() {
+        cart_count--;
+        getActivity().invalidateOptionsMenu();
+        Toast.makeText(context, "added", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -62,10 +62,10 @@ public class MixedAdapter extends RecyclerView.Adapter {
         View row;
         //Check fot view Type inflate layout according to it
         if (viewType == HEADER_ITEM) {
-            row = inflater.inflate(R.layout.custom_row_header, parent, false);
+            row = inflater.inflate(R.layout.row_header, parent, false);
             return new HeaderHolder(row);
         } else if (viewType == FOOTER_ITEM) {
-            row = inflater.inflate(R.layout.custom_row_footer, parent, false);
+            row = inflater.inflate(R.layout.row_footer, parent, false);
             return new FooterHolder(row);
         } else if (viewType == PRODUCT_ITEM) {
             row = inflater.inflate(R.layout.vertical_row, parent, false);
@@ -154,21 +154,21 @@ public class MixedAdapter extends RecyclerView.Adapter {
     private class HeaderHolder extends RecyclerView.ViewHolder {
         TextView texViewHeaderText, textViewCategory;
         ViewFlipper viewFlipper;
-        FrameLayout.LayoutParams params;
+//        FrameLayout.LayoutParams params;
 
         public HeaderHolder(View itemView) {
             super(itemView);
             texViewHeaderText = itemView.findViewById(R.id.texViewHeaderText);
             textViewCategory = itemView.findViewById(R.id.textViewCategory);
             viewFlipper = itemView.findViewById(R.id.flipper);
-            params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewFlipper.LayoutParams.MATCH_PARENT, ViewFlipper.LayoutParams.MATCH_PARENT);
             Log.e("if header", "onBindViewHolder: " + sliders.size());
             for (SliderImage s : sliders) {
-                setImageInFlipper(s);
+                setImageInFlipper(s, params);
             }
         }
 
-        private void setImageInFlipper(SliderImage slider) {
+        private void setImageInFlipper(SliderImage slider, LinearLayout.LayoutParams params) {
             ImageView image = new ImageView(context);
 //            image.setBackgroundResource(R.drawable.image_round_border);
 //            image.setClipToOutline(true);

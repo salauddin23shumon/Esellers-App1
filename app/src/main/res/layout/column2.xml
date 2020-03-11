@@ -61,7 +61,7 @@
 
 
             <RatingBar
-                android:id="@+id/ratting"
+                android:id="@+id/rating"
                 android:layout_width="wrap_content"
                 android:layout_height="14dp"
                 android:numStars="5"
@@ -78,7 +78,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ratting"
+                android:layout_below="@id/rating"
                 android:orientation="horizontal">
 
                 <Button

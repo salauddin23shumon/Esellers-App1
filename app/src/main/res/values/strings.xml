@@ -6,4 +6,6 @@
     <string name="login">SignIn</string>
     <string name="email">email</string>
     <string name="password">password</string>
+    <string name="action_Cart">cart</string>
+    <string name="action_Notification">notification</string>
 </resources>
