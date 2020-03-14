@@ -3,6 +3,7 @@ package com.wstcon.gov.bd.esellers.cart.cartModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.wstcon.gov.bd.esellers.product.productModel.Product;
 
 import java.io.Serializable;
 
@@ -16,13 +17,19 @@ public class Cart implements Serializable {
     private Integer productQuantity;
     @SerializedName("product_price")
     @Expose
-    private Integer productPrice;
+    private double productPrice;
     @SerializedName("size")
     @Expose
     private String size;
     @SerializedName("color")
     @Expose
     private String color;
+
+    private double totalCash;
+
+    private String productImg;
+
+    private String productName;
 
     public Integer getProductId() {
         return productId;
@@ -40,11 +47,11 @@ public class Cart implements Serializable {
         this.productQuantity = productQuantity;
     }
 
-    public Integer getProductPrice() {
+    public double getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(Integer productPrice) {
+    public void setProductPrice(double productPrice) {
         this.productPrice = productPrice;
     }
 
@@ -62,6 +69,30 @@ public class Cart implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public double getTotalCash() {
+        return totalCash;
+    }
+
+    public void setTotalCash(double totalCash) {
+        this.totalCash = totalCash;
+    }
+
+    public String getProductImg() {
+        return productImg;
+    }
+
+    public void setProductImg(String productImg) {
+        this.productImg = productImg;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
 }

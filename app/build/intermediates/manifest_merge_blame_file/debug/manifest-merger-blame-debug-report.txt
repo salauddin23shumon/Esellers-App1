@@ -19,69 +19,83 @@
 14-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:8:5-79
 14-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:8:22-76
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:9:5-66
+15-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:9:5-67
 15-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:9:22-64
 16
 17    <application
-17-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:11:5-34:19
+17-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:11:5-41:19
 18        android:allowBackup="true"
 18-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:12:9-35
 19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 19-->[androidx.core:core:1.2.0] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\302daf4f7d1b898f2c497b4300121e72\core-1.2.0\AndroidManifest.xml:24:18-86
 20        android:debuggable="true"
 21        android:hardwareAccelerated="true"
-21-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:18:9-43
+21-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:13:9-43
 22        android:icon="@mipmap/ic_launcher"
-22-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:13:9-43
+22-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:14:9-43
 23        android:label="@string/app_name"
-23-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:14:9-41
+23-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:15:9-41
 24        android:largeHeap="true"
-24-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:17:9-33
+24-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:16:9-33
 25        android:roundIcon="@mipmap/ic_launcher_round"
-25-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:15:9-54
+25-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:17:9-54
 26        android:supportsRtl="true"
-26-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:16:9-35
+26-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:18:9-35
 27        android:testOnly="true"
 28        android:theme="@style/AppTheme"
-28-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:20:9-40
+28-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:19:9-40
 29        android:usesCleartextTraffic="true" >
-29-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:19:9-44
-30        <activity
-30-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:22:9-25:20
-31            android:name="com.wstcon.gov.bd.esellers.userAuth.AuthActivity"
-31-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:22:19-56
-32            android:theme="@style/AuthTheme" >
-32-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:23:13-45
-33        </activity>
-34        <activity
-34-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:26:9-33:20
-35            android:name="com.wstcon.gov.bd.esellers.mainApp.MainActivity"
-35-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:26:19-55
-36            android:theme="@style/AppTheme" >
-36-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:27:13-44
-37            <intent-filter>
-37-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:28:13-32:29
-38                <action android:name="android.intent.action.MAIN" />
-38-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:29:17-69
-38-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:29:25-66
-39                <action android:name="android.intent.action.VIEW" />
-39-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:30:17-69
-39-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:30:25-66
-40
-41                <category android:name="android.intent.category.LAUNCHER" />
-41-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:31:17-77
-41-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:31:27-74
-42            </intent-filter>
-43        </activity>
-44
-45        <provider
-45-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:8:9-11:40
-46            android:name="com.squareup.picasso.PicassoProvider"
-46-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:9:13-64
-47            android:authorities="com.wstcon.gov.bd.esellers.com.squareup.picasso"
-47-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:10:13-72
-48            android:exported="false" />
-48-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:11:13-37
-49    </application>
+29-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:20:9-44
+30        <activity android:name="com.wstcon.gov.bd.esellers.payment.PaymentActivity" />
+30-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:21:9-70
+30-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:21:19-58
+31        <activity
+31-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:22:9-25:48
+32            android:name="com.wstcon.gov.bd.esellers.cart.CartActivity"
+32-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:23:13-46
+33            android:configChanges="screenSize|orientation|keyboard"
+33-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:24:13-68
+34            android:theme="@style/AuthTheme" />
+34-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:25:13-45
+35        <activity
+35-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:26:9-29:48
+36            android:name="com.wstcon.gov.bd.esellers.userAuth.AuthActivity"
+36-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:27:13-50
+37            android:configChanges="screenSize|orientation|keyboard"
+37-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:28:13-68
+38            android:theme="@style/AuthTheme" />
+38-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:29:13-45
+39        <activity
+39-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:30:9-40:20
+40            android:name="com.wstcon.gov.bd.esellers.mainApp.MainActivity"
+40-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:31:13-49
+41            android:configChanges="screenSize|orientation|keyboard"
+41-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:32:13-68
+42            android:theme="@style/AppTheme" >
+42-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:33:13-44
+43            <intent-filter>
+43-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:34:13-39:29
+44                <action android:name="android.intent.action.MAIN" />
+44-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:35:17-69
+44-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:35:25-66
+45                <action android:name="android.intent.action.VIEW" />
+45-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:36:17-69
+45-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:36:25-66
+46
+47                <category android:name="android.intent.category.LAUNCHER" />
+47-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:38:17-77
+47-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:38:27-74
+48            </intent-filter>
+49        </activity>
 50
-51</manifest>
+51        <provider
+51-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:8:9-11:40
+52            android:name="com.squareup.picasso.PicassoProvider"
+52-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:9:13-64
+53            android:authorities="com.wstcon.gov.bd.esellers.com.squareup.picasso"
+53-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:10:13-72
+54            android:exported="false" />
+54-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:11:13-37
+55    </application>
+56
+57</manifest>

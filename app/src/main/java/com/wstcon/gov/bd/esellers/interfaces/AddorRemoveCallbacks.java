@@ -1,11 +1,14 @@
 package com.wstcon.gov.bd.esellers.interfaces;
 
-/**
- * Created by chintu gandhwani on 1/22/2018.
- */
+import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
+
+
 
 public interface AddorRemoveCallbacks {
 
-    public void onAddProduct();
-    public void onRemoveProduct();
+    void onAddProduct(Cart cart);
+
+//    void onRemoveProduct(int id);
+
+
 }

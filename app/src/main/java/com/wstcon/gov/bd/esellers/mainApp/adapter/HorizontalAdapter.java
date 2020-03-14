@@ -34,6 +34,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.wstcon.gov.bd.esellers.R;
+import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
 import com.wstcon.gov.bd.esellers.dashboard.HomeFragment;
 import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
 import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
@@ -67,23 +68,24 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final HorizontalViewHolder horizontalViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final HorizontalViewHolder horizontalViewHolder, final int i) {
 
         final HorizontalModel horizontalModel = hmList.get(i);
-        final String id =String.valueOf(horizontalModel.getProduct().getId());
-        File dir = new File(imgFilePath+"/thumb/");
-        final File thumbImageFile = new File(dir,  id + ".jpg");
+        final String id = String.valueOf(horizontalModel.getProduct().getId());
+        File dir = new File(imgFilePath + "/thumb/");
+        final File thumbImageFile = new File(dir, id + ".jpg");
+
+//        Log.e("url", "onBindViewHolder: "+BASE_URL+horizontalModel.getProduct().getProductImage() );
 
 
-
-        if (!dir.exists()){
+        if (!dir.exists()) {
             dir.mkdir();
         }
 
         if (!thumbImageFile.exists()) {
             Glide.with(context)
                     .asBitmap()
-                    .load(BASE_URL+horizontalModel.getProduct().getProductImage())
+                    .load(BASE_URL + horizontalModel.getProduct().getProductImage())
                     .listener(new RequestListener<Bitmap>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
@@ -98,7 +100,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
                                 FileOutputStream outputStreamthumb = new FileOutputStream(thumbImageFile);
 //                        Bitmap thumbBitmap = Bitmap.createScaledBitmap(loadedImage,300,400,false);
                                 resource.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamthumb);
-                        Toast.makeText(context, id+" thumb saved", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, id + " thumb saved", Toast.LENGTH_SHORT).show();
                                 Log.d("file", ": " + id + " saved");
                                 outputStreamthumb.flush();
                                 outputStreamthumb.close();
@@ -108,10 +110,10 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
                             return false;
                         }
                     }).into(horizontalViewHolder.imageView);
-        }else {
-            Log.e("else", "onBindViewHolder: "+imgFilePath+"/thumb/" );
-            Log.e("else", "onBindViewHolder: "+dir.toString() );
-            Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/" + id +".jpg");
+        } else {
+            Log.e("else", "onBindViewHolder: " + imgFilePath + "/thumb/");
+            Log.e("else", "onBindViewHolder: " + dir.toString());
+            Bitmap bitmap = BitmapFactory.decodeFile(dir.getPath() + "/" + id + ".jpg");
             horizontalViewHolder.progressBar.setVisibility(View.GONE);
             horizontalViewHolder.imageView.setImageBitmap(bitmap);
         }
@@ -134,21 +136,26 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         horizontalViewHolder.cartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!horizontalModel.getProduct().isAddedToCart())
-                {
+                Cart cart = new Cart();
+                cart.setProductId(horizontalModel.getProduct().getId());
+                cart.setProductName(horizontalModel.getProduct().getProductName());
+                cart.setProductImg(horizontalModel.getProduct().getProductImage());
+                cart.setProductQuantity(1);
+                cart.setProductPrice(Double.parseDouble(horizontalModel.getProduct().getProductPrice()));
+                cart.setTotalCash(Double.parseDouble(horizontalModel.getProduct().getProductPrice()));
+
+                if (!horizontalModel.getProduct().isAddedToCart()) {
                     horizontalModel.getProduct().setAddedToCart(true);
-                    horizontalViewHolder.cartBtn.setText("Remove");
-                    if(context instanceof MainActivity)
-                    {
-                        ((AddorRemoveCallbacks)context).onAddProduct();
+//                    horizontalViewHolder.cartBtn.setText("Remove");
+                    if (context instanceof MainActivity) {
+                        ((AddorRemoveCallbacks) context).onAddProduct(cart);
                     }
 
-                }
-                else
-                {
+                } else {
+                    Toast.makeText(context, "already added into cart", Toast.LENGTH_SHORT).show();
                     horizontalModel.getProduct().setAddedToCart(false);
-                    horizontalViewHolder.cartBtn.setText("Add");
-                    ((AddorRemoveCallbacks)context).onRemoveProduct();
+//                    horizontalViewHolder.cartBtn.setText("Add To Cart");
+//                    ((AddorRemoveCallbacks) context).onRemoveProduct(cart.getProductId());
                 }
             }
         });
@@ -204,7 +211,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
     }
 
 
-    public interface HorizontalAdapterAction{
+    public interface HorizontalAdapterAction {
 
     }
 }

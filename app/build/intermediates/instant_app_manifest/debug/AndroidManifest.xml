@@ -28,12 +28,18 @@
         android:testOnly="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true" >
+        <activity android:name="com.wstcon.gov.bd.esellers.payment.PaymentActivity" />
+        <activity
+            android:name="com.wstcon.gov.bd.esellers.cart.CartActivity"
+            android:configChanges="screenSize|orientation|keyboard"
+            android:theme="@style/AuthTheme" />
         <activity
             android:name="com.wstcon.gov.bd.esellers.userAuth.AuthActivity"
-            android:theme="@style/AuthTheme" >
-        </activity>
+            android:configChanges="screenSize|orientation|keyboard"
+            android:theme="@style/AuthTheme" />
         <activity
             android:name="com.wstcon.gov.bd.esellers.mainApp.MainActivity"
+            android:configChanges="screenSize|orientation|keyboard"
             android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

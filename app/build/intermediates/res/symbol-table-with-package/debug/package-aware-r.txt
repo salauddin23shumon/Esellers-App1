@@ -819,6 +819,7 @@ color checkbox_themeable_attribute_color
 color colorAccent
 color colorPrimary
 color colorPrimaryDark
+color creamRed
 color deepred
 color design_bottom_navigation_shadow_color
 color design_box_stroke_color
@@ -1459,9 +1460,15 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable ic_arrow_back
+drawable ic_bkash
 drawable ic_calendar_black_24dp
+drawable ic_checkout1
+drawable ic_checkout2
+drawable ic_checkout3
 drawable ic_clear_black_24dp
 drawable ic_close_black_24dp
+drawable ic_delete
 drawable ic_edit_black_24dp
 drawable ic_email
 drawable ic_email_red_24dp
@@ -1476,6 +1483,7 @@ drawable ic_launcher_foreground
 drawable ic_left_arrow
 drawable ic_lock
 drawable ic_lock_red_24dp
+drawable ic_mastercard
 drawable ic_menu_arrow_down_black_24dp
 drawable ic_menu_arrow_up_black_24dp
 drawable ic_mtrl_checked_circle
@@ -1518,6 +1526,7 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable order_button
 drawable rounded_corner
 drawable shape_box
 drawable shape_round
@@ -1589,17 +1598,23 @@ id action_text
 id actions
 id activity_chooser_view_content
 id add
+id afp
 id alertTitle
 id all
 id allCatTV
 id always
+id appbar
+id asp
 id async
 id attr
 id auto
+id bacb
+id back
 id barrier
 id beginning
 id blocking
 id bottom
+id bottomLL
 id brandIV
 id brandLL
 id brandTV
@@ -1609,6 +1624,7 @@ id buttonPanel
 id buyBtn
 id cancel_action
 id cancel_button
+id cardno
 id cardview_id
 id cartBtn
 id cartRV
@@ -1628,6 +1644,7 @@ id chip2
 id chip3
 id chip_group
 id chronometer
+id city
 id clear_text
 id clip_horizontal
 id clip_vertical
@@ -1641,6 +1658,7 @@ id contentPanel
 id coordinator
 id count
 id counterValuePanel
+id country
 id custom
 id customPanel
 id cut
@@ -1648,6 +1666,7 @@ id date_picker_actions
 id decor_content_parent
 id decrementBtn
 id default_activity_button
+id deleteIV
 id desc1ET
 id desc1TV
 id desc2ET
@@ -1661,6 +1680,7 @@ id dialog_button
 id dimensions
 id direct
 id disableHome
+id division
 id dropdown_menu
 id edit_query
 id emailET
@@ -1722,6 +1742,7 @@ id loginTV
 id masked
 id media_actions
 id message
+id midLL
 id middle
 id mini
 id month_grid
@@ -1751,9 +1772,12 @@ id mtrl_picker_text_input_range_end
 id mtrl_picker_text_input_range_start
 id mtrl_picker_title_text
 id multiply
+id name
 id nameTV
 id navigation_header_container
 id never
+id next
+id nextBtn
 id noScroll
 id none
 id normal
@@ -1776,6 +1800,7 @@ id password_toggle
 id peekHeight
 id percent
 id pin
+id placeOrderBtn
 id priceTV
 id productIV
 id productImg
@@ -1787,6 +1812,7 @@ id progress_login
 id progress_signup
 id quantityTV
 id radio
+id radiofst
 id rating
 id regTV
 id right
@@ -1813,6 +1839,7 @@ id search_mag_icon
 id search_plate
 id search_src_text
 id search_voice_btn
+id secondLL
 id seeMore
 id seeMoreTV
 id select_dialog_listview
@@ -1842,6 +1869,8 @@ id src_over
 id standard
 id start
 id status_bar_latest_event_content
+id streetfst
+id streetsnd
 id stretch
 id submenuarrow
 id submit_area
@@ -1879,8 +1908,11 @@ id title
 id titleDividerNoCustom
 id titleTV
 id title_template
+id toolbar
 id top
+id topLL
 id topPanel
+id totalTV
 id touch_outside
 id transition_current_scene
 id transition_layout_save
@@ -1961,10 +1993,14 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_auth
+layout activity_cart
 layout activity_main
+layout activity_payment
 layout badge_icon_layout
-layout cart_fragment
 layout category_row
+layout checkout_address
+layout checkout_delivery_option
+layout checkout_payments
 layout column2
 layout custom_dialog
 layout design_bottom_navigation_item

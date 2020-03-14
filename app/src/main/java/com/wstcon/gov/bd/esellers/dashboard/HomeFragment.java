@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements AddorRemoveCallbacks {
+public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment ";
     private RecyclerView verticalRV;
@@ -84,17 +84,17 @@ public class HomeFragment extends Fragment implements AddorRemoveCallbacks {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public void onAddProduct() {
-        cart_count++;
-        getActivity().invalidateOptionsMenu();
-        Toast.makeText(context, "added", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRemoveProduct() {
-        cart_count--;
-        getActivity().invalidateOptionsMenu();
-        Toast.makeText(context, "added", Toast.LENGTH_SHORT).show();
-    }
+//    @Override
+//    public void onAddProduct() {
+//        cart_count++;
+//        getActivity().invalidateOptionsMenu();
+//        Toast.makeText(context, "added", Toast.LENGTH_SHORT).show();
+//    }
+//
+//    @Override
+//    public void onRemoveProduct() {
+//        cart_count--;
+//        getActivity().invalidateOptionsMenu();
+//        Toast.makeText(context, "added", Toast.LENGTH_SHORT).show();
+//    }
 }

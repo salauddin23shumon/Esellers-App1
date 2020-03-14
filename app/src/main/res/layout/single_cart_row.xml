@@ -98,6 +98,20 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".3"
+            android:padding="3dp"
+            android:layout_marginRight="10dp">
+            <ImageView
+                android:id="@+id/deleteIV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_delete"/>
+        </LinearLayout>
+
+
     </LinearLayout>
 
 
