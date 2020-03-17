@@ -9,9 +9,9 @@ public class CartRes {
     @SerializedName("status")
     @Expose
     private Integer status;
-    @SerializedName("order")
+    @SerializedName("message")
     @Expose
-    private Order order;
+    private String message;
 
     public Integer getStatus() {
         return status;
@@ -21,12 +21,12 @@ public class CartRes {
         this.status = status;
     }
 
-    public Order getOrder() {
-        return order;
+    public String getMessage() {
+        return message;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
 }

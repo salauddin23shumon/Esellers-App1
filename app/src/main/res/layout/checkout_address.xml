@@ -226,15 +226,15 @@
         </LinearLayout>
 
         <LinearLayout
-
             android:id="@+id/bottomLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/midLL"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
             <Button
-                android:id="@+id/back"
+                android:id="@+id/backBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -249,7 +249,7 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/next"
+                android:id="@+id/nextBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

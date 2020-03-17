@@ -31,6 +31,7 @@ import retrofit2.Response;
  */
 public class SignUpFragment extends Fragment {
 
+    private static final String TAG = "SignUpFragment ";
     private EditText  emailET,  passwordET, confirmET;
     private String  email, password;
     private ProgressBar progressBar;
@@ -94,12 +95,12 @@ public class SignUpFragment extends Fragment {
                     if (authResponse != null && authResponse.getStatus() == 1) {
                         Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         signupComplete.onSignUpComplete(authResponse.getToken());
-                        Log.d("signup", "onResponse1: " + response.code());
+                        Log.d(TAG, "onResponse1: " + response.code());
                     } else {
                         Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } else
-                    Log.d("signup", "onResponse2: " + response.code());//this is for server side error, wrong path, wrong file name or missing
+                    Log.d(TAG, "onResponse2: " + response.code());//this is for server side error, wrong path, wrong file name or missing
             }
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {

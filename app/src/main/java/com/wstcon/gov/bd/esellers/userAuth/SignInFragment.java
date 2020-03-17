@@ -34,11 +34,10 @@ public class SignInFragment extends Fragment {
 
     private EditText emailET, passwordET;
     private String email, password;
-    private Button loginBtn;
+    private Button loginBtn, closeBtn;
     private ProgressBar progressBar;
     private TextView regTV;
-    private LoginComplete loginComplete;
-    private BackToSignUp backToSignUp;
+    private SignInFrgmntAction action;
     private Context context;
 
     public SignInFragment() {
@@ -49,8 +48,8 @@ public class SignInFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        loginComplete = (LoginComplete) context;
-        backToSignUp = (BackToSignUp) context;
+        action= (SignInFrgmntAction) context;
+
     }
 
     @Override
@@ -61,6 +60,7 @@ public class SignInFragment extends Fragment {
         emailET = view.findViewById(R.id.emailET);
         passwordET = view.findViewById(R.id.passwordET);
         loginBtn = view.findViewById(R.id.signinBtn);
+        closeBtn = view.findViewById(R.id.closeBtn);
         regTV = view.findViewById(R.id.regTV);
         progressBar = view.findViewById(R.id.progress_login);
 
@@ -76,12 +76,20 @@ public class SignInFragment extends Fragment {
         regTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backToSignUp.onBackToSignUp();
+                action.onBackToSignUp();
+            }
+        });
+
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                action.onBackPress();
             }
         });
 
         return view;
     }
+
 
     private void doSignIn(String email, String password) {
 
@@ -93,7 +101,7 @@ public class SignInFragment extends Fragment {
                     AuthResponse authResponse = response.body();
                     if (authResponse != null && authResponse.getStatus() == 1) {
                         Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        loginComplete.onLoginComplete(authResponse.getToken());
+                        action.onLoginComplete(authResponse.getToken());
                         Log.d("signup", "onResponse: " + response.code());
                     }else {
                         Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -110,12 +118,10 @@ public class SignInFragment extends Fragment {
         });
     }
 
-    public interface LoginComplete {
+    public interface SignInFrgmntAction {
         void onLoginComplete(Token token);
-    }
-
-    public interface BackToSignUp {
         void onBackToSignUp();
+        void onBackPress();
     }
 
 }

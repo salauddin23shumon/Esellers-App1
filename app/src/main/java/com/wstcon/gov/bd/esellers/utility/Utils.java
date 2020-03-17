@@ -1,10 +1,14 @@
 package com.wstcon.gov.bd.esellers.utility;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Base64;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 
@@ -26,11 +30,22 @@ public class Utils {
 
     public static byte[] getImageBOA2(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         return outputStream.toByteArray();
     }
 
     public static Bitmap getImageBitmap(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
+
+    public static String getStringImage(Bitmap bitmap) {
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+
+        byte[] imageByteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(imageByteArray, Base64.DEFAULT);
+    }
+
+
 }

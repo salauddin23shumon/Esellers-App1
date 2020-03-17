@@ -11,20 +11,41 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.cart.adapter.CartAdapter;
+import com.wstcon.gov.bd.esellers.cart.cartModel.Address;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
+import com.wstcon.gov.bd.esellers.cart.cartModel.CartRes;
+import com.wstcon.gov.bd.esellers.cart.cartModel.Order;
+import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
 import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
+import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.payment.PaymentActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cart_count;
+import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
 
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements AddorRemoveCallbacks {
 
     private static final String TAG = "CartActivity";
     private RecyclerView recyclerView;
@@ -99,7 +120,56 @@ public class CartActivity extends AppCompatActivity {
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CartActivity.this, PaymentActivity.class));
+//                startActivity(new Intent(CartActivity.this, PaymentActivity.class));
+                sendrder();
+            }
+        });
+    }
+
+    private void sendrder() {
+
+        Log.e(TAG, "sendrder: list "+tempArrayList.size() );
+
+        String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9lc2VsbGVycy5hZ2Fpbndpc2guY29tXC9hcGlcL2F1dGhcL3VzZXJfbG9naW4iLCJpYXQiOjE1ODQzNDU5NzYsImV4cCI6MTYxNTg4MTk3NiwibmJmIjoxNTg0MzQ1OTc2LCJqdGkiOiJXZFowSWxvYk96SENuQ1cxIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.aQkg0kOURoXvwEe_OdzYhXeNy7gRtBMA3lGAxJ7j4jI";
+
+        Address address=new Address();
+        address.setAddress("banglamotor");
+        address.setCity("dhaka");
+        address.setZip(1000);
+        address.setCountry("bd");
+        address.setPhone("1212331232");
+        address.setReceiverName("sk");
+
+
+        Order order=new Order();
+        order.setCustomerId(1);
+        order.setOrderTotal(grandTotalPlus);
+        order.setPaymentType("COD");
+        order.setHasDifferentShipping(true);
+        order.setCart(tempArrayList);
+        order.setAddress(address);
+
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jp = new JsonParser();
+        JsonElement je = jp.parse(String.valueOf(order));
+        String prettyJsonString = gson.toJson(je);
+        System.out.println(prettyJsonString);
+
+        Call<CartRes>call= RetrofitClient.getInstance().getApiInterface().sendOrder(order);
+        call.enqueue(new Callback<CartRes>() {
+            @Override
+            public void onResponse(Call<CartRes> call, Response<CartRes> response) {
+                if (response.isSuccessful()){
+                    Log.e(TAG, "onResponse: "+response.body().getStatus() );
+                    Toast.makeText(CartActivity.this, "u have placed order successfully", Toast.LENGTH_SHORT).show();
+                }else
+                    Log.e(TAG, "onResponse: else "+response.code() );
+            }
+
+            @Override
+            public void onFailure(Call<CartRes> call, Throwable t) {
+                Log.e(TAG, "onFailure: "+t.getLocalizedMessage() );
             }
         });
     }
@@ -111,5 +181,32 @@ public class CartActivity extends AppCompatActivity {
         MainActivity.cart_count = (tempArrayList.size());
         finish();
         super.onBackPressed();
+    }
+
+    @Override
+    public void onAddProduct(Cart cart) {
+
+    }
+
+    @Override
+    public void onRemoveProduct(int id) {
+        cart_count--;
+        invalidateOptionsMenu();
+        Toast.makeText(this, "removed", Toast.LENGTH_SHORT).show();
+
+        if (globalCartList.size() == 1) {
+            globalCartList.clear();
+            Log.e(TAG, "onClick: 1st if clicked" );
+        }
+
+        if (globalCartList.size() > 0) {
+            for(Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
+                if(iterator.next().getProductId() == id)
+                    iterator.remove();
+            }
+
+            Log.e(TAG, "onClick: 2nd "+globalCartList.size() );
+
+        }
     }
 }

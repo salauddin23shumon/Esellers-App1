@@ -13,6 +13,8 @@
     <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -40,7 +42,7 @@
         <activity
             android:name="com.wstcon.gov.bd.esellers.mainApp.MainActivity"
             android:configChanges="screenSize|orientation|keyboard"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -48,6 +50,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.wstcon.gov.bd.esellers.product.ProductDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name="com.squareup.picasso.PicassoProvider"

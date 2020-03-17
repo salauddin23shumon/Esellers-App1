@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.wstcon.gov.bd.esellers.R;
 
@@ -42,14 +41,14 @@ public class DeliveryFragment extends Fragment {
         nxtBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                action.onNextClick();
+                action.onDeliveryNxtClick();
             }
         });
         return view;
     }
 
     public interface DeliveryFrgmntAction{
-        void onNextClick();
+        void onDeliveryNxtClick();
     }
 
 }

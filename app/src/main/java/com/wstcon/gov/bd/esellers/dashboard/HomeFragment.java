@@ -24,6 +24,7 @@ import com.wstcon.gov.bd.esellers.mainApp.adapter.MixedAdapter;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.RecyclerViewItem;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderImage;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.VerticalModel;
+import com.wstcon.gov.bd.esellers.product.ProductFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +74,8 @@ public class HomeFragment extends Fragment {
         verticalRV.setHasFixedSize(true);
         verticalRV.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         verticalRV.setAdapter(mixedAdapter);
-        mixedAdapter.updateSlider(sliders);
 
+        mixedAdapter.updateSlider(sliders);
         mixedAdapter.updateList(vmList);
         return view;
     }
@@ -83,6 +84,7 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
+
 
 //    @Override
 //    public void onAddProduct() {

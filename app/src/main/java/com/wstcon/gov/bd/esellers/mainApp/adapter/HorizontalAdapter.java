@@ -2,10 +2,8 @@ package com.wstcon.gov.bd.esellers.mainApp.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,21 +20,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.signature.ObjectKey;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
-import com.wstcon.gov.bd.esellers.dashboard.HomeFragment;
 import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
+import com.wstcon.gov.bd.esellers.interfaces.SeeProductDetails;
 import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
 
@@ -50,6 +44,7 @@ import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
 
 public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.HorizontalViewHolder> {
 
+    private static final String TAG = "HorizontalAdapter ";
     private Context context;
     private ArrayList<HorizontalModel> hmList;
     private File imgFilePath;
@@ -63,7 +58,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
     @NonNull
     @Override
     public HorizontalViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.column2, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_product, viewGroup, false);
         return new HorizontalViewHolder(view);
     }
 
@@ -118,6 +113,13 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
             horizontalViewHolder.imageView.setImageBitmap(bitmap);
         }
 
+        horizontalViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((SeeProductDetails) context).onProductClick(horizontalModel);
+                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
         horizontalViewHolder.productTV.setText(horizontalModel.getProduct().getProductName());
         horizontalViewHolder.priceTV.setText(horizontalModel.getProduct().getProductPrice());
         horizontalViewHolder.ratingBar.setRating(Float.parseFloat(horizontalModel.getProduct().getRating()));
@@ -125,13 +127,6 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.alpha);
         horizontalViewHolder.imageView.startAnimation(animation);
 
-        horizontalViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                fullView(horizontalModel);
-//                context.startActivity(new Intent(context, ProductDetailsActivity.class).putExtra("item", horizontalModel));
-            }
-        });
 
         horizontalViewHolder.cartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +136,23 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
                 cart.setProductName(horizontalModel.getProduct().getProductName());
                 cart.setProductImg(horizontalModel.getProduct().getProductImage());
                 cart.setProductQuantity(1);
+
+                cart.setSize("");
+                cart.setColor("");
+//
+//                if (horizontalModel.getProduct().getAttributes()==null){
+//                    cart.setSize("");
+//                    cart.setColor("");
+//                }else {
+//                    if (horizontalModel.getProduct().getAttributes().get(0).getSize() != null)
+//                        cart.setSize(horizontalModel.getProduct().getAttributes().get(0).getSize());
+//                    else
+//                        cart.setSize("");
+//                    if (horizontalModel.getProduct().getAttributes().get(0).getColor() != null)
+//                        cart.setColor(horizontalModel.getProduct().getAttributes().get(0).getColor());
+//                    else
+//                        cart.setColor("");
+//                }
                 cart.setProductPrice(Double.parseDouble(horizontalModel.getProduct().getProductPrice()));
                 cart.setTotalCash(Double.parseDouble(horizontalModel.getProduct().getProductPrice()));
 
@@ -187,7 +199,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
     @Override
     public int getItemCount() {
-        Log.e("", "getItemCount: " + hmList.size());
+        Log.e(TAG, "getItemCount: " + hmList.size());
         return hmList.size();
     }
 

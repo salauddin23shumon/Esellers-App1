@@ -21,6 +21,7 @@ import com.squareup.picasso.Picasso;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.category.categoryModel.Category;
 import com.wstcon.gov.bd.esellers.database.DatabaseQuery;
+import com.wstcon.gov.bd.esellers.interfaces.CategoryListener;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.Footer;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.RecyclerViewItem;
@@ -49,6 +50,8 @@ public class MixedAdapter extends RecyclerView.Adapter {
     private static final int CATEGORY_ITEM = 3;
     private Context context;
     private SliderImage slider = new SliderImage();
+
+    private MixedAdapterAction action;
 
     public MixedAdapter(List<RecyclerViewItem> recyclerViewItems, Context context) {
         this.recyclerViewItems = recyclerViewItems;
@@ -208,37 +211,10 @@ public class MixedAdapter extends RecyclerView.Adapter {
             for (Category c: categories){
                 setCatIcon(c);
             }
-//
-//            for (int j = 1; j <= 7; j++) {
-//                int b1 = j;
-//                create_img1("drawable/a" + j, b1);
-//            }
+
         }
 
-        public void create_img1(String ss, int ID) {
-            View view = LayoutInflater.from(context).inflate(R.layout.single_cat, null, false);
-            ImageView imageView = view.findViewById(R.id.catImg);
-            TextView textView = view.findViewById(R.id.catTxt);
-            textView.setText("category" + ID);
-            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            parms.setMargins(20, 0, 20, 0);
-            view.setLayoutParams(parms);
-
-            int id = context.getResources().getIdentifier(ss, "id", context.getPackageName());
-            imageView.setImageResource(id);
-            linearLayout.addView(view);
-            Log.e("", "create_img1: ID:" + ID + " id:" + id + " ss:" + ss);
-            imageView.setId(ID);
-
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
-        public void setCatIcon(Category category) {
+        public void setCatIcon(final Category category) {
             View view = LayoutInflater.from(context).inflate(R.layout.single_cat, null, false);
             ImageView imageView = view.findViewById(R.id.catImg);
             TextView textView = view.findViewById(R.id.catTxt);
@@ -250,14 +226,16 @@ public class MixedAdapter extends RecyclerView.Adapter {
             parms.setMargins(20, 0, 20, 0);
             view.setLayoutParams(parms);
 
-            imageView.setImageBitmap(category.getBitmap());
+            imageView.setImageBitmap(getRoundedCornerBitmap(category.getBitmap(),120));
+//            imageView.setImageBitmap(category.getBitmap());
             linearLayout.addView(view);
             imageView.setId(category.getId());
 
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "clicked"+category.getId(), Toast.LENGTH_SHORT).show();
+                    ((CategoryListener) context).onCatIconClick(category.getId());
                 }
             });
         }
@@ -295,6 +273,13 @@ public class MixedAdapter extends RecyclerView.Adapter {
 
         Log.e("mixed", "updateSlider: " + sliders.size());
         notifyDataSetChanged();
+    }
+
+
+    public interface MixedAdapterAction{
+//        void onCatIconClick(int cid);
+        void onProductImgClick();
+//        void onSeeMoreClick();
     }
 
 }

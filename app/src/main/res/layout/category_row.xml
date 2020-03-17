@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#FBF1FD"
+    android:background="#DBADF5"
+    android:layout_marginBottom="5dp"
     android:id="@+id/layout">
 
     <RelativeLayout
@@ -23,7 +24,7 @@
             android:id="@+id/seeMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="See More -> "
+            android:background="@drawable/ic_arrow_forward_black"
             android:textSize="14sp"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true" />

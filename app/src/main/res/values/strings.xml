@@ -8,4 +8,7 @@
     <string name="password">password</string>
     <string name="action_Cart">cart</string>
     <string name="action_Notification">notification</string>
+
+    <string name="navigation_drawer_open">drawer open</string>
+    <string name="navigation_drawer_close">drawer close</string>
 </resources>

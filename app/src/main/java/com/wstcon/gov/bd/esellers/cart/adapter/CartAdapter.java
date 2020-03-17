@@ -126,7 +126,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                     grandTotalPlus = 0;
                     totalTV.setText(String.valueOf(grandTotalPlus));
                     Log.e(TAG, "onClick: 1st if clicked" );
-
+                    ((AddorRemoveCallbacks)context).onRemoveProduct(cart.getProductId());
 //                    MainActivity.cart_count = cartList.size();
                 }
 
@@ -144,7 +144,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
                     Log.e(TAG, "onClick: 2nd if clicked" );
 //                    MainActivity.cart_count = cartList.size();
-
+                    ((AddorRemoveCallbacks)context).onRemoveProduct(cart.getProductId());
 
                 } else {
                     Toast.makeText(context, "else", Toast.LENGTH_SHORT).show();

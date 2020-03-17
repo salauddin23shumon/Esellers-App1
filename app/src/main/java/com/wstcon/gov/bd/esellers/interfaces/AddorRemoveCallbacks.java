@@ -8,7 +8,7 @@ public interface AddorRemoveCallbacks {
 
     void onAddProduct(Cart cart);
 
-//    void onRemoveProduct(int id);
+    void onRemoveProduct(int id);
 
 
 }

@@ -12,7 +12,7 @@ public class Order {
     private Integer customerId;
     @SerializedName("order_total")
     @Expose
-    private Integer orderTotal;
+    private Double orderTotal;
     @SerializedName("payment_type")
     @Expose
     private String paymentType;
@@ -24,7 +24,7 @@ public class Order {
     private Address address;
     @SerializedName("has_different_shipping")
     @Expose
-    private Integer hasDifferentShipping;
+    private Boolean hasDifferentShipping;
 
     public Integer getCustomerId() {
         return customerId;
@@ -34,11 +34,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public Integer getOrderTotal() {
+    public Double getOrderTotal() {
         return orderTotal;
     }
 
-    public void setOrderTotal(Integer orderTotal) {
+    public void setOrderTotal(Double orderTotal) {
         this.orderTotal = orderTotal;
     }
 
@@ -66,11 +66,11 @@ public class Order {
         this.address = address;
     }
 
-    public Integer getHasDifferentShipping() {
+    public Boolean getHasDifferentShipping() {
         return hasDifferentShipping;
     }
 
-    public void setHasDifferentShipping(Integer hasDifferentShipping) {
+    public void setHasDifferentShipping(Boolean hasDifferentShipping) {
         this.hasDifferentShipping = hasDifferentShipping;
     }
 

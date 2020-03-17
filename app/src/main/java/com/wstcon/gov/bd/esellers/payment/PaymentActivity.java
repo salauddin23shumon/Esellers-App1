@@ -9,8 +9,10 @@ import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.dashboard.StartSplashFragment;
 import com.wstcon.gov.bd.esellers.payment.fragment.AddressFragment;
 import com.wstcon.gov.bd.esellers.payment.fragment.DeliveryFragment;
+import com.wstcon.gov.bd.esellers.payment.fragment.PaymentFragment;
 
-public class PaymentActivity extends AppCompatActivity implements DeliveryFragment.DeliveryFrgmntAction {
+public class PaymentActivity extends AppCompatActivity implements DeliveryFragment.DeliveryFrgmntAction,
+        AddressFragment.AddressFrgmntAction {
 
     private Fragment fragment;
 
@@ -28,8 +30,21 @@ public class PaymentActivity extends AppCompatActivity implements DeliveryFragme
     }
 
     @Override
-    public void onNextClick() {
+    public void onDeliveryNxtClick() {
         fragment = new AddressFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onAddressNxtClick() {
+        fragment = new PaymentFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onAddressBckClick() {
+        fragment = new DeliveryFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+//        getSupportFragmentManager().beginTransaction().remove(fragment).addToBackStack(null).commit();
     }
 }

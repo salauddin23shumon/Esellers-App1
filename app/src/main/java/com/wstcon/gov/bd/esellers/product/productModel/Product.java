@@ -5,8 +5,9 @@ import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.wstcon.gov.bd.esellers.mainApp.dataModel.RecyclerViewItem;
 
-public class Product implements Serializable {
+public class Product extends RecyclerViewItem implements Serializable {
 
     @SerializedName("id")
     @Expose
