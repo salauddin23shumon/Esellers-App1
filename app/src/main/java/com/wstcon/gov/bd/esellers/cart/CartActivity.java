@@ -5,7 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,10 +27,6 @@ import com.wstcon.gov.bd.esellers.cart.cartModel.Order;
 import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
 import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
-import com.wstcon.gov.bd.esellers.payment.PaymentActivity;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,8 +37,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cart_count;
-import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
-
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
 
 public class CartActivity extends AppCompatActivity implements AddorRemoveCallbacks {
@@ -56,11 +50,16 @@ public class CartActivity extends AppCompatActivity implements AddorRemoveCallba
     public static double grandTotalPlus;
     // create a temp list and add cartitem list
     public static List<Cart> tempArrayList;
+    private SharedPreferences prefs;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        prefs = this.getSharedPreferences("Session", MODE_PRIVATE);
+        id = prefs.getString("ID", "No ID defined");
 
         recyclerView = findViewById(R.id.cartRV);
         totalTV = findViewById(R.id.totalTV);
@@ -104,7 +103,7 @@ public class CartActivity extends AppCompatActivity implements AddorRemoveCallba
             }
         }
         tempArrayList.addAll(globalCartList);
-        Log.d("tempArrayList:"+tempArrayList.get(0).getProductName(), String.valueOf(tempArrayList.size()));
+//        Log.d("tempArrayList:"+tempArrayList.get(0).getProductName(), String.valueOf(tempArrayList.size()));
         adapter.updateList(tempArrayList);
         globalCartList.clear();
 
@@ -120,17 +119,14 @@ public class CartActivity extends AppCompatActivity implements AddorRemoveCallba
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(CartActivity.this, PaymentActivity.class));
-                sendrder();
+                sendOrder();
             }
         });
     }
 
-    private void sendrder() {
+    private void sendOrder() {
 
-        Log.e(TAG, "sendrder: list "+tempArrayList.size() );
-
-        String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9lc2VsbGVycy5hZ2Fpbndpc2guY29tXC9hcGlcL2F1dGhcL3VzZXJfbG9naW4iLCJpYXQiOjE1ODQzNDU5NzYsImV4cCI6MTYxNTg4MTk3NiwibmJmIjoxNTg0MzQ1OTc2LCJqdGkiOiJXZFowSWxvYk96SENuQ1cxIiwic3ViIjoxLCJwcnYiOiI4N2UwYWYxZWY5ZmQxNTgxMmZkZWM5NzE1M2ExNGUwYjA0NzU0NmFhIn0.aQkg0kOURoXvwEe_OdzYhXeNy7gRtBMA3lGAxJ7j4jI";
+        Log.e(TAG, "sendOrder: list "+tempArrayList.size() );
 
         Address address=new Address();
         address.setAddress("banglamotor");
@@ -142,7 +138,7 @@ public class CartActivity extends AppCompatActivity implements AddorRemoveCallba
 
 
         Order order=new Order();
-        order.setCustomerId(1);
+        order.setCustomerId(Integer.parseInt(id));
         order.setOrderTotal(grandTotalPlus);
         order.setPaymentType("COD");
         order.setHasDifferentShipping(true);
@@ -163,6 +159,7 @@ public class CartActivity extends AppCompatActivity implements AddorRemoveCallba
                 if (response.isSuccessful()){
                     Log.e(TAG, "onResponse: "+response.body().getStatus() );
                     Toast.makeText(CartActivity.this, "u have placed order successfully", Toast.LENGTH_SHORT).show();
+                    clearData();
                 }else
                     Log.e(TAG, "onResponse: else "+response.code() );
             }
@@ -172,6 +169,14 @@ public class CartActivity extends AppCompatActivity implements AddorRemoveCallba
                 Log.e(TAG, "onFailure: "+t.getLocalizedMessage() );
             }
         });
+    }
+
+    public void clearData(){
+        cart_count=0;
+        grandTotalPlus=0;
+        tempArrayList.clear();
+        invalidateOptionsMenu();
+        finish();
     }
 
     @Override

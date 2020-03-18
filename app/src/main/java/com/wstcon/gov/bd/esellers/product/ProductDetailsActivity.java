@@ -121,8 +121,8 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem menuItem = menu.findItem(R.id.cart_action);
         menuItem.setIcon(Converter.convertLayoutToImage(ProductDetailsActivity.this, cart_count, R.drawable.cart3));
-        MenuItem menuItem2 = menu.findItem(R.id.notification_action);
-        menuItem2.setIcon(Converter.convertLayoutToImage(ProductDetailsActivity.this, 0, R.drawable.ic_notifications_white_24dp));
+//        MenuItem menuItem2 = menu.findItem(R.id.notification_action);
+//        menuItem2.setIcon(Converter.convertLayoutToImage(ProductDetailsActivity.this, 0, R.drawable.ic_notifications_white_24dp));
         return super.onCreateOptionsMenu(menu);
     }
 

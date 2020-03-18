@@ -22,16 +22,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.cart.CartActivity;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
+import com.wstcon.gov.bd.esellers.dashboard.StartSplashFragment;
 import com.wstcon.gov.bd.esellers.interfaces.CategoryListener;
 import com.wstcon.gov.bd.esellers.interfaces.SeeProductDetails;
-import com.wstcon.gov.bd.esellers.mainApp.adapter.MixedAdapter;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
+import com.wstcon.gov.bd.esellers.order.OrderActivity;
 import com.wstcon.gov.bd.esellers.product.ProductDetailsActivity;
-import com.wstcon.gov.bd.esellers.product.ProductDetailsFragment;
 import com.wstcon.gov.bd.esellers.userProfile.ProfileFragment;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.Users;
 import com.wstcon.gov.bd.esellers.dashboard.HomeFragment;
-import com.wstcon.gov.bd.esellers.dashboard.StartSplashFragment;
 import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.VerticalModel;
 import com.wstcon.gov.bd.esellers.product.ProductFragment;
@@ -126,8 +125,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem menuItem = menu.findItem(R.id.cart_action);
         menuItem.setIcon(Converter.convertLayoutToImage(MainActivity.this, cart_count, R.drawable.cart3));
-        MenuItem menuItem2 = menu.findItem(R.id.notification_action);
-        menuItem2.setIcon(Converter.convertLayoutToImage(MainActivity.this, 0, R.drawable.ic_notifications_white_24dp));
+//        MenuItem menuItem2 = menu.findItem(R.id.notification_action);
+//        menuItem2.setIcon(Converter.convertLayoutToImage(MainActivity.this, 0, R.drawable.ic_notifications_white_24dp));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -252,9 +251,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_about:
                 Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
                 break;
-//            case R.id.nav_profile:
-//                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
-//                break;
+            case R.id.nav_order:
+                startActivity(new Intent(MainActivity.this, OrderActivity.class));
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
         navigationView.getMenu().getItem(0).setChecked(false);

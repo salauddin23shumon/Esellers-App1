@@ -20,7 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".payment.PaymentActivity"/>
+        <activity
+            android:name=".order.OrderActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".payment.PaymentActivity" />
         <activity
             android:name=".cart.CartActivity"
             android:configChanges="screenSize|orientation|keyboard"
@@ -40,8 +43,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".product.ProductDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".product.ProductDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -3,7 +3,7 @@ package com.wstcon.gov.bd.esellers.userProfile.userModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class Users {
 
     @SerializedName("id")
     @Expose
@@ -22,13 +22,13 @@ public class User {
     private String userProfilePhoto;
     @SerializedName("roles")
     @Expose
-    private Object roles;
+    private String roles;
     @SerializedName("address")
     @Expose
     private String address;
     @SerializedName("email_verified_at")
     @Expose
-    private Object emailVerifiedAt;
+    private String emailVerifiedAt;
     @SerializedName("status")
     @Expose
     private String status;
@@ -40,7 +40,13 @@ public class User {
     private String updatedAt;
     @SerializedName("deleted_at")
     @Expose
-    private Object deletedAt;
+    private String deletedAt;
+
+    private String imgString;
+
+    private String token;
+
+    private boolean profileComplete = false;
 
     public Integer getId() {
         return id;
@@ -82,11 +88,11 @@ public class User {
         this.userProfilePhoto = userProfilePhoto;
     }
 
-    public Object getRoles() {
+    public String getRoles() {
         return roles;
     }
 
-    public void setRoles(Object roles) {
+    public void setRoles(String roles) {
         this.roles = roles;
     }
 
@@ -98,11 +104,11 @@ public class User {
         this.address = address;
     }
 
-    public Object getEmailVerifiedAt() {
+    public String getEmailVerifiedAt() {
         return emailVerifiedAt;
     }
 
-    public void setEmailVerifiedAt(Object emailVerifiedAt) {
+    public void setEmailVerifiedAt(String emailVerifiedAt) {
         this.emailVerifiedAt = emailVerifiedAt;
     }
 
@@ -130,12 +136,35 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public Object getDeletedAt() {
+    public String getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Object deletedAt) {
+    public void setDeletedAt(String deletedAt) {
         this.deletedAt = deletedAt;
     }
 
+    public String getImgString() {
+        return imgString;
+    }
+
+    public void setImgString(String imgString) {
+        this.imgString = imgString;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public boolean isProfileComplete() {
+        return profileComplete;
+    }
+
+    public void setProfileComplete(boolean profileComplete) {
+        this.profileComplete = profileComplete;
+    }
 }

@@ -5,16 +5,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -65,13 +64,24 @@ public class StartSplashFragment extends Fragment {
         this.context = context;
         query = new DatabaseQuery(context);
         action = (SplashAction) context;
+
+
+        if (query.doesDatabaseExist()) {
+            Log.e(TAG, "onCreateView: exist");
+            addData();
+
+        } else {
+            Log.e(TAG, "onCreateView: not exist");
+            getCategory();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        getCategory();
+
+
 
         return inflater.inflate(R.layout.fragment_start_splash, container, false);
     }
@@ -89,6 +99,9 @@ public class StartSplashFragment extends Fragment {
     }
 
     private void fetchSlider() {
+
+        Log.d(TAG, "fetchSlider: cld");
+
         Call<SliderResponse> call = RetrofitClient.getInstance().getApiInterface().getSliders();
         call.enqueue(new Callback<SliderResponse>() {
             @Override
@@ -97,14 +110,18 @@ public class StartSplashFragment extends Fragment {
                 List<SliderImage> sliderImages = response.body().getSliderImages();
                 Log.e(TAG, "onResponse: " + sliderImages.size());
                 sliderSize = sliderImages.size();
-                if (query.getSliderCount() < sliderSize) {
-                    query.deleteSlider();
-                    for (SliderImage s : sliderImages) {
-                        getSliderPhoto(s);
-                    }
-                } else {
-                    addData();
+                for (SliderImage s : sliderImages) {
+                    getSliderPhoto(s);
                 }
+
+//                if (query.getSliderCount() < sliderSize) {
+//                    query.deleteSlider();
+//                    for (SliderImage s : sliderImages) {
+//                        getSliderPhoto(s);
+//                    }
+//                } else {
+//                    addData();
+//                }
             }
 
             @Override
@@ -117,16 +134,17 @@ public class StartSplashFragment extends Fragment {
 
     private void getSliderPhoto(final SliderImage slider) {
 
+        Log.d(TAG, "getSliderPhoto: cld");
+
         Glide.with(context).asBitmap().load(BASE_URL + slider.getSliderImage()).into(new CustomTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 slider.setBitmap(resource);
-                Log.e(TAG, "onResourceReady: " + slider.getSliderImage());
+//                Log.e(TAG, "onResourceReady: " + slider.getSliderImage());
                 query.insertSlider(slider);
 
-                Log.e(TAG, "onResourceReady: " + query.getSliderCount());
 
-                if (query.getSliderCount() == sliderSize) {
+                if (query.getSliderCount() == sliderSize && query.getCatIconCount()==catSize) {
                     addData();
                 }
             }
@@ -140,18 +158,18 @@ public class StartSplashFragment extends Fragment {
     }
 
     private void getCatIcon(final Category category) {
+
+        Log.d(TAG, "getCatIcon: cld");
+
         Glide.with(context).asBitmap().load(BASE_URL + category.getCategoryIcon()).into(new CustomTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 category.setBitmap(resource);
-                Log.e(TAG, "onResourceReady: " + category.getCategoryIcon());
+//                Log.e(TAG, "onResourceReady: " + category.getCategoryIcon());
                 query.insertCategory(category);
-
-                Log.e(TAG, "onResourceReady: " + query.getCatIconCount());
-
-                if (query.getCatIconCount() == catSize) {
-                    fetchSlider();
-                }
+//                if (query.getCatIconCount() == catSize) {
+//                    fetchSlider();
+//                }
             }
 
             @Override
@@ -162,6 +180,8 @@ public class StartSplashFragment extends Fragment {
     }
 
     private void addData() {
+
+        Log.d(TAG, "addData: cld");
 
         final ArrayList<HorizontalModel> horizontalModels1 = new ArrayList<>();
         final ArrayList<HorizontalModel> horizontalModels2 = new ArrayList<>();
@@ -204,25 +224,35 @@ public class StartSplashFragment extends Fragment {
 
 
     private void getCategory() {
+
+        Log.d(TAG, "getCategory: cld");
+
+
         Call<CategoryResponse> call = RetrofitClient.getInstance().getApiInterface().getAllCategories();
         call.enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
                 List<Category> categoryList = response.body().getCategories();
                 catSize = categoryList.size();
-                Log.e(TAG, "onResponse: " + categoryList.size());
-                if (query.getCatIconCount() < categoryList.size()) {
-                    query.deleteCat();
-                    for (Category c : categoryList) {
-                        getCatIcon(c);
-                    }
-                } else
-                    addData();
+                Log.e(TAG, "getCategory: " + categoryList.size());
+                fetchSlider();
+                for (Category c : categoryList) {
+                    getCatIcon(c);
+                }
+
+//                if (query.getCatIconCount() < categoryList.size()) {
+//                    query.deleteCat();
+//                    for (Category c : categoryList) {
+//                        getCatIcon(c);
+//                    }
+//                } else
+//                    addData();
 
             }
 
             @Override
             public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: "+t.getLocalizedMessage() );
 
             }
         });

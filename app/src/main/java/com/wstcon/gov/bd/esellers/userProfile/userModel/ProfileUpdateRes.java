@@ -13,7 +13,7 @@ public class ProfileUpdateRes {
     private String message;
     @SerializedName("user")
     @Expose
-    private User user;
+    private Users user;
 
     public Integer getStatus() {
         return status;
@@ -31,11 +31,11 @@ public class ProfileUpdateRes {
         this.message = message;
     }
 
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 

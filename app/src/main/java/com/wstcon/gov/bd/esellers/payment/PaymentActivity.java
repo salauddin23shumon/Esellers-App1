@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 
 import com.wstcon.gov.bd.esellers.R;
-import com.wstcon.gov.bd.esellers.dashboard.StartSplashFragment;
 import com.wstcon.gov.bd.esellers.payment.fragment.AddressFragment;
 import com.wstcon.gov.bd.esellers.payment.fragment.DeliveryFragment;
 import com.wstcon.gov.bd.esellers.payment.fragment.PaymentFragment;

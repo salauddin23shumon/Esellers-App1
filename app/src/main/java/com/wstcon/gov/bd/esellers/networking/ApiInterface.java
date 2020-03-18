@@ -3,6 +3,8 @@ package com.wstcon.gov.bd.esellers.networking;
 import com.wstcon.gov.bd.esellers.cart.cartModel.CartRes;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Order;
 import com.wstcon.gov.bd.esellers.category.categoryModel.CategoryResponse;
+import com.wstcon.gov.bd.esellers.order.orderModel.OrderDetailsRes;
+import com.wstcon.gov.bd.esellers.order.orderModel.OrderHistoryResponse;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.ProfileUpdateRes;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.Users;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderResponse;
@@ -49,6 +51,14 @@ public interface ApiInterface {
 
     @GET("api/product/show_product")
     Call<ProductResponse> getAllProducts();
+
+
+    @GET("api/order/orderDetails/{oid}")
+    Call<OrderDetailsRes> getOrderDetails(@Path("oid") int id);
+
+
+    @GET("api/order/order/{cid}")
+    Call<OrderHistoryResponse> getOrder(@Path("cid") int id);
 
 
     @GET("api/product/category_product/{cid}")

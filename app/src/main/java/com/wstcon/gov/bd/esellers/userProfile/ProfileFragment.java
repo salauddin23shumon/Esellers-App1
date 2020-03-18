@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,16 +25,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.ProfileUpdateRes;
-import com.wstcon.gov.bd.esellers.userProfile.userModel.User;
-import com.wstcon.gov.bd.esellers.userProfile.userModel.Users;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.LogoutResponse;
-
-import java.io.IOException;
+import com.wstcon.gov.bd.esellers.userProfile.userModel.Users;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -76,10 +71,10 @@ public class ProfileFragment extends Fragment {
         logout = (Logout) context;
         profileOpen = (ProfileOpen) context;
         prefs = context.getSharedPreferences("Session", MODE_PRIVATE);
-        token = prefs.getString("TOKEN", "No name defined");
-        id = prefs.getString("ID", "No name defined");
+        token = prefs.getString("TOKEN", "No TOKEN defined");
+        id = prefs.getString("ID", "No ID defined");
 //        token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9lc2VsbGVycy5hZ2Fpbndpc2guY29tXC9hcGlcL2F1dGhcL3VzZXJfbG9naW4iLCJpYXQiOjE1ODQzNzIxMDIsImV4cCI6MTYxNTkwODEwMiwibmJmIjoxNTg0MzcyMTAyLCJqdGkiOiJXWGZLaXVwOHpUbERDYmJHIiwic3ViIjoxMywicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.Vdl5pfgFfs2HKyRoBpfkv2g1yjCQbZ6-1sDsG-vyHFk";
-//        id=13;
+//        id="13";
 
         Log.e(TAG, "onAttach: "+token+" \nid: "+id );
     }
@@ -149,7 +144,7 @@ public class ProfileFragment extends Fragment {
             public void onResponse(Call<ProfileUpdateRes> call, Response<ProfileUpdateRes> response) {
                 if (response.isSuccessful()){
                     if (response.body().getStatus()==1){
-                        User users=response.body().getUser();
+                        Users users=response.body().getUser();
                         Log.e(TAG, "onResponse1: "+users.getAddress() );
                     }
                 }else

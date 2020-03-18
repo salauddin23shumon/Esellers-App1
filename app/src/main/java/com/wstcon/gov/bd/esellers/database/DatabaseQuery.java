@@ -19,16 +19,21 @@ import com.wstcon.gov.bd.esellers.category.categoryModel.Category;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderImage;
 import com.wstcon.gov.bd.esellers.utility.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.wstcon.gov.bd.esellers.database.DatabaseOpenHelper.DATABASE_NAME;
 
 
 public class DatabaseQuery {
     private DatabaseOpenHelper helper;
     private SQLiteDatabase db;
+    private Context context;
 
     public DatabaseQuery(Context context) {
         helper = new DatabaseOpenHelper(context);
+        this.context=context;
     }
 
     private void open() {
@@ -144,5 +149,10 @@ public class DatabaseQuery {
         this.open();
         db.execSQL(DatabaseOpenHelper.DELETE_CAT_TABLE);
         this.close();
+    }
+
+    public boolean doesDatabaseExist() {
+        File dbFile = context.getDatabasePath(DATABASE_NAME);
+        return dbFile.exists();
     }
 }
