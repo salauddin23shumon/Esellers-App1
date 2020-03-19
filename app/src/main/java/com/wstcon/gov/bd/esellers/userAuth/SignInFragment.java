@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.wstcon.gov.bd.esellers.R;
+import com.wstcon.gov.bd.esellers.interfaces.AuthCompleteListener;
+import com.wstcon.gov.bd.esellers.interfaces.BackBtnPress;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.AuthResponse;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.Token;
@@ -32,6 +34,7 @@ import retrofit2.Response;
  */
 public class SignInFragment extends Fragment {
 
+    private static final String TAG = "SignInFragment ";
     private EditText emailET, passwordET;
     private String email, password;
     private Button loginBtn, closeBtn;
@@ -83,7 +86,7 @@ public class SignInFragment extends Fragment {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                action.onBackPress();
+                ((BackBtnPress) context).onBackBtnPress();
             }
         });
 
@@ -100,11 +103,12 @@ public class SignInFragment extends Fragment {
                 if (response.isSuccessful()) {
                     AuthResponse authResponse = response.body();
                     if (authResponse != null && authResponse.getStatus() == 1) {
-                        Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        action.onLoginComplete(authResponse.getToken());
+                        Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        ((AuthCompleteListener) context).onAuthComplete(authResponse.getToken());
+//                        action.onLoginComplete(authResponse.getToken());
                         Log.d("signup", "onResponse: " + response.code());
                     }else {
-                        Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Log.d("signup", "server onResponse: " + response.code());
@@ -113,15 +117,14 @@ public class SignInFragment extends Fragment {
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: "+t.getLocalizedMessage() );
+                Toast.makeText(context, "Server busy !!! Please try again", Toast.LENGTH_LONG).show();
             }
         });
     }
 
     public interface SignInFrgmntAction {
-        void onLoginComplete(Token token);
         void onBackToSignUp();
-        void onBackPress();
     }
 
 }

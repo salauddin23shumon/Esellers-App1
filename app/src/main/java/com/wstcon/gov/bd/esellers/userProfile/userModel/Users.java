@@ -42,7 +42,7 @@ public class Users {
     @Expose
     private String deletedAt;
 
-    private String imgString;
+    private String profileStringImg;
 
     private String token;
 
@@ -144,12 +144,12 @@ public class Users {
         this.deletedAt = deletedAt;
     }
 
-    public String getImgString() {
-        return imgString;
+    public String getProfileStringImg() {
+        return profileStringImg;
     }
 
-    public void setImgString(String imgString) {
-        this.imgString = imgString;
+    public void setProfileStringImg(String profileStringImg) {
+        this.profileStringImg = profileStringImg;
     }
 
     public String getToken() {

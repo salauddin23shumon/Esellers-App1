@@ -45,7 +45,7 @@ public interface ApiInterface {
     Call<Users> getUserProfile();
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("auth/logout")
+    @POST("api/auth/logout")
     Call<LogoutResponse> userLogout();
 
 

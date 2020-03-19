@@ -1,12 +1,21 @@
 package com.wstcon.gov.bd.esellers.userAuth;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.wstcon.gov.bd.esellers.interfaces.AuthCompleteListener;
+import com.wstcon.gov.bd.esellers.interfaces.BackBtnPress;
 import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.Users;
@@ -17,8 +26,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AuthActivity extends AppCompatActivity implements SignUpFragment.SignUpComplete,
-        SignUpFragment.BackToSignIn, SignInFragment.SignInFrgmntAction {
+import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
+import static com.wstcon.gov.bd.esellers.utility.Utils.getStringImage;
+
+public class AuthActivity extends AppCompatActivity implements AuthCompleteListener,
+        SignUpFragment.BackToSignIn, SignInFragment.SignInFrgmntAction, BackBtnPress {
 
     private static final String TAG = "AuthActivity ";
     private Fragment fragment;
@@ -67,13 +79,13 @@ public class AuthActivity extends AppCompatActivity implements SignUpFragment.Si
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
-    @Override
-    public void onSignUpComplete(Token token) {
-        Log.e(TAG, "onSignUpComplete: " + token.getOriginal().getAccessToken());
-//        writeToken(token.getOriginal().getAccessToken());
-        startActivity(new Intent(AuthActivity.this, MainActivity.class).putExtra("token", token));
-        finish();
-    }
+//    @Override
+//    public void onSignUpComplete(Token token) {
+//        Log.e(TAG, "onSignUpComplete: " + token.getOriginal().getAccessToken());
+////        writeToken(token.getOriginal().getAccessToken());
+//        startActivity(new Intent(AuthActivity.this, MainActivity.class).putExtra("token", token));
+//        finish();
+//    }
 
     @Override
     public void onBackToSignIn() {
@@ -81,14 +93,14 @@ public class AuthActivity extends AppCompatActivity implements SignUpFragment.Si
         commitTransaction(fragment);
     }
 
-    @Override
-    public void onLoginComplete(Token token) {
-        Log.e(TAG, "onLoginComplete: " + token.getOriginal().getAccessToken());
-        getUserData(token.getOriginal().getAccessToken());
-//        writeToken(token.getOriginal().getAccessToken());
-//        startActivity(new Intent(AuthActivity.this, MainActivity.class).putExtra("token", token));
-        finish();
-    }
+//    @Override
+//    public void onLoginComplete(Token token) {
+//        Log.e(TAG, "onLoginComplete: " + token.getOriginal().getAccessToken());
+//        getUserData(token.getOriginal().getAccessToken());
+////        writeToken(token.getOriginal().getAccessToken());
+////        startActivity(new Intent(AuthActivity.this, MainActivity.class).putExtra("token", token));
+////        finish();
+//    }
 
 //    public void writeToken(String token){
 //        editor = getSharedPreferences("UserToken", MODE_PRIVATE).edit();
@@ -103,11 +115,6 @@ public class AuthActivity extends AppCompatActivity implements SignUpFragment.Si
         commitTransaction(fragment);
     }
 
-    @Override
-    public void onBackPress() {
-//        startActivity(new Intent(AuthActivity.this, MainActivity.class));
-        finish();
-    }
 
     private void getUserData(final String token) {
         Log.d(TAG, "getUserData: token length:" + token.length());
@@ -118,13 +125,16 @@ public class AuthActivity extends AppCompatActivity implements SignUpFragment.Si
                 if (response.isSuccessful()) {
                     Users user = response.body();
                     user.setToken(token);
-                    if (user.getUserProfilePhoto()==null) {
+                    if (user.getUserProfilePhoto() == null) {
                         user.setProfileComplete(false);
-                    }else {
-                        user.setProfileComplete(true);
+                        sessionManager.createSession(user);
+                        finish();
+                    } else {
+                        downloadImg(user);
+                        Log.e(TAG, "onResponse: else ");
                     }
                     Log.e(TAG, "onResponse: " + user.getEmail());
-                    sessionManager.createSession(user);
+
                 } else
                     Log.d(TAG, "onResponse: " + response.code());
             }
@@ -134,5 +144,37 @@ public class AuthActivity extends AppCompatActivity implements SignUpFragment.Si
                 Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
             }
         });
+    }
+
+    private void downloadImg(final Users user) {
+
+        Glide.with(this)
+                .asBitmap()
+                .load(BASE_URL + user.getUserProfilePhoto())
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        user.setProfileStringImg(getStringImage(resource));
+                        user.setProfileComplete(true);
+                        sessionManager.createSession(user);
+                        finish();
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void onAuthComplete(Token token) {
+        Log.e(TAG, "onLoginComplete: " + token.getOriginal().getAccessToken());
+        getUserData(token.getOriginal().getAccessToken());
+    }
+
+    @Override
+    public void onBackBtnPress() {
+        finish();
     }
 }

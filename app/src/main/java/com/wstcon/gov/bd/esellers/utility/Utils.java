@@ -47,5 +47,9 @@ public class Utils {
         return Base64.encodeToString(imageByteArray, Base64.DEFAULT);
     }
 
+    public static Bitmap getBitmapImage(String image) {
+        byte[] decodedByte = Base64.decode(image, 0);
+        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+    }
 
 }

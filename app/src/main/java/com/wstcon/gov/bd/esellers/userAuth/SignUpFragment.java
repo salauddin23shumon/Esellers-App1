@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wstcon.gov.bd.esellers.R;
+import com.wstcon.gov.bd.esellers.interfaces.AuthCompleteListener;
+import com.wstcon.gov.bd.esellers.interfaces.BackBtnPress;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.AuthResponse;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.Token;
@@ -35,9 +37,8 @@ public class SignUpFragment extends Fragment {
     private EditText  emailET,  passwordET, confirmET;
     private String  email, password;
     private ProgressBar progressBar;
-    private Button regBtn;
+    private Button regBtn,closeBtn;
     private TextView logonTV;
-    private SignUpComplete signupComplete;
     private BackToSignIn backToSignin;
     private Context context;
 
@@ -49,7 +50,7 @@ public class SignUpFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        signupComplete = (SignUpComplete) context;
+
         backToSignin = (BackToSignIn) context;
     }
 
@@ -64,6 +65,7 @@ public class SignUpFragment extends Fragment {
         regBtn = view.findViewById(R.id.signupBtn);
         logonTV = view.findViewById(R.id.loginTV);
         progressBar = view.findViewById(R.id.progress_signup);
+        closeBtn = view.findViewById(R.id.closeBtn);
 
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +83,13 @@ public class SignUpFragment extends Fragment {
             }
         });
 
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((BackBtnPress) context).onBackBtnPress();
+            }
+        });
+
         return view;
     }
 
@@ -93,24 +102,22 @@ public class SignUpFragment extends Fragment {
                 if (response.isSuccessful()) {
                     AuthResponse authResponse = response.body();
                     if (authResponse != null && authResponse.getStatus() == 1) {
-                        Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        signupComplete.onSignUpComplete(authResponse.getToken());
+                        Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        ((AuthCompleteListener) context).onAuthComplete(authResponse.getToken());
+//                        signupComplete.onSignUpComplete(authResponse.getToken());
                         Log.d(TAG, "onResponse1: " + response.code());
                     } else {
-                        Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, authResponse.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 } else
                     Log.d(TAG, "onResponse2: " + response.code());//this is for server side error, wrong path, wrong file name or missing
             }
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure: "+t.getLocalizedMessage() );
+                Toast.makeText(context, "Server busy !!! Please try again", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    public interface SignUpComplete {
-        void onSignUpComplete(Token token);
     }
 
     public interface BackToSignIn {

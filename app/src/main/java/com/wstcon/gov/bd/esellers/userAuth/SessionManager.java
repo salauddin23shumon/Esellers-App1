@@ -17,17 +17,17 @@ public class SessionManager {
     private SharedPreferences.Editor editor;
     private Context context;
     private static final int MODE = Context.MODE_PRIVATE;
-    private static final String PREF_NAME = "Session";
-    private static final String LOGIN = "IS_LOGIN";
-    private static final String TOKEN = "TOKEN";
-    private static final String ID = "ID";
-    private static final String USER_NAME = "USER_NAME";
-    private static final String EMAIL = "EMAIL";
-    private static final String MOBILE = "MOBILE";
-    private static final String ADDRESS = "ADDRESS";
-    private static final String PHOTO_URL = "PHOTO_URL";
-    private static final String PHOTO = "PHOTO";
-    private static final String STATUS = "USER_STATUS";
+    public static final String PREF_NAME = "Session";
+    public static final String LOGIN = "IS_LOGIN";
+    public static final String TOKEN = "TOKEN";
+    public static final String ID = "ID";
+    public static final String USER_NAME = "USER_NAME";
+    public static final String EMAIL = "EMAIL";
+    public static final String MOBILE = "MOBILE";
+    public static final String ADDRESS = "ADDRESS";
+    public static final String PHOTO_URL = "PHOTO_URL";
+    public static final String PHOTO = "PHOTO";
+    public static final String STATUS = "USER_STATUS";
 
 
 
@@ -35,6 +35,8 @@ public class SessionManager {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE);
         editor = sharedPreferences.edit();
+        editor.putBoolean(LOGIN, false);
+        editor.apply();
     }
 
     public void createSession(Users user) {
@@ -45,7 +47,7 @@ public class SessionManager {
         editor.putString(MOBILE, user.getMobile());
         editor.putString(ADDRESS, user.getAddress());
         editor.putString(PHOTO_URL, BASE_URL+user.getUserProfilePhoto());
-        editor.putString(PHOTO, user.getImgString());
+        editor.putString(PHOTO, user.getProfileStringImg());
         editor.putString(TOKEN, user.getToken());
         editor.putBoolean(STATUS, user.isProfileComplete());
         editor.apply();
@@ -72,13 +74,11 @@ public class SessionManager {
 //        return false;
 //    }
 
-    public void logout(final Class<? extends Activity> ActivityToBeOpen) {
+    public void clearSession() {
         editor.clear();
-        sharedPreferences.getBoolean(LOGIN, false);
+        editor.putBoolean(LOGIN, false);
         editor.commit();
-        Intent i = new Intent(context, ActivityToBeOpen);
-        context.startActivity(i);
-        ((Activity) context).finish();
+
     }
 
 

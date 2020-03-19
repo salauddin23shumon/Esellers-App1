@@ -9,11 +9,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,9 +28,12 @@ import com.wstcon.gov.bd.esellers.dashboard.StartSplashFragment;
 import com.wstcon.gov.bd.esellers.interfaces.CategoryListener;
 import com.wstcon.gov.bd.esellers.interfaces.SeeProductDetails;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
+import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.order.OrderActivity;
 import com.wstcon.gov.bd.esellers.product.ProductDetailsActivity;
-import com.wstcon.gov.bd.esellers.userProfile.ProfileFragment;
+import com.wstcon.gov.bd.esellers.userAuth.SessionManager;
+import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.LogoutResponse;
+import com.wstcon.gov.bd.esellers.userProfile.ProfileActivity;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.Users;
 import com.wstcon.gov.bd.esellers.dashboard.HomeFragment;
 import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
@@ -43,20 +48,35 @@ import java.util.Iterator;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ProfileFragment.Logout,
-        ProfileFragment.ProfileOpen, StartSplashFragment.SplashAction, AddorRemoveCallbacks, SeeProductDetails, CategoryListener {
+import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.EMAIL;
+import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.PHOTO;
+import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.PREF_NAME;
+import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.STATUS;
+import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.TOKEN;
+import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.USER_NAME;
+import static com.wstcon.gov.bd.esellers.utility.Utils.getBitmapImage;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        StartSplashFragment.SplashAction, AddorRemoveCallbacks, SeeProductDetails, CategoryListener {
 
     private static final String TAG = "MainActivity ";
-    private TextView nameTV, emailTV;
+    private TextView nameTV, emailTV, header_authTV;
+    private ImageView header_authIV;
     private LinearLayout userLoginLinearLayout;
     private CircleImageView profile_img;
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Fragment fragment;
-    private List<VerticalModel> vmList=new ArrayList<>();
+    private List<VerticalModel> vmList = new ArrayList<>();
+    private SharedPreferences prefs;
+    private SessionManager sessionManager;
     private Users user;
     private Cart shoppingCart;
+    Menu nav_profile_Menu, nav_order_Menu;
 
     public static List<Cart> globalCartList = new ArrayList<>();
     public static int cart_count = 0;
@@ -67,7 +87,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sessionManager = new SessionManager(this);
         Log.e(TAG, "onCreate: called");
+        prefs = this.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         drawer = findViewById(R.id.drawer_layout);
 
@@ -75,7 +97,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         setViewForNavHeader();
-        chkProfile();
+
+        nav_profile_Menu = navigationView.getMenu();
+        nav_profile_Menu.findItem(R.id.nav_profile).setVisible(false);
+
+        nav_order_Menu = navigationView.getMenu();
+        nav_order_Menu.findItem(R.id.nav_order).setVisible(false);
 
         Toolbar toolbar = findViewById(R.id.myToolbar);
         setSupportActionBar(toolbar);
@@ -94,21 +121,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userLoginLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AuthActivity.class));
+                if (!sessionManager.isLogin()) {
+                    startActivity(new Intent(MainActivity.this, AuthActivity.class));
+                    drawer.closeDrawer(GravityCompat.START);
+
+                } else
+                    doLogout(prefs.getString(TOKEN, ""));
             }
         });
-
-        setDrawerView(user);
-
-    }
-
-    private boolean chkProfile() {
-        return false;
+        setDrawerView();
 
     }
 
-    private void setDrawerView(Users users) {
+    private void doLogout(String token) {
+        Call<LogoutResponse> call = RetrofitClient.getInstance(token).getApiInterface().userLogout();
+        call.enqueue(new Callback<LogoutResponse>() {
+            @Override
+            public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
+                if (response.isSuccessful()) {
+                    LogoutResponse logoutResponse = response.body();
+                    if (logoutResponse != null && logoutResponse.getStatus() == 1) {
+                        Toast.makeText(MainActivity.this, logoutResponse.getMessage(), Toast.LENGTH_LONG).show();
+                        sessionManager.clearSession();
+                        resetDrawerView();
+                        drawer.closeDrawer(GravityCompat.START);
+                        Log.d(TAG, "onResponse: " + response.code());
+                    } else {
+                        Toast.makeText(MainActivity.this, logoutResponse.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else
+                    Log.d(TAG, "onResponse: " + response.code());
+            }
 
+            @Override
+            public void onFailure(Call<LogoutResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void resetDrawerView() {
+        profile_img.setImageResource(R.drawable.ic_user);
+        nameTV.setText("Guest User");
+        emailTV.setText("guest@mail.com");
+        nav_profile_Menu.findItem(R.id.nav_profile).setVisible(false);
+        nav_order_Menu.findItem(R.id.nav_order).setVisible(false);
+        header_authTV.setText("Sign In");
+        header_authIV.setImageResource(R.drawable.ic_login_white);
+    }
+
+
+    private void setDrawerView() {
+        SharedPreferences preferences = this.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        prefs=preferences;
+        if (sessionManager.isLogin()) {
+            nav_profile_Menu.findItem(R.id.nav_profile).setVisible(true);
+            nav_order_Menu.findItem(R.id.nav_order).setVisible(true);
+            header_authTV.setText("Sign Out");
+            header_authIV.setImageResource(R.drawable.ic_logout_white);
+            emailTV.setText(preferences.getString(EMAIL, ""));
+            if (preferences.getBoolean(STATUS, false)) {
+                nameTV.setText(preferences.getString(USER_NAME, ""));
+                profile_img.setImageBitmap(getBitmapImage(preferences.getString(PHOTO, "no photo")));
+            }
+        }
     }
 
     private void setViewForNavHeader() {
@@ -117,6 +193,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         emailTV = header.findViewById(R.id.nav_user_emailTV);
         profile_img = header.findViewById(R.id.nav_user_photoIV);
         userLoginLinearLayout = header.findViewById(R.id.nav_loginLL);
+        header_authTV = header.findViewById(R.id.header_auth_statusTV);
+        header_authIV = header.findViewById(R.id.header_auth_statusIV);
     }
 
 
@@ -146,21 +224,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
-    public void onUserLogout() {
-        startActivity(new Intent(MainActivity.this, AuthActivity.class));
-        finish();
-    }
-
-    @Override
-    public void onProfile() {
-        fragment = new ProductFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-    }
 
     @Override
     public void onSplashFinished(List<VerticalModel> vmList) {
-        this.vmList=vmList;
+        this.vmList = vmList;
         Bundle bundle = new Bundle();
         bundle.putSerializable("product", (Serializable) vmList);
         fragment = new HomeFragment();
@@ -185,16 +252,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (globalCartList.size() == 1) {
             globalCartList.clear();
-            Log.e(TAG, "onClick: 1st if clicked" );
+            Log.e(TAG, "onClick: 1st if clicked");
         }
 
         if (globalCartList.size() > 0) {
-            for(Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
-                if(iterator.next().getProductId() == id)
+            for (Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
+                if (iterator.next().getProductId() == id)
                     iterator.remove();
             }
 
-            Log.e(TAG, "onClick: 2nd "+globalCartList.size() );
+            Log.e(TAG, "onClick: 2nd " + globalCartList.size());
 
         }
     }
@@ -202,13 +269,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.d(TAG, "onRestart: called");
         invalidateOptionsMenu();
+        setDrawerView();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: called");
         invalidateOptionsMenu();
+        setDrawerView();
     }
 
     @Override
@@ -243,11 +314,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 onCatIconClick(7);
                 break;
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 break;
-            case R.id.nav_policy:
-                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
-                break;
+//            case R.id.nav_policy:
+//                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
+//                break;
             case R.id.nav_about:
                 Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
                 break;
@@ -262,9 +333,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onCatIconClick(int cid) {
-        Bundle bundle=new Bundle();
-        bundle.putInt("catId",cid);
-        fragment=new ProductFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("catId", cid);
+        fragment = new ProductFragment();
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
@@ -272,11 +343,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onProductClick(HorizontalModel model) {
-//        Bundle bundle=new Bundle();
-//        bundle.putSerializable("product",model);
-//        fragment=new ProductDetailsFragment();
-//        fragment.setArguments(bundle);
-//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         startActivity(new Intent(MainActivity.this, ProductDetailsActivity.class).putExtra("product", model));
     }
 }
