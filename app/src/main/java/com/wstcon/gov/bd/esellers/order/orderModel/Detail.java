@@ -5,7 +5,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.wstcon.gov.bd.esellers.product.productModel.Product;
 
-public class Detail {
+import java.io.Serializable;
+
+public class Detail implements Serializable {
 
     @SerializedName("id")
     @Expose

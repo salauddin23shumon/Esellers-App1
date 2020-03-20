@@ -4,7 +4,9 @@ package com.wstcon.gov.bd.esellers.order.orderModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Payment {
+import java.io.Serializable;
+
+public class Payment implements Serializable {
 
     @SerializedName("id")
     @Expose

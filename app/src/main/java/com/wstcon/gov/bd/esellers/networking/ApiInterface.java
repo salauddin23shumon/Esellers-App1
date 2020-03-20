@@ -34,7 +34,7 @@ public interface ApiInterface {
 
 
     @FormUrlEncoded
-    @POST("api/auth/profile_update/{uid}")
+    @POST("api/auth/profile_update/{uid}")                  //uid=user id
     Call<ProfileUpdateRes> updateProfile(@Field("name") String name, @Field("email") String email,
                                          @Field("mobile") String mobile, @Field("user_profile_photo") String photo,
                                          @Field("address") String address, @Path("uid")  int id);    //token required
@@ -53,15 +53,15 @@ public interface ApiInterface {
     Call<ProductResponse> getAllProducts();
 
 
-    @GET("api/order/orderDetails/{oid}")
+    @GET("api/order/orderDetails/{oid}")                            //oid=order id
     Call<OrderDetailsRes> getOrderDetails(@Path("oid") int id);
 
 
-    @GET("api/order/order/{cid}")
+    @GET("api/order/customer_order/{cid}")                          //cid=customer id
     Call<OrderHistoryResponse> getOrder(@Path("cid") int id);
 
 
-    @GET("api/product/category_product/{cid}")
+    @GET("api/product/category_product/{cid}")                      //cid=category id
     Call<ProductResponse> getProductsByCat(@Path("cid") int id);
 
 

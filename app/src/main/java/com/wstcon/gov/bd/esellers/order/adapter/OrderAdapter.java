@@ -1,6 +1,7 @@
 package com.wstcon.gov.bd.esellers.order.adapter;
 
 import android.content.Context;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,19 +14,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wstcon.gov.bd.esellers.R;
+import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.order.orderModel.CustomerOrder;
+import com.wstcon.gov.bd.esellers.order.orderModel.OrderDetails;
+import com.wstcon.gov.bd.esellers.order.orderModel.OrderDetailsRes;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
     private static final String TAG = "OrderAdapter ";
     private List<CustomerOrder>orderList;
     private Context context;
+    private OrderDetailsClick detailsClick;
 
     public OrderAdapter(List<CustomerOrder> orderList, Context context) {
         this.orderList = orderList;
         this.context = context;
+        detailsClick= (OrderDetailsClick) context;
     }
 
     @NonNull
@@ -46,10 +56,32 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, ""+order.getId(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, ""+order.getId(), Toast.LENGTH_SHORT).show();
+                getOrderDetails(order.getId());
             }
         });
 
+    }
+
+    private void getOrderDetails(Integer id) {
+        Call<OrderDetailsRes> call= RetrofitClient.getInstance().getApiInterface().getOrderDetails(id);
+        call.enqueue(new Callback<OrderDetailsRes>() {
+            @Override
+            public void onResponse(Call<OrderDetailsRes> call, Response<OrderDetailsRes> response) {
+                if (response.isSuccessful()){
+                    OrderDetails details=response.body().getOrderDetails();
+                    Log.e(TAG, "onResponse: "+details.getOrder().getOrderTotal() );
+                    detailsClick.onDetailsClick(details);
+//                    context.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                }else
+                    Log.e(TAG, "onResponse: else"+response.code() );
+            }
+
+            @Override
+            public void onFailure(Call<OrderDetailsRes> call, Throwable t) {
+                Log.e(TAG, "onFailure: "+t.getLocalizedMessage() );
+            }
+        });
     }
 
     @Override
@@ -74,5 +106,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     public void updateList(List<CustomerOrder> orderList){
         this.orderList=orderList;
         notifyDataSetChanged();
+    }
+
+    public interface OrderDetailsClick{
+        void onDetailsClick(OrderDetails details);
     }
 }

@@ -3,7 +3,9 @@ package com.wstcon.gov.bd.esellers.order.orderModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CustomerOrder {
+import java.io.Serializable;
+
+public class CustomerOrder implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;

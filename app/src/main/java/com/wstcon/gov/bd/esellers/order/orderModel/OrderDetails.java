@@ -1,12 +1,13 @@
 
 package com.wstcon.gov.bd.esellers.order.orderModel;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class OrderDetails {
+public class OrderDetails implements Serializable {
 
     @SerializedName("order")
     @Expose

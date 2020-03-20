@@ -35,7 +35,7 @@ public class SessionManager {
         this.context = context;
         sharedPreferences = context.getSharedPreferences(PREF_NAME, MODE);
         editor = sharedPreferences.edit();
-        editor.putBoolean(LOGIN, false);
+//        editor.putBoolean(LOGIN, false);
         editor.apply();
     }
 
