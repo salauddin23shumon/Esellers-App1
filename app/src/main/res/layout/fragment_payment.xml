@@ -61,15 +61,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:orientation="vertical"
-
-                    android:paddingStart="30dp">
+                    android:paddingStart="30dp"
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="Standard Delivery"
+                        android:layout_gravity="center"
+                        android:text="Insert Shipping Info"
+                        android:layout_marginBottom="40dp"
+                        android:textSize="20sp" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Standard Delivery"
                         android:textSize="22sp" />
 
 
@@ -77,8 +84,7 @@
                         android:id="@+id/radiofst"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="0dp"
@@ -86,13 +92,13 @@
                             android:layout_weight="3"
                             android:padding="10dp"
                             android:text="order will be delivered between 3-5 business days"
-
                             android:textSize="15sp" />
 
                         <RadioButton
                             android:layout_width="0dp"
                             android:layout_height="90dp"
-                            android:layout_weight=".4" />
+                            android:layout_weight=".4"
+                            android:checked="true"/>
 
                     </LinearLayout>
 
@@ -100,17 +106,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="5dp"
                         android:text="Next Day Delivery"
-
                         android:textSize="22sp" />
 
                     <LinearLayout
                         android:id="@+id/secondLL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="0dp"
@@ -118,7 +122,6 @@
                             android:layout_weight="3"
                             android:padding="10dp"
                             android:text="order will be delivered between 3-5 business days"
-
                             android:textSize="15sp" />
 
                         <RadioButton
@@ -134,14 +137,14 @@
                     android:id="@+id/midLL2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="vertical"
                     android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="vertical"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp">
@@ -150,20 +153,30 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Billing address is the same as previous address"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:visibility="gone" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:text="Or"
-                            android:textSize="20sp" />
+                            android:textSize="20sp"
+                            android:visibility="gone" />
 
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Insert new Shipping address"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Insert Shipping Info"
+                            android:textSize="20sp" />
                     </LinearLayout>
 
 
@@ -171,7 +184,6 @@
                         android:id="@+id/afp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/bacb"
                         android:orientation="vertical">
 
                         <TextView
@@ -179,7 +191,7 @@
                             android:layout_height="wrap_content"
                             android:paddingStart="30dp"
                             android:paddingTop="20dp"
-                            android:text="Street 1"
+                            android:text="Address"
                             android:textSize="20sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -188,37 +200,11 @@
                             android:paddingStart="30dp">
 
                             <EditText
-                                android:id="@+id/streetfst"
+                                android:id="@+id/addressET"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="30dp"
                                 android:ems="17"
-                                android:hint="Street 1"
-                                android:inputType="text" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="30dp"
-                            android:paddingTop="20dp"
-                            android:text="Street 2"
-                            android:textSize="20sp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="30dp">
-
-                            <EditText
-                                android:id="@+id/streetsnd"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="30dp"
-                                android:ems="17"
-                                android:hint="Street 2"
                                 android:inputType="text" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -239,12 +225,11 @@
                             android:paddingStart="30dp">
 
                             <EditText
-                                android:id="@+id/city"
+                                android:id="@+id/cityET"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="30dp"
                                 android:ems="17"
-                                android:hint="City"
                                 android:inputType="text" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -252,6 +237,79 @@
 
                     </LinearLayout>
 
+
+                    <LinearLayout
+                        android:id="@+id/asp1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/afp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="30dp"
+                                android:paddingTop="20dp"
+                                android:text="Zip Code"
+                                android:textSize="20sp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="30dp">
+
+                                <EditText
+                                    android:id="@+id/zipET"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="8"
+                                    android:inputType="text" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="30dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="20dp"
+                                android:paddingTop="20dp"
+                                android:text="Country"
+                                android:textSize="20sp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="20dp">
+
+                                <EditText
+                                    android:id="@+id/countryET"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="8"
+                                    android:text="Bangladesh"
+                                    android:inputType="number" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/asp"
@@ -271,7 +329,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="30dp"
                                 android:paddingTop="20dp"
-                                android:text="Division"
+                                android:text="Receiver Name"
                                 android:textSize="20sp" />
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -280,11 +338,10 @@
                                 android:paddingStart="30dp">
 
                                 <EditText
-                                    android:id="@+id/division"
+                                    android:id="@+id/receiverET"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:ems="8"
-                                    android:hint="Division"
                                     android:inputType="text" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -296,6 +353,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:layout_marginEnd="30dp"
                             android:orientation="vertical">
 
                             <TextView
@@ -303,7 +361,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="20dp"
                                 android:paddingTop="20dp"
-                                android:text="Zip Code"
+                                android:text="Contact"
                                 android:textSize="20sp" />
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -312,16 +370,16 @@
                                 android:paddingStart="20dp">
 
                                 <EditText
-                                    android:id="@+id/country"
+                                    android:id="@+id/contactET"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:ems="8"
-                                    android:hint="1205"
                                     android:inputType="number" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
+
 
                     </LinearLayout>
 
@@ -332,6 +390,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginTop="20dp"
                     android:paddingStart="30dp"
                     android:paddingEnd="30dp"
                     android:visibility="gone">
@@ -340,12 +399,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Payment Method"
+                        android:layout_gravity="center"
                         android:textSize="20sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp">
 
                         <ImageView
                             android:layout_width="0dp"
@@ -407,10 +468,11 @@
 
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="60dp"
                             android:layout_weight=".3"
                             android:paddingTop="20dp"
-                            android:src="@drawable/ic_bkash" />
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/cod2" />
 
                         <TextView
                             android:layout_width="0dp"
@@ -425,6 +487,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:checked="true"
                             android:layout_weight=".2" />
 
                     </LinearLayout>

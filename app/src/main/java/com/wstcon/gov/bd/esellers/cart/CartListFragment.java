@@ -122,7 +122,7 @@ public class CartListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (tempArrayList.size() != 0)
-                    action.onPlaceOrderClick();
+                    action.onPlaceOrderClick(grandTotalPlus);
                 else
                     Toast.makeText(context, "u have no cart in the list", Toast.LENGTH_SHORT).show();
             }
@@ -150,7 +150,7 @@ public class CartListFragment extends Fragment {
 
 
     public interface CartFrgmntAction {
-        void onPlaceOrderClick();
+        void onPlaceOrderClick(double total );
     }
 
 }

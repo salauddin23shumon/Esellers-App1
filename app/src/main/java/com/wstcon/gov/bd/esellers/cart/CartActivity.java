@@ -105,11 +105,14 @@ public class CartActivity extends AppCompatActivity implements CartListFragment.
     }
 
     @Override
-    public void onPlaceOrderClick() {
+    public void onPlaceOrderClick(double total) {
         grandTotalPlus = 0;
         globalCartList.addAll(tempArrayList);
         MainActivity.cart_count = (tempArrayList.size());
+        Bundle bundle=new Bundle();
+        bundle.putDouble("total", total);
         Fragment fragment = new PaymentFragment();
+        fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
     }
 
