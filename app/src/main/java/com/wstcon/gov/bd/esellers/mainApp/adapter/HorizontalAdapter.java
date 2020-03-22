@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
 import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
 
 
@@ -95,7 +96,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
                                 FileOutputStream outputStreamthumb = new FileOutputStream(thumbImageFile);
 //                        Bitmap thumbBitmap = Bitmap.createScaledBitmap(loadedImage,300,400,false);
                                 resource.compress(Bitmap.CompressFormat.JPEG, 100, outputStreamthumb);
-                                Toast.makeText(context, id + " thumb saved", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(context, id + " thumb saved", Toast.LENGTH_SHORT).show();
                                 Log.d("file", ": " + id + " saved");
                                 outputStreamthumb.flush();
                                 outputStreamthumb.close();
@@ -117,7 +118,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
             @Override
             public void onClick(View v) {
                 ((SeeProductDetails) context).onProductClick(horizontalModel);
-                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
             }
         });
         horizontalViewHolder.productTV.setText(horizontalModel.getProduct().getProductName());
@@ -165,35 +166,12 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
                 } else {
                     Toast.makeText(context, "already added into cart", Toast.LENGTH_SHORT).show();
-                    horizontalModel.getProduct().setAddedToCart(false);
+//                    horizontalModel.getProduct().setAddedToCart(false);
 //                    horizontalViewHolder.cartBtn.setText("Add To Cart");
 //                    ((AddorRemoveCallbacks) context).onRemoveProduct(cart.getProductId());
                 }
             }
         });
-    }
-
-    private void fullView(HorizontalModel horizontalModel) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View fullView = inflater.inflate(R.layout.fullscreeen, null, false);
-        final Dialog fullScreenDilog = new Dialog(context, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
-        fullScreenDilog.setContentView(fullView);
-
-        Button closeBtn = fullScreenDilog.findViewById(R.id.btnClose);
-        ImageView fullScreenView = fullScreenDilog.findViewById(R.id.fullView);
-//        Log.e("", "fullView: " + horizontalModel.getProduct().getImage());
-//        fullScreenView.setImageResource(horizontalModel.getImage());
-//        Glide.with(context).load(horizontalModel.getImgUrl()).into(fullScreenView);
-//        Glide.with(context).load(horizontalModel.getProduct().getImage()).centerCrop().into(fullScreenView);
-//        Picasso.get().load(horizontalModel.getImgUrl()).fit().centerCrop().into(fullScreenView);
-        closeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fullScreenDilog.dismiss();
-            }
-        });
-
-        fullScreenDilog.show();
     }
 
 

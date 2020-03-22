@@ -65,7 +65,7 @@ public class Product extends RecyclerViewItem implements Serializable {
     private String manufacturerName;
     @SerializedName("vendor_name")
     @Expose
-    private Object vendorName;
+    private String vendorName;
     @SerializedName("product_status_name")
     @Expose
     private String productStatusName;
@@ -222,11 +222,11 @@ public class Product extends RecyclerViewItem implements Serializable {
         this.manufacturerName = manufacturerName;
     }
 
-    public Object getVendorName() {
+    public String getVendorName() {
         return vendorName;
     }
 
-    public void setVendorName(Object vendorName) {
+    public void setVendorName(String vendorName) {
         this.vendorName = vendorName;
     }
 

@@ -1,96 +1,46 @@
 package com.wstcon.gov.bd.esellers.cart;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.wstcon.gov.bd.esellers.R;
-import com.wstcon.gov.bd.esellers.cart.adapter.CartAdapter;
-import com.wstcon.gov.bd.esellers.cart.cartModel.Address;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
-import com.wstcon.gov.bd.esellers.cart.cartModel.CartRes;
-import com.wstcon.gov.bd.esellers.cart.cartModel.Order;
 import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
+import com.wstcon.gov.bd.esellers.interfaces.NavBackBtnPress;
 import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
-import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
+import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.grandTotalPlus;
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cart_count;
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
 
-public class CartActivity extends AppCompatActivity implements AddorRemoveCallbacks {
+
+public class CartActivity extends AppCompatActivity implements CartListFragment.CartFrgmntAction,
+        NavBackBtnPress, AddorRemoveCallbacks, PaymentFragment.PaymentFrgmntAction {
 
     private static final String TAG = "CartActivity";
-    private RecyclerView recyclerView;
-    private Toolbar toolbar;
-    public static TextView totalTV;
-    private Button orderBtn;
-    private CartAdapter adapter;
-    public static double grandTotalPlus;
-    // create a temp list and add cartitem list
-    public static List<Cart> tempArrayList;
-    private SharedPreferences prefs;
-    private String id;
+    private Fragment fragment;
+    public static List<Cart> tempArrayList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        prefs = this.getSharedPreferences("Session", MODE_PRIVATE);
-        id = prefs.getString("ID", "No ID defined");
+        fragment = new CartListFragment();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        }
 
-        recyclerView = findViewById(R.id.cartRV);
-        totalTV = findViewById(R.id.totalTV);
-        orderBtn = findViewById(R.id.placeOrderBtn);
-        toolbar = findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Cart");
-
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // these lines of code for show the same  cart for future refrence
-                grandTotalPlus = 0;
-                globalCartList.addAll(tempArrayList);
-                MainActivity.cart_count = (tempArrayList.size());
-                finish();
-            }
-        });
-
-        tempArrayList = new ArrayList<>();
-        adapter = new CartAdapter(tempArrayList,this);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-
-//        MainActivity.cart_count = 0;
-
+//        tempArrayList = new ArrayList<>();
         for (int i = 0; i < globalCartList.size(); i++) {
             for (int j = i + 1; j < globalCartList.size(); j++) {
                 if (globalCartList.get(i).getProductId().equals(globalCartList.get(j).getProductId())) {
@@ -103,89 +53,28 @@ public class CartActivity extends AppCompatActivity implements AddorRemoveCallba
             }
         }
         tempArrayList.addAll(globalCartList);
-//        Log.d("tempArrayList:"+tempArrayList.get(0).getProductName(), String.valueOf(tempArrayList.size()));
-        adapter.updateList(tempArrayList);
-        globalCartList.clear();
-
-        Log.d("sizecart_22", String.valueOf(globalCartList.size()));
-        // this code is for get total cash
-        for (int i = 0; i < tempArrayList.size(); i++) {
-            grandTotalPlus = grandTotalPlus + tempArrayList.get(i).getTotalCash();
-        }
-        totalTV.setText("TK. " + String.valueOf(grandTotalPlus));
-        recyclerView.setAdapter(adapter);
-
-
-        orderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendOrder();
-            }
-        });
     }
 
-    private void sendOrder() {
-
-        Log.e(TAG, "sendOrder: list "+tempArrayList.size() );
-
-        Address address=new Address();
-        address.setAddress("banglamotor");
-        address.setCity("dhaka");
-        address.setZip(1000);
-        address.setCountry("bd");
-        address.setPhone("1212331232");
-        address.setReceiverName("sk");
-
-
-        Order order=new Order();
-        order.setCustomerId(Integer.parseInt(id));
-        order.setOrderTotal(grandTotalPlus);
-        order.setPaymentType("COD");
-        order.setHasDifferentShipping(true);
-        order.setCart(tempArrayList);
-        order.setAddress(address);
-
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonParser jp = new JsonParser();
-        JsonElement je = jp.parse(String.valueOf(order));
-        String prettyJsonString = gson.toJson(je);
-        System.out.println(prettyJsonString);
-
-        Call<CartRes>call= RetrofitClient.getInstance().getApiInterface().sendOrder(order);
-        call.enqueue(new Callback<CartRes>() {
-            @Override
-            public void onResponse(Call<CartRes> call, Response<CartRes> response) {
-                if (response.isSuccessful()){
-                    Log.e(TAG, "onResponse: "+response.body().getStatus() );
-                    Toast.makeText(CartActivity.this, "u have placed order successfully", Toast.LENGTH_SHORT).show();
-                    clearData();
-                }else
-                    Log.e(TAG, "onResponse: else "+response.code() );
-            }
-
-            @Override
-            public void onFailure(Call<CartRes> call, Throwable t) {
-                Log.e(TAG, "onFailure: "+t.getLocalizedMessage() );
-            }
-        });
-    }
-
-    public void clearData(){
-        cart_count=0;
-        grandTotalPlus=0;
-        tempArrayList.clear();
-        invalidateOptionsMenu();
-        finish();
-    }
 
     @Override
     public void onBackPressed() {
-        grandTotalPlus = 0;
-        globalCartList.addAll(tempArrayList);
-        MainActivity.cart_count = (tempArrayList.size());
-        finish();
-        super.onBackPressed();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            grandTotalPlus = 0;
+            globalCartList.addAll(tempArrayList);
+            MainActivity.cart_count = (tempArrayList.size());
+            tempArrayList.clear();
+            finish();
+            super.onBackPressed();
+            //additional code
+        } else {
+            grandTotalPlus = 0;
+            globalCartList.addAll(tempArrayList);
+            MainActivity.cart_count = (tempArrayList.size());
+            getSupportFragmentManager().popBackStack();
+        }
+
     }
 
     @Override
@@ -201,17 +90,44 @@ public class CartActivity extends AppCompatActivity implements AddorRemoveCallba
 
         if (globalCartList.size() == 1) {
             globalCartList.clear();
-            Log.e(TAG, "onClick: 1st if clicked" );
+            Log.e(TAG, "onClick: 1st if clicked");
         }
 
-        if (globalCartList.size() > 0) {
-            for(Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
-                if(iterator.next().getProductId() == id)
+        if (globalCartList.size() > 1) {
+            for (Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
+                if (iterator.next().getProductId() == id)
                     iterator.remove();
             }
 
-            Log.e(TAG, "onClick: 2nd "+globalCartList.size() );
+            Log.e(TAG, "onClick: 2nd " + globalCartList.size());
 
         }
+    }
+
+    @Override
+    public void onPlaceOrderClick() {
+        grandTotalPlus = 0;
+        globalCartList.addAll(tempArrayList);
+        MainActivity.cart_count = (tempArrayList.size());
+        Fragment fragment = new PaymentFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onNavBackBtnPress() {
+//        grandTotalPlus = 0;
+//        globalCartList.addAll(tempArrayList);
+//        MainActivity.cart_count = (tempArrayList.size());
+//        finish();
+        onBackPressed();
+    }
+
+    @Override
+    public void onOrderSuccessfullyPlaced() {
+        cart_count = 0;
+        grandTotalPlus = 0;
+        tempArrayList.clear();
+        invalidateOptionsMenu();
+        finish();
     }
 }

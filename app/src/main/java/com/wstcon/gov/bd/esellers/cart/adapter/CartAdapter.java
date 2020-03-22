@@ -21,9 +21,10 @@ import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
 
 import java.util.List;
 
-import static com.wstcon.gov.bd.esellers.cart.CartActivity.grandTotalPlus;
-import static com.wstcon.gov.bd.esellers.cart.CartActivity.tempArrayList;
-import static com.wstcon.gov.bd.esellers.cart.CartActivity.totalTV;
+import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.grandTotalPlus;
+
+
+import static com.wstcon.gov.bd.esellers.cart.CartListFragment.totalTV;
 import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
@@ -74,8 +75,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
                 cart.setTotalCash(cash);
 
-                for (int i = 0; i < tempArrayList.size(); i++) {
-                    grandTotalPlus = grandTotalPlus + tempArrayList.get(i).getTotalCash();
+                for (int i = 0; i < cartList.size(); i++) {
+                    grandTotalPlus = grandTotalPlus + cartList.get(i).getTotalCash();
                 }
                 Log.d("totalcashthegun", String.valueOf(grandTotalPlus));
                 totalTV.setText(String.valueOf(grandTotalPlus));
@@ -104,8 +105,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
                     cart.setTotalCash(cash);
 //                    holder.productCartPrice.setText(String.valueOf(cash));
-                    for (int i = 0; i < tempArrayList.size(); i++) {
-                        grandTotalPlus = grandTotalPlus + tempArrayList.get(i).getTotalCash();
+                    for (int i = 0; i < cartList.size(); i++) {
+                        grandTotalPlus = grandTotalPlus + cartList.get(i).getTotalCash();
                     }
 
                     Log.d("totalcashthegun", String.valueOf(grandTotalPlus));
@@ -135,8 +136,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, cartList.size());
                     grandTotalPlus = 0;
-                    for (int i = 0; i < tempArrayList.size(); i++) {
-                        grandTotalPlus = grandTotalPlus + tempArrayList.get(i).getTotalCash();
+                    for (int i = 0; i < cartList.size(); i++) {
+                        grandTotalPlus = grandTotalPlus + cartList.get(i).getTotalCash();
                     }
 
                     Log.d("totalcashthegun", String.valueOf(grandTotalPlus));

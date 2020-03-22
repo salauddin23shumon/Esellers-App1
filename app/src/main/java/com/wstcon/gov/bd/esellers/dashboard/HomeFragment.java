@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

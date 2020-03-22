@@ -16,9 +16,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.order.orderModel.CustomerOrder;
 import com.wstcon.gov.bd.esellers.order.orderModel.Detail;
@@ -28,6 +31,8 @@ import com.wstcon.gov.bd.esellers.order.orderModel.Shipping;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +53,7 @@ public class OrderDetailsFragment extends Fragment {
     private BackToOrderList backToOrderList;
 
 
+
     public OrderDetailsFragment() {
         // Required empty public constructor
     }
@@ -60,13 +66,24 @@ public class OrderDetailsFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             orderDetails = (OrderDetails) bundle.getSerializable("details");
+
             if (orderDetails.getDetails() != null)
                 details = orderDetails.getDetails();
+            else
+                Log.e(TAG, "onAttach: details obj is null" );
             if (orderDetails.getPayment() != null)
                 payment = orderDetails.getPayment();
+            else
+                Log.e(TAG, "onAttach: payment obj is null" );
             if (orderDetails.getShipping() != null)
                 shipping = orderDetails.getShipping();
-            customerOrder = orderDetails.getOrder();
+            else
+                Log.e(TAG, "onAttach: shipping obj is null" );
+            if (orderDetails.getOrder() != null)
+                customerOrder = orderDetails.getOrder();
+            else
+                Log.e(TAG, "onAttach: customerOrder obj is null" );
+
             Log.e(TAG, "onAttach: " + orderDetails.getOrder().getId());
             Log.e(TAG, "onAttach: " + orderDetails.getDetails().size());
         }
@@ -81,7 +98,7 @@ public class OrderDetailsFragment extends Fragment {
         toolbar = view.findViewById(R.id.toolbar);
         customerTV = view.findViewById(R.id.customerTV);
         orderIdTV = view.findViewById(R.id.order_idTV);
-        dateTV = view.findViewById(R.id.dateTV);
+        dateTV = view.findViewById(R.id.order_dateTV);
         statusTV = view.findViewById(R.id.statusTV);
         totalTV = view.findViewById(R.id.totalTV);
         dueTV = view.findViewById(R.id.dueTV);
@@ -96,7 +113,7 @@ public class OrderDetailsFragment extends Fragment {
 
         customerTV.setText("Customer Name: " + shipping.getReceiverName());
         orderIdTV.setText("Order Id: " + String.valueOf(customerOrder.getId()));
-//        dateTV.setText("Order Date: " + customerOrder.getCreatedAt());
+        dateTV.setText("Order Date: " + customerOrder.getCreatedAt());
         statusTV.setText("Order Status: " + customerOrder.getOrderStatus());
 
         totalTV.setText("Total: " + customerOrder.getOrderTotal());
@@ -118,7 +135,6 @@ public class OrderDetailsFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ((BackBtnPress)context).onBackBtnPress();
                 backToOrderList.onBackToListClick();
             }
         });
@@ -146,6 +162,19 @@ public class OrderDetailsFragment extends Fragment {
             Detail itemDetail = details.get(position);
             holder.idTV.setText(String.valueOf(position));
             holder.itemTV.setText(itemDetail.getProducts().getProductName());
+
+            Glide.with(context)
+                    .load(BASE_URL + itemDetail.getProducts().getProductImage()).into(holder.imageView);
+
+            holder.quantityTV.setText(itemDetail.getQuantity());
+            holder.priceTV.setText(itemDetail.getProducts().getProductPrice());
+
+            holder.reviewBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
 
         @Override
@@ -157,6 +186,8 @@ public class OrderDetailsFragment extends Fragment {
         public class ItemViewHolder extends RecyclerView.ViewHolder {
 
             private TextView idTV, itemTV, quantityTV, priceTV;
+            private ImageView imageView;
+            private Button reviewBtn;
 
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -164,6 +195,8 @@ public class OrderDetailsFragment extends Fragment {
                 itemTV = itemView.findViewById(R.id.productTV);
                 quantityTV = itemView.findViewById(R.id.quantityTV);
                 priceTV = itemView.findViewById(R.id.priceTV);
+                imageView = itemView.findViewById(R.id.imageview);
+                reviewBtn = itemView.findViewById(R.id.reviewBtn);
             }
         }
     }

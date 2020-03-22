@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static List<Cart> globalCartList = new ArrayList<>();
     public static int cart_count = 0;
+    public static double grandTotalPlus = 0;
+
 
 
     @Override
@@ -255,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.e(TAG, "onClick: 1st if clicked");
         }
 
-        if (globalCartList.size() > 0) {
+        if (globalCartList.size() > 1) {
             for (Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
                 if (iterator.next().getProductId() == id)
                     iterator.remove();

@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.wstcon.gov.bd.esellers.R;
-import com.wstcon.gov.bd.esellers.interfaces.BackBtnPress;
+import com.wstcon.gov.bd.esellers.interfaces.NavBackBtnPress;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.order.adapter.OrderAdapter;
 import com.wstcon.gov.bd.esellers.order.orderModel.CustomerOrder;
@@ -100,7 +100,7 @@ public class OrderListFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BackBtnPress)context).onBackBtnPress();
+                ((NavBackBtnPress)context).onNavBackBtnPress();
             }
         });
     }

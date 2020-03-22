@@ -28,6 +28,8 @@ import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
 import com.wstcon.gov.bd.esellers.utility.Converter;
 
+import java.util.Iterator;
+
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cart_count;
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
 import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
@@ -35,8 +37,8 @@ import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
 public class ProductDetailsActivity extends AppCompatActivity implements AddorRemoveCallbacks{
 
     private static final String TAG = "ProductDetailsActivity ";
-    private TextView productTV, priceTV, shortDecTV, longDescTV;
-    private ImageView productIV, brandIV;
+    private TextView productTV, priceTV, shortDecTV, longDescTV, vendorTV, manufacTV;
+    private ImageView productIV, brandIV,cartBtn2;
     private Button cartBtn, buyBtn;
     private Toolbar toolbar;
     private RatingBar ratingBar;
@@ -52,11 +54,15 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
 
         productTV=findViewById(R.id.nameTV);
         priceTV=findViewById(R.id.priceTV);
+        vendorTV=findViewById(R.id.vendorTV);
+        manufacTV=findViewById(R.id.menufacTV);
+        priceTV=findViewById(R.id.priceTV);
         shortDecTV=findViewById(R.id.desc1ET);
         longDescTV=findViewById(R.id.desc2ET);
         productIV=findViewById(R.id.productIV);
         brandIV=findViewById(R.id.brandIV);
         cartBtn=findViewById(R.id.cartBtn);
+        cartBtn2=findViewById(R.id.cartBtn2);
         buyBtn=findViewById(R.id.buyBtn);
         ratingBar=findViewById(R.id.rating);
 
@@ -78,6 +84,10 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
 
         productTV.setText(horizontalModel.getProduct().getProductName());
         priceTV.setText(horizontalModel.getProduct().getProductPrice());
+        shortDecTV.setText(horizontalModel.getProduct().getShortDescription());
+        longDescTV.setText(horizontalModel.getProduct().getLongDescription());
+        vendorTV.setText(horizontalModel.getProduct().getVendorName());
+        manufacTV.setText(horizontalModel.getProduct().getManufacturerName());
         Glide.with(this).load(BASE_URL+horizontalModel.getProduct().getProductImage()).into(productIV);
 
         productIV.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +117,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
 
                 } else {
                     Toast.makeText(ProductDetailsActivity.this, "already added into cart", Toast.LENGTH_SHORT).show();
-                    horizontalModel.getProduct().setAddedToCart(false);
+//                    horizontalModel.getProduct().setAddedToCart(false);
 //                    horizontalViewHolder.cartBtn.setText("Add To Cart");
 //                    ((AddorRemoveCallbacks) context).onRemoveProduct(cart.getProductId());
                 }
@@ -133,7 +143,7 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
                 if (cart_count < 1) {
                     Toast.makeText(this, "there is no item in cart", Toast.LENGTH_SHORT).show();
                 } else {
-                    startActivity(new Intent(this, CartActivity.class));
+                    startActivity(new Intent(ProductDetailsActivity.this, CartActivity.class));
                 }
                 break;
             default:
@@ -183,6 +193,23 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
 
     @Override
     public void onRemoveProduct(int id) {
+        cart_count--;
+        invalidateOptionsMenu();
+        Toast.makeText(this, "removed", Toast.LENGTH_SHORT).show();
 
+        if (globalCartList.size() == 1) {
+            globalCartList.clear();
+            Log.e(TAG, "onClick: 1st if clicked");
+        }
+
+        if (globalCartList.size() > 1) {
+            for (Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
+                if (iterator.next().getProductId() == id)
+                    iterator.remove();
+            }
+
+            Log.e(TAG, "onClick: 2nd " + globalCartList.size());
+
+        }
     }
 }

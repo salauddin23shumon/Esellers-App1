@@ -17,13 +17,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.interfaces.AuthCompleteListener;
-import com.wstcon.gov.bd.esellers.interfaces.BackBtnPress;
+import com.wstcon.gov.bd.esellers.interfaces.NavBackBtnPress;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.AuthResponse;
-import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.Token;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,7 +84,7 @@ public class SignInFragment extends Fragment {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BackBtnPress) context).onBackBtnPress();
+                ((NavBackBtnPress) context).onNavBackBtnPress();
             }
         });
 

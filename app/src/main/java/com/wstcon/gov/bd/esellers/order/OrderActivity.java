@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.wstcon.gov.bd.esellers.R;
-import com.wstcon.gov.bd.esellers.interfaces.BackBtnPress;
+import com.wstcon.gov.bd.esellers.interfaces.NavBackBtnPress;
 import com.wstcon.gov.bd.esellers.order.adapter.OrderAdapter;
 import com.wstcon.gov.bd.esellers.order.orderModel.OrderDetails;
 
 
-public class OrderActivity extends AppCompatActivity implements BackBtnPress, OrderAdapter.OrderDetailsClick,
+public class OrderActivity extends AppCompatActivity implements NavBackBtnPress, OrderAdapter.OrderDetailsClick,
         OrderDetailsFragment.BackToOrderList {
 
     private static final String TAG = "OrderActivity ";
@@ -23,46 +23,38 @@ public class OrderActivity extends AppCompatActivity implements BackBtnPress, Or
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
-        fragment=new OrderListFragment();
+        fragment = new OrderListFragment();
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
     }
 
-    @Override
-    public void onBackPressed() {
-//        finish();
-//        super.onBackPressed();
-//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+//    @Override
+//    public void onBackPressed() {
 //        int count = getSupportFragmentManager().getBackStackEntryCount();
-//        Log.d(TAG, "onBackPressed: "+count);
-//        if (count == 0) {
-//            Log.d(TAG, "onBackPressed: if called");
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+//
+//        if (count > 0) {
+//            getFragmentManager().popBackStack();
 //
 //            //additional code
 //        } else {
-//            Log.d(TAG, "onBackPressed: else called");
-//
+////            getSupportFragmentManager().popBackStack();
 //            super.onBackPressed();
-////                        getSupportFragmentManager().popBackStack();
-////            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-////            finish();
 //        }
-    }
+//    }
 
     @Override
-    public void onBackBtnPress() {
+    public void onNavBackBtnPress() {
         finish();
     }
 
     @Override
     public void onDetailsClick(OrderDetails details) {
-        Bundle bundle=new Bundle();
-        bundle.putSerializable("details",details);
-        Fragment fragment=new OrderDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("details", details);
+        Fragment fragment = new OrderDetailsFragment();
         fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
         Log.d(TAG, "onDetailsClick: clicked");
     }
 
