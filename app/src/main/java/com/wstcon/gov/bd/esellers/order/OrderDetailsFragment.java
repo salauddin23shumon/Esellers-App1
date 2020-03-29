@@ -28,8 +28,8 @@ import com.wstcon.gov.bd.esellers.order.orderModel.Detail;
 import com.wstcon.gov.bd.esellers.order.orderModel.OrderDetails;
 import com.wstcon.gov.bd.esellers.order.orderModel.Payment;
 import com.wstcon.gov.bd.esellers.order.orderModel.Shipping;
+import com.wstcon.gov.bd.esellers.product.productModel.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
@@ -50,7 +50,7 @@ public class OrderDetailsFragment extends Fragment {
     private CustomerOrder customerOrder;
     private Shipping shipping;
     private Payment payment;
-    private BackToOrderList backToOrderList;
+    private OrdrFrgmntAction ordrFrgmntAction;
 
 
 
@@ -62,7 +62,7 @@ public class OrderDetailsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-        backToOrderList = (BackToOrderList) context;
+        ordrFrgmntAction = (OrdrFrgmntAction) context;
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             orderDetails = (OrderDetails) bundle.getSerializable("details");
@@ -135,7 +135,7 @@ public class OrderDetailsFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backToOrderList.onBackToListClick();
+                ordrFrgmntAction.onBackToListClick();
             }
         });
     }
@@ -159,7 +159,7 @@ public class OrderDetailsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-            Detail itemDetail = details.get(position);
+            final Detail itemDetail = details.get(position);
             holder.idTV.setText(String.valueOf(position));
             holder.itemTV.setText(itemDetail.getProducts().getProductName());
 
@@ -172,7 +172,7 @@ public class OrderDetailsFragment extends Fragment {
             holder.reviewBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    ordrFrgmntAction.onReviewClick(itemDetail.getProducts());
                 }
             });
         }
@@ -199,9 +199,11 @@ public class OrderDetailsFragment extends Fragment {
                 reviewBtn = itemView.findViewById(R.id.reviewBtn);
             }
         }
+
     }
 
-    public interface BackToOrderList {
+    public interface OrdrFrgmntAction {
         void onBackToListClick();
+        void onReviewClick(Product product);
     }
 }

@@ -24,17 +24,19 @@ import com.google.android.material.navigation.NavigationView;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.cart.CartActivity;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
+import com.wstcon.gov.bd.esellers.category.categoryModel.Category;
 import com.wstcon.gov.bd.esellers.dashboard.StartSplashFragment;
+import com.wstcon.gov.bd.esellers.database.DatabaseQuery;
 import com.wstcon.gov.bd.esellers.interfaces.CategoryListener;
 import com.wstcon.gov.bd.esellers.interfaces.SeeProductDetails;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
+import com.wstcon.gov.bd.esellers.interfaces.ShowHideIconListener;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.order.OrderActivity;
-import com.wstcon.gov.bd.esellers.product.ProductDetailsActivity;
+import com.wstcon.gov.bd.esellers.product.ProductDetailsFragment;
+import com.wstcon.gov.bd.esellers.product.productModel.Product;
 import com.wstcon.gov.bd.esellers.userAuth.SessionManager;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.LogoutResponse;
 import com.wstcon.gov.bd.esellers.userProfile.ProfileActivity;
-import com.wstcon.gov.bd.esellers.userProfile.userModel.Users;
 import com.wstcon.gov.bd.esellers.dashboard.HomeFragment;
 import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.VerticalModel;
@@ -44,8 +46,10 @@ import com.wstcon.gov.bd.esellers.utility.Converter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -61,7 +65,7 @@ import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.USER_NAME;
 import static com.wstcon.gov.bd.esellers.utility.Utils.getBitmapImage;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        StartSplashFragment.SplashAction, AddorRemoveCallbacks, SeeProductDetails, CategoryListener {
+        StartSplashFragment.SplashAction, AddorRemoveCallbacks, SeeProductDetails, CategoryListener, ShowHideIconListener {
 
     private static final String TAG = "MainActivity ";
     private TextView nameTV, emailTV, header_authTV;
@@ -72,16 +76,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private Fragment fragment;
     private List<VerticalModel> vmList = new ArrayList<>();
+    private List<Category>categoryList=new ArrayList<>();
     private SharedPreferences prefs;
     private SessionManager sessionManager;
-    private Users user;
-    private Cart shoppingCart;
-    Menu nav_profile_Menu, nav_order_Menu;
+    private DatabaseQuery databaseQuery;
+    private Toolbar toolbar;
+    private ActionBarDrawerToggle toggle;
 
-    public static List<Cart> globalCartList = new ArrayList<>();
+    private Menu nav_profile_Menu, nav_order_Menu;
+
+    public static Set<Cart> cartSet = new HashSet<>();
     public static int cart_count = 0;
     public static double grandTotalPlus = 0;
-
 
 
     @Override
@@ -90,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         sessionManager = new SessionManager(this);
+        databaseQuery=new DatabaseQuery(this);
+        categoryList.addAll(databaseQuery.getCategory());
+
         Log.e(TAG, "onCreate: called");
         prefs = this.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
@@ -106,10 +115,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nav_order_Menu = navigationView.getMenu();
         nav_order_Menu.findItem(R.id.nav_order).setVisible(false);
 
-        Toolbar toolbar = findViewById(R.id.myToolbar);
+        toolbar = findViewById(R.id.myToolbar);
         setSupportActionBar(toolbar);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -175,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setDrawerView() {
         SharedPreferences preferences = this.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        prefs=preferences;
+        prefs = preferences;
         if (sessionManager.isLogin()) {
             nav_profile_Menu.findItem(R.id.nav_profile).setVisible(true);
             nav_order_Menu.findItem(R.id.nav_order).setVisible(true);
@@ -239,32 +248,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onAddProduct(Cart cart) {
-        cart_count++;
-        invalidateOptionsMenu();
-        globalCartList.add(cart);
-        Log.e(TAG, "onAddProduct: " + globalCartList.size() + " " + cart.getProductName());
-        Toast.makeText(this, "added", Toast.LENGTH_SHORT).show();
+        if (cartSet.contains(cart)) {
+            Toast.makeText(this, "already into cart", Toast.LENGTH_SHORT).show();
+        } else {
+            cart_count++;
+            invalidateOptionsMenu();
+            cartSet.add(cart);
+            Log.e(TAG, "onAddProduct: " + cartSet.size() + " " + cart.getProductName());
+            Toast.makeText(this, "added", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    public void onRemoveProduct(int id) {
-        cart_count--;
-        invalidateOptionsMenu();
-        Toast.makeText(this, "removed", Toast.LENGTH_SHORT).show();
-
-        if (globalCartList.size() == 1) {
-            globalCartList.clear();
-            Log.e(TAG, "onClick: 1st if clicked");
-        }
-
-        if (globalCartList.size() > 1) {
-            for (Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
-                if (iterator.next().getProductId() == id)
+    public void onRemoveProduct(Cart cart) {
+        if (cartSet.size() == 1) {
+            cartSet.clear();
+            invalidateOptionsMenu();
+        } else {
+            for (Iterator<Cart> iterator = cartSet.iterator(); iterator.hasNext(); ) {
+                if (iterator.next().getProductId().equals(cart.getProductId()))
                     iterator.remove();
             }
-
-            Log.e(TAG, "onClick: 2nd " + globalCartList.size());
-
+            invalidateOptionsMenu();
         }
     }
 
@@ -295,25 +300,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                 break;
             case R.id.nav_men:
-                onCatIconClick(1);
+                onCatIconClick(categoryList.get(1));
                 break;
             case R.id.nav_women:
-                onCatIconClick(2);
+                onCatIconClick(categoryList.get(2));
                 break;
             case R.id.nav_kids:
-                onCatIconClick(3);
+                onCatIconClick(categoryList.get(3));
                 break;
             case R.id.nav_cosmetics:
-                onCatIconClick(4);
+                onCatIconClick(categoryList.get(4));
                 break;
             case R.id.nav_bag:
-                onCatIconClick(5);
+                onCatIconClick(categoryList.get(5));
                 break;
             case R.id.nav_home_app:
-                onCatIconClick(6);
+                onCatIconClick(categoryList.get(6));
                 break;
             case R.id.nav_mobile:
-                onCatIconClick(7);
+                onCatIconClick(categoryList.get(7));
                 break;
             case R.id.nav_profile:
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
@@ -334,9 +339,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onCatIconClick(int cid) {
+    public void onCatIconClick(Category category) {
         Bundle bundle = new Bundle();
-        bundle.putInt("catId", cid);
+        bundle.putSerializable("category", category);
         fragment = new ProductFragment();
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
@@ -344,7 +349,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     @Override
-    public void onProductClick(HorizontalModel model) {
-        startActivity(new Intent(MainActivity.this, ProductDetailsActivity.class).putExtra("product", model));
+    public void onProductClick(Product model) {
+//        startActivity(new Intent(MainActivity.this, ProductDetailsActivity.class).putExtra("product", model));
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("product", model);
+        Fragment fragment = new ProductDetailsFragment();
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+
+    }
+
+    @Override
+    public void showHamburgerIcon() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        toggle.setDrawerIndicatorEnabled(true);
+    }
+
+    @Override
+    public void showBackIcon() {
+        toggle.setDrawerIndicatorEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 }

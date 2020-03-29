@@ -1,50 +1,53 @@
 package com.wstcon.gov.bd.esellers.product.adapter;
 
 import android.content.Context;
-import android.text.InputFilter;
+import android.content.res.Configuration;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.wstcon.gov.bd.esellers.R;
-import com.wstcon.gov.bd.esellers.category.categoryModel.Category;
-import com.wstcon.gov.bd.esellers.database.DatabaseQuery;
-import com.wstcon.gov.bd.esellers.interfaces.CategoryListener;
-import com.wstcon.gov.bd.esellers.mainApp.adapter.HorizontalAdapter;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.RecyclerViewItem;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.VerticalModel;
-import com.wstcon.gov.bd.esellers.utility.VerticalSpaceItemDecoration;
+import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
+import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
+import com.wstcon.gov.bd.esellers.interfaces.PaginationListener;
+import com.wstcon.gov.bd.esellers.interfaces.SeeProductDetails;
+import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
+import com.wstcon.gov.bd.esellers.product.productModel.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.wstcon.gov.bd.esellers.utility.ImageHelper.getRoundedCornerBitmap;
+import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
 
-public class ProductAdapter extends RecyclerView.Adapter {
+public class ProductAdapter extends RecyclerView.Adapter implements PaginationListener {
 
-    private String TAG="ProductAdapter ";
-
-    private List<RecyclerViewItem> recyclerViewItems;
+    private String TAG = "ProductAdapter ";
 
     // Item Type
     private static final int PRODUCT_ITEM = 0;
+    private static final int FOOTER_ITEM = 1;
 
-    private static final int CATEGORY_ITEM = 1;
+
+    private List<Product> productList;
     private Context context;
 
 
-    public ProductAdapter(List<RecyclerViewItem> recyclerViewItems, Context context) {
-        this.recyclerViewItems = recyclerViewItems;
+    private boolean isLoadingAdded = false;
+
+
+    public ProductAdapter(List<Product> productList, Context context) {
+        this.productList = productList;
         this.context = context;
     }
 
@@ -52,146 +55,203 @@ public class ProductAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row;
-        //Check fot view Type inflate layout according to it
-       if (viewType == CATEGORY_ITEM) {
-            row = inflater.inflate(R.layout.category_row, parent, false);
-            return new CategoryHolder(row);
-        }else if (viewType == PRODUCT_ITEM) {
-            row = inflater.inflate(R.layout.vertical_row, parent, false);
-            return new VerticalViewHolder(row);
+        View customView;
+
+        switch (viewType) {
+            case PRODUCT_ITEM:
+                customView = inflater.inflate(R.layout.single_product_grid, parent, false);
+                return new ProductViewHolder(customView);
+            case FOOTER_ITEM:
+                customView = inflater.inflate(R.layout.item_progress, parent, false);
+                return new LoadingVH(customView);
         }
+
         return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        RecyclerViewItem recyclerViewItem = recyclerViewItems.get(position);
-        if (holder instanceof VerticalViewHolder) {
+        Log.e(TAG, "onBindViewHolder: " + position);
 
-            VerticalViewHolder verticalViewHolder = (VerticalViewHolder) holder;
-            VerticalModel verticalModel = (VerticalModel) recyclerViewItem;
-//            verticalViewHolder.catTV.setText(verticalModel.getHorizontalModels().get(0).getStatus());
+        switch (getItemViewType(position)) {
 
-            ArrayList<HorizontalModel> hmList = verticalModel.getHorizontalModels();
+            case FOOTER_ITEM:
 
-            Log.e(TAG, "onBindViewHolder: "+hmList.size() );
-//            ArrayList<HorizontalModel> hmList2=new ArrayList<>();
-//            for (int i=0; i<2;i++) {
-//                HorizontalModel customlist=hmList.get(i);
-//                hmList2.add(customlist);
-//                Log.e(TAG, "onBindViewHolder: hmList2 size"+hmList2.size() );
-//            }
+                break;
 
-            verticalViewHolder.horizontalRV.setHasFixedSize(true);
-            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(context, hmList);
-            verticalViewHolder.horizontalRV.setLayoutManager(new GridLayoutManager(context,  2));
-            verticalViewHolder.horizontalRV.setAdapter(horizontalAdapter);
-        } else if (holder instanceof CategoryHolder) {
-            CategoryHolder categoryHolder = (CategoryHolder) holder;
+            case PRODUCT_ITEM:
+                ProductViewHolder productViewHolder = (ProductViewHolder) holder;
+                final Product newProduct = productList.get(position);
+                Log.e(TAG, "onBindViewHolder: " + newProduct.getId());
 
+                productViewHolder.priceTV.setText(newProduct.getProductPrice());
+                productViewHolder.productTV.setText(newProduct.getProductName());
+                productViewHolder.ratingBar.setRating(Float.parseFloat(newProduct.getRating()));
+
+                Glide.with(context)
+                        .load(BASE_URL + newProduct.getProductImage())
+                        .into(productViewHolder.imageView);
+
+                productViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((SeeProductDetails) context).onProductClick(newProduct);
+                    }
+                });
+
+                productViewHolder.cartBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Cart cart = new Cart();
+                        cart.setProductId(newProduct.getId());
+                        cart.setProductName(newProduct.getProductName());
+                        cart.setProductImg(newProduct.getProductImage());
+                        cart.setProductQuantity(1);
+                        cart.setProduct(newProduct);
+                        cart.setSize("");
+                        cart.setColor("");
+
+
+                        cart.setProductPrice(Double.parseDouble(newProduct.getProductPrice()));
+                        cart.setTotalCash(Double.parseDouble(newProduct.getProductPrice()));
+
+                        if (!newProduct.isAddedToCart()) {
+                            newProduct.setAddedToCart(true);
+                            if (context instanceof MainActivity) {
+                                ((AddorRemoveCallbacks) context).onAddProduct(cart);
+                            }
+
+                        } else {
+                            Toast.makeText(context, "already added into cart", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                break;
         }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        //here we can set view type
-        RecyclerViewItem recyclerViewItem = recyclerViewItems.get(position);
-        //if its header then return header item
-       if (recyclerViewItem instanceof VerticalModel)
-            return PRODUCT_ITEM;
-        else if (recyclerViewItem instanceof Category)
-            return CATEGORY_ITEM;
-        else
-            return super.getItemViewType(position);
-
     }
 
     @Override
     public int getItemCount() {
-        return recyclerViewItems.size();
+        Log.e(TAG, "getItemCount: " + productList.size());
+        return productList == null ? 0 : productList.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        Log.d(TAG, "getItemViewType: " + position);
+        return (position == productList.size() - 1 && isLoadingAdded) ? FOOTER_ITEM : PRODUCT_ITEM;
+    }
 
-    private class VerticalViewHolder extends RecyclerView.ViewHolder {
-        private RecyclerView horizontalRV;
-        private TextView catTV, seeTV;
+    @Override
+    public void add(Product product) {
+        productList.add(product);
 
-        public VerticalViewHolder(@NonNull View itemView) {
-            super(itemView);
-            horizontalRV = itemView.findViewById(R.id.horizontalRV);
-            catTV = itemView.findViewById(R.id.catTV);
-            seeTV = itemView.findViewById(R.id.seeMoreTV);
+        notifyItemInserted(productList.size() - 1);
+        Log.d(TAG, "add: " + productList.size());
+    }
 
+    @Override
+    public void addAllItem(List<Product> products) {
+        for (Product p : products)
+            add(p);
+    }
 
-            horizontalRV.addItemDecoration(new VerticalSpaceItemDecoration(120));
-
-            catTV.setVisibility(View.GONE);
-            seeTV.setVisibility(View.GONE);
+    @Override
+    public void removeItem(Product product) {
+        int position = productList.indexOf(product);
+        if (position > -1) {
+            productList.remove(position);
+            notifyItemRemoved(position);
         }
     }
 
+    @Override
+    public void clearList() {
+        isLoadingAdded = false;
+        while (getItemCount() > 0) {
+            removeItem(getItem(0));
+        }
+    }
 
-    private class CategoryHolder extends RecyclerView.ViewHolder {
-        LinearLayout linearLayout;
-//        ImageView imageView;
-        TextView textView;
+    @Override
+    public boolean isEmpty() {
+        return getItemCount() == 0;
+    }
 
-        public CategoryHolder(View itemView) {
+    @Override
+    public void addLoadingFooter() {
+        isLoadingAdded = true;
+        add(new Product());
+    }
+
+    @Override
+    public void removeLoadingFooter() {
+        isLoadingAdded = false;
+        int position = productList.size() - 1;
+        Product product = getItem(position);
+        if (product != null) {
+            productList.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    @Override
+    public Product getItem(int position) {
+        return productList.get(position);
+    }
+
+
+    public class ProductViewHolder extends RecyclerView.ViewHolder {
+        private FrameLayout frameLayout;
+        private TextView productTV, priceTV;
+        private ImageView imageView, wishBtn;
+        private ProgressBar progressBar;
+        private Button cartBtn;
+        private RatingBar ratingBar;
+
+        public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-//            imageView = itemView.findViewById(R.id.catImg);
-            textView = itemView.findViewById(R.id.catTxt);
-            linearLayout = itemView.findViewById(R.id.imgLayout);
+            productTV = itemView.findViewById(R.id.productTV);
+            priceTV = itemView.findViewById(R.id.priceTV);
+            imageView = itemView.findViewById(R.id.imageview);
+            progressBar = itemView.findViewById(R.id.progress);
+            cartBtn = itemView.findViewById(R.id.cartBtn);
+            wishBtn = itemView.findViewById(R.id.wishBtn);
+            ratingBar = itemView.findViewById(R.id.rating);
+            frameLayout = itemView.findViewById(R.id.gridFrame);
 
-            DatabaseQuery query=new DatabaseQuery(context);
-            List<Category> categories=query.getCategory();
-            for (Category c: categories){
-                setCatIcon(c);
+
+            int currentOrientation = context.getResources().getConfiguration().orientation;
+            if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+//                Log.v("TAG", "Landscape !!!");
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            } else {
+//                Log.v("TAG", "Portrait !!!");
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
-        }
 
-        public void setCatIcon(final Category category) {
-            View view = LayoutInflater.from(context).inflate(R.layout.single_cat, null, false);
-            ImageView imageView = view.findViewById(R.id.catImg);
-            TextView textView = view.findViewById(R.id.catTxt);
-            textView.setMaxLines(2);
-            textView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-            textView.setText(category.getCategoryName());
-            Log.e(TAG, "setCatIcon: "+category.getCategoryName() );
-            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            parms.setMargins(20, 0, 20, 0);
-            view.setLayoutParams(parms);
+//            frameLayout.post(new Runnable()
+//            {
+//
+//                @Override
+//                public void run()
+//                {
+//                    Log.d(TAG, "ProductViewHolder W: "+frameLayout.getWidth()+" H: "+frameLayout.getHeight());
+//                    Log.d(TAG, "ProductViewHolder img W: "+imageView.getWidth()+" H: "+imageView.getHeight());
+//
+//                }
+//            });
 
-            imageView.setImageBitmap(getRoundedCornerBitmap(category.getBitmap(),120));
-//            imageView.setImageBitmap(category.getBitmap());
-            linearLayout.addView(view);
-            imageView.setId(category.getId());
-
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((CategoryListener) context).onCatIconClick(category.getId());
-                }
-            });
         }
     }
 
 
-    public void updateList(List<VerticalModel> products) {
+    protected class LoadingVH extends RecyclerView.ViewHolder {
 
-        List<RecyclerViewItem> recyclerViewItems = new ArrayList<>();
-
-        Category category = new Category();
-
-        recyclerViewItems.add(category);
-
-        recyclerViewItems.addAll(products);
-
-        this.recyclerViewItems = recyclerViewItems;
-
-        Log.e("", "updateList: " + recyclerViewItems.size());
-        notifyDataSetChanged();
+        public LoadingVH(View itemView) {
+            super(itemView);
+        }
     }
-
 
 }

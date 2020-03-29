@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import com.wstcon.gov.bd.esellers.product.productModel.Product;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Cart implements Serializable {
 
@@ -24,6 +25,8 @@ public class Cart implements Serializable {
     @SerializedName("color")
     @Expose
     private String color;
+
+    private Product product;
 
     private double totalCash;
 
@@ -95,4 +98,25 @@ public class Cart implements Serializable {
         this.productName = productName;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Cart cart = (Cart) obj;
+        return productId.equals(cart.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId);
+    }
 }

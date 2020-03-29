@@ -119,15 +119,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.deleteIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cartList.get(position).getProduct().setAddedToCart(false);
                 if (cartList.size() == 1) {
-                    cartList.remove(position);
+//                    cartList.remove(position);
                     cartList.clear();
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, cartList.size());
                     grandTotalPlus = 0;
                     totalTV.setText(String.valueOf(grandTotalPlus));
                     Log.e(TAG, "onClick: 1st if clicked" );
-                    ((AddorRemoveCallbacks)context).onRemoveProduct(cart.getProductId());
+                    ((AddorRemoveCallbacks)context).onRemoveProduct(cart);
 //                    MainActivity.cart_count = cartList.size();
                 }
 
@@ -145,10 +146,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
                     Log.e(TAG, "onClick: 2nd if clicked" );
 //                    MainActivity.cart_count = cartList.size();
-                    ((AddorRemoveCallbacks)context).onRemoveProduct(cart.getProductId());
+                    ((AddorRemoveCallbacks)context).onRemoveProduct(cart);
 
                 } else {
-                    Toast.makeText(context, "else", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "no item", Toast.LENGTH_SHORT).show();
                 }
             }
         });

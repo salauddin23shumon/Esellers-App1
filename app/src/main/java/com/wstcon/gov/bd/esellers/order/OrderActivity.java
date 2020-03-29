@@ -10,10 +10,11 @@ import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.interfaces.NavBackBtnPress;
 import com.wstcon.gov.bd.esellers.order.adapter.OrderAdapter;
 import com.wstcon.gov.bd.esellers.order.orderModel.OrderDetails;
+import com.wstcon.gov.bd.esellers.product.productModel.Product;
 
 
 public class OrderActivity extends AppCompatActivity implements NavBackBtnPress, OrderAdapter.OrderDetailsClick,
-        OrderDetailsFragment.BackToOrderList {
+        OrderDetailsFragment.OrdrFrgmntAction {
 
     private static final String TAG = "OrderActivity ";
     private Fragment fragment;
@@ -61,5 +62,14 @@ public class OrderActivity extends AppCompatActivity implements NavBackBtnPress,
     @Override
     public void onBackToListClick() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+    }
+
+    @Override
+    public void onReviewClick(Product product) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("product", product);
+        Fragment fragment = new RatingFragment();
+        fragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
     }
 }

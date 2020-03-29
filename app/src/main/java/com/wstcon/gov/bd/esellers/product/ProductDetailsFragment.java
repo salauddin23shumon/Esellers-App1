@@ -18,11 +18,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.wstcon.gov.bd.esellers.R;
+import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
+import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
+import com.wstcon.gov.bd.esellers.interfaces.ShowHideIconListener;
+import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
+import com.wstcon.gov.bd.esellers.product.productModel.Product;
 
 import java.util.Objects;
 
@@ -33,13 +39,13 @@ import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
  */
 public class ProductDetailsFragment extends Fragment {
 
-    private TextView productTV, priceTV, shortDecTV, longDescTV;
+    private TextView productTV, priceTV, shortDecTV, longDescTV, vendorTV, manufacTV;
     private ImageView productIV, brandIV;
     private Button cartBtn, buyBtn;
     private RatingBar ratingBar;
-    private HorizontalModel horizontalModel;
     private Context context;
     private Toolbar toolbar;
+    private Product product;
 
     public ProductDetailsFragment() {
         // Required empty public constructor
@@ -53,7 +59,7 @@ public class ProductDetailsFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            horizontalModel= (HorizontalModel) bundle.getSerializable("product");
+            product= (Product) bundle.getSerializable("product");
         }
     }
 
@@ -63,19 +69,21 @@ public class ProductDetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_product_details, container, false);
 
+        ((ShowHideIconListener) getActivity()).showBackIcon();
+
         productTV=view.findViewById(R.id.nameTV);
         priceTV=view.findViewById(R.id.priceTV);
         shortDecTV=view.findViewById(R.id.desc1ET);
         longDescTV=view.findViewById(R.id.desc2ET);
+        vendorTV=view.findViewById(R.id.vendorTV);
+        manufacTV=view.findViewById(R.id.menufacTV);
         productIV=view.findViewById(R.id.productIV);
         brandIV=view.findViewById(R.id.brandIV);
         cartBtn=view.findViewById(R.id.cartBtn);
         buyBtn=view.findViewById(R.id.buyBtn);
         ratingBar=view.findViewById(R.id.rating);
-        toolbar=view.findViewById(R.id.toolbar);
 
-
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar = ((MainActivity) getActivity()).findViewById(R.id.myToolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,48 +91,58 @@ public class ProductDetailsFragment extends Fragment {
             }
         });
 
-
-        productTV.setText(horizontalModel.getProduct().getProductName());
-        priceTV.setText(horizontalModel.getProduct().getProductPrice());
-        Glide.with(this).load(BASE_URL+horizontalModel.getProduct().getProductImage()).into(productIV);
+        shortDecTV.setText(product.getShortDescription());
+        longDescTV.setText(product.getLongDescription());
+        vendorTV.setText(product.getVendorName());
+        manufacTV.setText(product.getManufacturerName());
+        productTV.setText(product.getProductName());
+        priceTV.setText(product.getProductPrice());
+        Glide.with(this).load(BASE_URL+product.getProductImage()).into(productIV);
 
         productIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fullView(horizontalModel);
+                fullView(product);
             }
         });
-        
+
+        cartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cart cart = new Cart();
+                cart.setProductId(product.getId());
+                cart.setProductName(product.getProductName());
+                cart.setProductImg(product.getProductImage());
+                cart.setProductQuantity(1);
+                cart.setSize("");
+                cart.setColor("");
+                cart.setProductPrice(Double.parseDouble(product.getProductPrice()));
+                cart.setTotalCash(Double.parseDouble(product.getProductPrice()));
+
+                if (!product.isAddedToCart()) {
+                    product.setAddedToCart(true);
+                    ((AddorRemoveCallbacks)context).onAddProduct(cart);
+
+                } else {
+                    Toast.makeText(context, "already added into cart", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).hide();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).show();
-    }
 
 
-    private void fullView(HorizontalModel horizontalModel) {
+    private void fullView(Product product) {
         LayoutInflater inflater=LayoutInflater.from(context);
         View fullView= inflater.inflate(R.layout.fullscreeen,null,false);
         final Dialog fullScreenDilog=new Dialog(getActivity(),android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
         fullScreenDilog.setContentView(fullView);
 
         Button closeBtn=fullScreenDilog.findViewById(R.id.btnClose);
-//        ImageView fullScreenView=fullScreenDilog.findViewById(R.id.fullView);
         PhotoView fullScreenView=fullScreenDilog.findViewById(R.id.fullView);
-//        Log.e("", "fullView: "+horizontalModel.getProduct().getImage() );
-//        fullScreenView.setImageResource(horizontalModel.getImage());
-//        Glide.with(context).load(horizontalModel.getImgUrl()).into(fullScreenView);
-        Glide.with(this).load(BASE_URL+horizontalModel.getProduct().getProductImage()).into(fullScreenView);
-//        Picasso.get().load(horizontalModel.getImgUrl()).fit().centerCrop().into(fullScreenView);
+        Glide.with(this).load(BASE_URL+product.getProductImage()).into(fullScreenView);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,4 +153,9 @@ public class ProductDetailsFragment extends Fragment {
         fullScreenDilog.show();
     }
 
+    @Override
+    public void onDetach() {
+        ((ShowHideIconListener) getActivity()).showHamburgerIcon();
+        super.onDetach();
+    }
 }

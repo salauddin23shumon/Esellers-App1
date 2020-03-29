@@ -39,7 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
+
 import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
 
 
@@ -117,7 +117,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         horizontalViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((SeeProductDetails) context).onProductClick(horizontalModel);
+                ((SeeProductDetails) context).onProductClick(horizontalModel.getProduct());
 //                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
             }
         });
@@ -137,7 +137,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
                 cart.setProductName(horizontalModel.getProduct().getProductName());
                 cart.setProductImg(horizontalModel.getProduct().getProductImage());
                 cart.setProductQuantity(1);
-
+                cart.setProduct(horizontalModel.getProduct());
                 cart.setSize("");
                 cart.setColor("");
 //
@@ -159,16 +159,12 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
 
                 if (!horizontalModel.getProduct().isAddedToCart()) {
                     horizontalModel.getProduct().setAddedToCart(true);
-//                    horizontalViewHolder.cartBtn.setText("Remove");
                     if (context instanceof MainActivity) {
                         ((AddorRemoveCallbacks) context).onAddProduct(cart);
                     }
 
                 } else {
                     Toast.makeText(context, "already added into cart", Toast.LENGTH_SHORT).show();
-//                    horizontalModel.getProduct().setAddedToCart(false);
-//                    horizontalViewHolder.cartBtn.setText("Add To Cart");
-//                    ((AddorRemoveCallbacks) context).onRemoveProduct(cart.getProductId());
                 }
             }
         });
@@ -200,8 +196,4 @@ public class HorizontalAdapter extends RecyclerView.Adapter<HorizontalAdapter.Ho
         }
     }
 
-
-    public interface HorizontalAdapterAction {
-
-    }
 }

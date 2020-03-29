@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#DBADF5"
+    android:background="@drawable/cat_border"
     android:layout_marginBottom="5dp"
     android:id="@+id/layout">
 
@@ -16,7 +16,7 @@
             android:id="@+id/allCatTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/white"
             android:text=" All Category"
             android:textSize="16sp"/>
 
@@ -24,7 +24,7 @@
             android:id="@+id/seeMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_arrow_forward_black"
+            android:background="@drawable/ic_arrow_forward_green"
             android:textSize="14sp"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true" />
@@ -35,7 +35,7 @@
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="105dp"
         android:scrollbars="none">
 
         <LinearLayout

@@ -24,25 +24,25 @@ import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.cart.CartActivity;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
 import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
-import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
+import com.wstcon.gov.bd.esellers.product.productModel.Product;
 import com.wstcon.gov.bd.esellers.utility.Converter;
 
-import java.util.Iterator;
 
+import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cartSet;
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cart_count;
-import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
+
 import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
 
-public class ProductDetailsActivity extends AppCompatActivity implements AddorRemoveCallbacks{
+public class ProductDetailsActivity extends AppCompatActivity implements AddorRemoveCallbacks {
 
     private static final String TAG = "ProductDetailsActivity ";
     private TextView productTV, priceTV, shortDecTV, longDescTV, vendorTV, manufacTV;
-    private ImageView productIV, brandIV,cartBtn2;
+    private ImageView productIV, brandIV, cartBtn2;
     private Button cartBtn, buyBtn;
     private Toolbar toolbar;
     private RatingBar ratingBar;
-    private HorizontalModel horizontalModel;
+    //    private HorizontalModel horizontalModel;
+    private Product product;
 
 
     @Override
@@ -50,21 +50,21 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
 
-        horizontalModel= (HorizontalModel) getIntent().getSerializableExtra("product");
+        product = (Product) getIntent().getSerializableExtra("product");
 
-        productTV=findViewById(R.id.nameTV);
-        priceTV=findViewById(R.id.priceTV);
-        vendorTV=findViewById(R.id.vendorTV);
-        manufacTV=findViewById(R.id.menufacTV);
-        priceTV=findViewById(R.id.priceTV);
-        shortDecTV=findViewById(R.id.desc1ET);
-        longDescTV=findViewById(R.id.desc2ET);
-        productIV=findViewById(R.id.productIV);
-        brandIV=findViewById(R.id.brandIV);
-        cartBtn=findViewById(R.id.cartBtn);
-        cartBtn2=findViewById(R.id.cartBtn2);
-        buyBtn=findViewById(R.id.buyBtn);
-        ratingBar=findViewById(R.id.rating);
+        productTV = findViewById(R.id.nameTV);
+        priceTV = findViewById(R.id.priceTV);
+        vendorTV = findViewById(R.id.vendorTV);
+        manufacTV = findViewById(R.id.menufacTV);
+        priceTV = findViewById(R.id.priceTV);
+        shortDecTV = findViewById(R.id.desc1ET);
+        longDescTV = findViewById(R.id.desc2ET);
+        productIV = findViewById(R.id.productIV);
+        brandIV = findViewById(R.id.brandIV);
+        cartBtn = findViewById(R.id.cartBtn);
+        cartBtn2 = findViewById(R.id.cartBtn2);
+        buyBtn = findViewById(R.id.buyBtn);
+        ratingBar = findViewById(R.id.rating);
 
         toolbar = findViewById(R.id.toolbar);
 
@@ -82,18 +82,18 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
         });
 
 
-        productTV.setText(horizontalModel.getProduct().getProductName());
-        priceTV.setText(horizontalModel.getProduct().getProductPrice());
-        shortDecTV.setText(horizontalModel.getProduct().getShortDescription());
-        longDescTV.setText(horizontalModel.getProduct().getLongDescription());
-        vendorTV.setText(horizontalModel.getProduct().getVendorName());
-        manufacTV.setText(horizontalModel.getProduct().getManufacturerName());
-        Glide.with(this).load(BASE_URL+horizontalModel.getProduct().getProductImage()).into(productIV);
+        productTV.setText(product.getProductName());
+        priceTV.setText(product.getProductPrice());
+        shortDecTV.setText(product.getShortDescription());
+        longDescTV.setText(product.getLongDescription());
+        vendorTV.setText(product.getVendorName());
+        manufacTV.setText(product.getManufacturerName());
+        Glide.with(this).load(BASE_URL + product.getProductImage()).into(productIV);
 
         productIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fullView(horizontalModel);
+                fullView(product);
             }
         });
 
@@ -101,17 +101,17 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
             @Override
             public void onClick(View v) {
                 Cart cart = new Cart();
-                cart.setProductId(horizontalModel.getProduct().getId());
-                cart.setProductName(horizontalModel.getProduct().getProductName());
-                cart.setProductImg(horizontalModel.getProduct().getProductImage());
+                cart.setProductId(product.getId());
+                cart.setProductName(product.getProductName());
+                cart.setProductImg(product.getProductImage());
                 cart.setProductQuantity(1);
                 cart.setSize("");
                 cart.setColor("");
-                cart.setProductPrice(Double.parseDouble(horizontalModel.getProduct().getProductPrice()));
-                cart.setTotalCash(Double.parseDouble(horizontalModel.getProduct().getProductPrice()));
+                cart.setProductPrice(Double.parseDouble(product.getProductPrice()));
+                cart.setTotalCash(Double.parseDouble(product.getProductPrice()));
 
-                if (!horizontalModel.getProduct().isAddedToCart()) {
-                    horizontalModel.getProduct().setAddedToCart(true);
+                if (!product.isAddedToCart()) {
+                    product.setAddedToCart(true);
 //                    horizontalViewHolder.cartBtn.setText("Remove");
                     onAddProduct(cart);
 
@@ -158,19 +158,19 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
         super.onBackPressed();
     }
 
-    private void fullView(HorizontalModel horizontalModel) {
-        LayoutInflater inflater=LayoutInflater.from(this);
-        View fullView= inflater.inflate(R.layout.fullscreeen,null,false);
-        final Dialog fullScreenDilog=new Dialog(this,android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+    private void fullView(Product product) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View fullView = inflater.inflate(R.layout.fullscreeen, null, false);
+        final Dialog fullScreenDilog = new Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
         fullScreenDilog.setContentView(fullView);
 
-        Button closeBtn=fullScreenDilog.findViewById(R.id.btnClose);
+        Button closeBtn = fullScreenDilog.findViewById(R.id.btnClose);
 //        ImageView fullScreenView=fullScreenDilog.findViewById(R.id.fullView);
-        PhotoView fullScreenView=fullScreenDilog.findViewById(R.id.fullView);
+        PhotoView fullScreenView = fullScreenDilog.findViewById(R.id.fullView);
 //        Log.e("", "fullView: "+horizontalModel.getProduct().getImage() );
 //        fullScreenView.setImageResource(horizontalModel.getImage());
 //        Glide.with(context).load(horizontalModel.getImgUrl()).into(fullScreenView);
-        Glide.with(this).load(BASE_URL+horizontalModel.getProduct().getProductImage()).into(fullScreenView);
+        Glide.with(this).load(BASE_URL + product.getProductImage()).into(fullScreenView);
 //        Picasso.get().load(horizontalModel.getImgUrl()).fit().centerCrop().into(fullScreenView);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,32 +184,46 @@ public class ProductDetailsActivity extends AppCompatActivity implements AddorRe
 
     @Override
     public void onAddProduct(Cart cart) {
-        cart_count++;
-        invalidateOptionsMenu();
-        globalCartList.add(cart);
-        Log.e(TAG, "onAddProduct: " + globalCartList.size() + " " + cart.getProductName());
-        Toast.makeText(this, "added", Toast.LENGTH_SHORT).show();
+        if (cartSet.contains(cart)){
+            Toast.makeText(this, "already entered", Toast.LENGTH_SHORT).show();
+        }else {
+            cart_count++;
+            invalidateOptionsMenu();
+            cartSet.add(cart);
+//        globalCartList.add(cart);
+//        Log.e(TAG, "onAddProduct: " + globalCartList.size() + " " + cart.getProductName());
+            Toast.makeText(this, "added", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    public void onRemoveProduct(int id) {
-        cart_count--;
-        invalidateOptionsMenu();
-        Toast.makeText(this, "removed", Toast.LENGTH_SHORT).show();
-
-        if (globalCartList.size() == 1) {
-            globalCartList.clear();
-            Log.e(TAG, "onClick: 1st if clicked");
-        }
-
-        if (globalCartList.size() > 1) {
-            for (Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
-                if (iterator.next().getProductId() == id)
-                    iterator.remove();
-            }
-
-            Log.e(TAG, "onClick: 2nd " + globalCartList.size());
-
+    public void onRemoveProduct(Cart cart) {
+        if (cartSet.size()==1){
+            cartSet.clear();
+        }else {
+            cartSet.remove(cart);
         }
     }
+
+//    @Override
+//    public void onRemoveProduct(int id) {
+//        cart_count--;
+//        invalidateOptionsMenu();
+//        Toast.makeText(this, "removed", Toast.LENGTH_SHORT).show();
+//
+//        if (globalCartList.size() == 1) {
+//            globalCartList.clear();
+//            Log.e(TAG, "onClick: 1st if clicked");
+//        }
+//
+//        if (globalCartList.size() > 1) {
+//            for (Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
+//                if (iterator.next().getProductId() == id)
+//                    iterator.remove();
+//            }
+//
+//            Log.e(TAG, "onClick: 2nd " + globalCartList.size());
+//
+//        }
+//    }
 }

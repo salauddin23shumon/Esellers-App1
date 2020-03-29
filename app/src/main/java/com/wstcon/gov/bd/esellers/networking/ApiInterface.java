@@ -5,6 +5,7 @@ import com.wstcon.gov.bd.esellers.cart.cartModel.Order;
 import com.wstcon.gov.bd.esellers.category.categoryModel.CategoryResponse;
 import com.wstcon.gov.bd.esellers.order.orderModel.OrderDetailsRes;
 import com.wstcon.gov.bd.esellers.order.orderModel.OrderHistoryResponse;
+import com.wstcon.gov.bd.esellers.order.reviewModel.ReviewPostResponse;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.ProfileUpdateRes;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.Users;
 import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderResponse;
@@ -20,6 +21,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
 
@@ -49,8 +51,17 @@ public interface ApiInterface {
     Call<LogoutResponse> userLogout();
 
 
+    @FormUrlEncoded
+    @POST("api/review/save_review/{uid}/{pid}")
+    Call<ReviewPostResponse> postReview(@Field("rating") int rating, @Field("review") String review,
+                                        @Path("uid")  int uid, @Path("pid") int pid);
+
+
     @GET("api/product/show_product")
     Call<ProductResponse> getAllProducts();
+
+    @GET("api/product/category_product/{cid}")                      //cid=category id
+    Call<ProductResponse> getProductsByCat(@Path("cid") int id, @Query("page") int pageIndex);
 
 
     @GET("api/order/orderDetails/{oid}")                            //oid=order id

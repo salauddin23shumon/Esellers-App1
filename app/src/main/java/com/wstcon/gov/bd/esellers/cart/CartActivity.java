@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
+import com.wstcon.gov.bd.esellers.dashboard.HomeFragment;
 import com.wstcon.gov.bd.esellers.interfaces.AddorRemoveCallbacks;
 import com.wstcon.gov.bd.esellers.interfaces.NavBackBtnPress;
 import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
@@ -18,9 +19,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cartSet;
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.grandTotalPlus;
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cart_count;
-import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
+
 
 
 public class CartActivity extends AppCompatActivity implements CartListFragment.CartFrgmntAction,
@@ -28,7 +30,7 @@ public class CartActivity extends AppCompatActivity implements CartListFragment.
 
     private static final String TAG = "CartActivity";
     private Fragment fragment;
-    public static List<Cart> tempArrayList=new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +41,6 @@ public class CartActivity extends AppCompatActivity implements CartListFragment.
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
-
-//        tempArrayList = new ArrayList<>();
-        for (int i = 0; i < globalCartList.size(); i++) {
-            for (int j = i + 1; j < globalCartList.size(); j++) {
-                if (globalCartList.get(i).getProductId().equals(globalCartList.get(j).getProductId())) {
-                    globalCartList.get(i).setProductQuantity(globalCartList.get(j).getProductQuantity());
-                    globalCartList.get(i).setTotalCash(globalCartList.get(j).getTotalCash());
-                    globalCartList.remove(j);
-                    j--;
-                    Log.d(TAG, String.valueOf(globalCartList.size()));
-                }
-            }
-        }
-        tempArrayList.addAll(globalCartList);
     }
 
 
@@ -62,19 +50,14 @@ public class CartActivity extends AppCompatActivity implements CartListFragment.
 
         if (count == 0) {
             grandTotalPlus = 0;
-            globalCartList.addAll(tempArrayList);
-            MainActivity.cart_count = (tempArrayList.size());
-            tempArrayList.clear();
+            MainActivity.cart_count = (cartSet.size());
             finish();
             super.onBackPressed();
-            //additional code
         } else {
             grandTotalPlus = 0;
-            globalCartList.addAll(tempArrayList);
-            MainActivity.cart_count = (tempArrayList.size());
+            MainActivity.cart_count = (cartSet.size());
             getSupportFragmentManager().popBackStack();
         }
-
     }
 
     @Override
@@ -83,32 +66,23 @@ public class CartActivity extends AppCompatActivity implements CartListFragment.
     }
 
     @Override
-    public void onRemoveProduct(int id) {
-        cart_count--;
-        invalidateOptionsMenu();
-        Toast.makeText(this, "removed", Toast.LENGTH_SHORT).show();
-
-        if (globalCartList.size() == 1) {
-            globalCartList.clear();
-            Log.e(TAG, "onClick: 1st if clicked");
-        }
-
-        if (globalCartList.size() > 1) {
-            for (Iterator<Cart> iterator = globalCartList.iterator(); iterator.hasNext(); ) {
-                if (iterator.next().getProductId() == id)
+    public void onRemoveProduct(Cart cart) {
+        if (cartSet.size() == 1) {
+            cartSet.clear();
+            invalidateOptionsMenu();
+        } else {
+            for (Iterator<Cart> iterator = cartSet.iterator(); iterator.hasNext(); ) {
+                if (iterator.next().getProductId().equals(cart.getProductId()))
                     iterator.remove();
             }
-
-            Log.e(TAG, "onClick: 2nd " + globalCartList.size());
-
+            invalidateOptionsMenu();
         }
     }
 
     @Override
     public void onPlaceOrderClick(double total) {
         grandTotalPlus = 0;
-        globalCartList.addAll(tempArrayList);
-        MainActivity.cart_count = (tempArrayList.size());
+        MainActivity.cart_count = (cartSet.size());
         Bundle bundle=new Bundle();
         bundle.putDouble("total", total);
         Fragment fragment = new PaymentFragment();
@@ -118,10 +92,6 @@ public class CartActivity extends AppCompatActivity implements CartListFragment.
 
     @Override
     public void onNavBackBtnPress() {
-//        grandTotalPlus = 0;
-//        globalCartList.addAll(tempArrayList);
-//        MainActivity.cart_count = (tempArrayList.size());
-//        finish();
         onBackPressed();
     }
 
@@ -129,8 +99,10 @@ public class CartActivity extends AppCompatActivity implements CartListFragment.
     public void onOrderSuccessfullyPlaced() {
         cart_count = 0;
         grandTotalPlus = 0;
-        tempArrayList.clear();
+        cartSet.clear();
         invalidateOptionsMenu();
         finish();
+//        Fragment fragment=new HomeFragment();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 }

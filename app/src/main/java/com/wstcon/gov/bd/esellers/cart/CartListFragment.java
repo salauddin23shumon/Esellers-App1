@@ -25,18 +25,16 @@ import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.cart.adapter.CartAdapter;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
 import com.wstcon.gov.bd.esellers.interfaces.NavBackBtnPress;
-import com.wstcon.gov.bd.esellers.mainApp.MainActivity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
 
-import static com.wstcon.gov.bd.esellers.cart.CartActivity.tempArrayList;
+import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cartSet;
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.grandTotalPlus;
-import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.globalCartList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,10 +46,7 @@ public class CartListFragment extends Fragment {
     public static TextView totalTV;
     private Button orderBtn;
     private CartAdapter adapter;
-    //    public static double grandTotalPlus;
     private Toolbar toolbar;
-
-    //    public static List<Cart> tempArrayList;
     private SharedPreferences prefs;
     private String id;
     private Context context;
@@ -75,7 +70,6 @@ public class CartListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart_list, container, false);
-//        setHasOptionsMenu(true);
 
         prefs = context.getSharedPreferences("Session", MODE_PRIVATE);
         id = prefs.getString("ID", "No ID defined");
@@ -85,32 +79,14 @@ public class CartListFragment extends Fragment {
         totalTV = view.findViewById(R.id.totalTV);
         orderBtn = view.findViewById(R.id.placeOrderBtn);
 
-//        tempArrayList = new ArrayList<>();
+        List<Cart>tempArrayList = new ArrayList<>();
+        tempArrayList.addAll(cartSet);
         adapter = new CartAdapter(tempArrayList, context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
 
-
-//        MainActivity.cart_count = 0;
-
-//        for (int i = 0; i < globalCartList.size(); i++) {
-//            for (int j = i + 1; j < globalCartList.size(); j++) {
-//                if (globalCartList.get(i).getProductId().equals(globalCartList.get(j).getProductId())) {
-//                    globalCartList.get(i).setProductQuantity(globalCartList.get(j).getProductQuantity());
-//                    globalCartList.get(i).setTotalCash(globalCartList.get(j).getTotalCash());
-//                    globalCartList.remove(j);
-//                    j--;
-//                    Log.d(TAG, String.valueOf(globalCartList.size()));
-//                }
-//            }
-//        }
-//        tempArrayList.addAll(globalCartList);
-//        Log.d("tempArrayList:"+tempArrayList.get(0).getProductName(), String.valueOf(tempArrayList.size()));
         adapter.updateList(tempArrayList);
-        globalCartList.clear();
 
-        Log.d("sizecart_22", String.valueOf(globalCartList.size()));
-        // this code is for get total cash
         for (int i = 0; i < tempArrayList.size(); i++) {
             grandTotalPlus = grandTotalPlus + tempArrayList.get(i).getTotalCash();
         }
@@ -121,8 +97,9 @@ public class CartListFragment extends Fragment {
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tempArrayList.size() != 0)
+                if (cartSet.size() != 0) {
                     action.onPlaceOrderClick(grandTotalPlus);
+                }
                 else
                     Toast.makeText(context, "u have no cart in the list", Toast.LENGTH_SHORT).show();
             }

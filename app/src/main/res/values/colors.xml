@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#640502</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="ratingFillColor">#FF3300</color>
-    <color name="ratingStrokeColor">#353534</color>
+    <color name="ratingFillColor">#FF0000</color>
+    <color name="ratingStrokeColor">#DDDDA0</color>
 
 
     <color name="white">#FFFFFF</color>

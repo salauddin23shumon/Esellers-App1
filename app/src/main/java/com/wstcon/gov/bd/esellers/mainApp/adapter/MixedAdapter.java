@@ -1,6 +1,7 @@
 package com.wstcon.gov.bd.esellers.mainApp.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -218,11 +219,12 @@ public class MixedAdapter extends RecyclerView.Adapter {
             View view = LayoutInflater.from(context).inflate(R.layout.single_cat, null, false);
             ImageView imageView = view.findViewById(R.id.catImg);
             TextView textView = view.findViewById(R.id.catTxt);
+            textView.setTextColor(Color.parseColor("#ffffff"));
             textView.setMaxLines(2);
             textView.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
             textView.setText(category.getCategoryName());
             Log.e(TAG, "setCatIcon: "+category.getCategoryName() );
-            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             parms.setMargins(20, 0, 20, 0);
             view.setLayoutParams(parms);
 
@@ -235,7 +237,7 @@ public class MixedAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
 //                    Toast.makeText(context, "clicked"+category.getId(), Toast.LENGTH_SHORT).show();
-                    ((CategoryListener) context).onCatIconClick(category.getId());
+                    ((CategoryListener) context).onCatIconClick(category);
                 }
             });
         }

@@ -28,18 +28,21 @@ import com.google.gson.JsonParser;
 import com.shuhart.stepview.StepView;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Address;
+import com.wstcon.gov.bd.esellers.cart.cartModel.Cart;
 import com.wstcon.gov.bd.esellers.cart.cartModel.CartRes;
 import com.wstcon.gov.bd.esellers.cart.cartModel.Order;
 import com.wstcon.gov.bd.esellers.interfaces.NavBackBtnPress;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
-import static com.wstcon.gov.bd.esellers.cart.CartActivity.tempArrayList;
-
+import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cartSet;
 
 
 /**
@@ -215,6 +218,9 @@ public class PaymentFragment extends Fragment {
 
     private void sendOrder(Address address) {
 
+        final List<Cart> tempArrayList=new ArrayList<>();
+        tempArrayList.addAll(cartSet);
+
         Order order=new Order();
         order.setCustomerId(Integer.parseInt(customerId));
         order.setOrderTotal(total);
@@ -238,6 +244,7 @@ public class PaymentFragment extends Fragment {
                     Log.e(TAG, "onResponse: "+response.body().getStatus() );
                     Toast.makeText(context, "u have placed order successfully", Toast.LENGTH_SHORT).show();
                     action.onOrderSuccessfullyPlaced();
+                    chngStatus(tempArrayList);
                 }else
                     Log.e(TAG, "onResponse: else "+response.code() );
             }
@@ -251,6 +258,11 @@ public class PaymentFragment extends Fragment {
 
     public interface PaymentFrgmntAction{
         void onOrderSuccessfullyPlaced();
+    }
+
+    public void chngStatus(List<Cart>carts){
+        for (Cart c:carts)
+            c.getProduct().setAddedToCart(false);
     }
 
 }

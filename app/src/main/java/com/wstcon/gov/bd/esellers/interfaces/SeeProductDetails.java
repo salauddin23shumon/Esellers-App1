@@ -1,7 +1,7 @@
 package com.wstcon.gov.bd.esellers.interfaces;
 
-import com.wstcon.gov.bd.esellers.mainApp.dataModel.HorizontalModel;
+import com.wstcon.gov.bd.esellers.product.productModel.Product;
 
 public interface SeeProductDetails {
-    void onProductClick(HorizontalModel model);
+    void onProductClick(Product product);
 }
