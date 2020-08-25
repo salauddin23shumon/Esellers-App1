@@ -5,6 +5,7 @@ import com.wstcon.gov.bd.esellers.cart.cartModel.Order;
 import com.wstcon.gov.bd.esellers.category.categoryModel.CategoryResponse;
 import com.wstcon.gov.bd.esellers.order.orderModel.OrderDetailsRes;
 import com.wstcon.gov.bd.esellers.order.orderModel.OrderHistoryResponse;
+import com.wstcon.gov.bd.esellers.order.reviewModel.ReviewGetResponse;
 import com.wstcon.gov.bd.esellers.order.reviewModel.ReviewPostResponse;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.ProfileUpdateRes;
 import com.wstcon.gov.bd.esellers.userProfile.userModel.Users;
@@ -12,6 +13,7 @@ import com.wstcon.gov.bd.esellers.mainApp.dataModel.SliderResponse;
 import com.wstcon.gov.bd.esellers.product.productModel.ProductResponse;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.AuthResponse;
 import com.wstcon.gov.bd.esellers.userAuth.userAuthModels.LogoutResponse;
+import com.wstcon.gov.bd.esellers.vendor.VendorResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -56,12 +58,12 @@ public interface ApiInterface {
     Call<ReviewPostResponse> postReview(@Field("rating") int rating, @Field("review") String review,
                                         @Path("uid")  int uid, @Path("pid") int pid);
 
+    @GET("api/review/get_review/{pid}")
+    Call<ReviewGetResponse> getAllReviews(@Path("pid") int pid, @Query("page") int pageIndex);
+
 
     @GET("api/product/show_product")
     Call<ProductResponse> getAllProducts();
-
-    @GET("api/product/category_product/{cid}")                      //cid=category id
-    Call<ProductResponse> getProductsByCat(@Path("cid") int id, @Query("page") int pageIndex);
 
 
     @GET("api/order/orderDetails/{oid}")                            //oid=order id
@@ -76,6 +78,10 @@ public interface ApiInterface {
     Call<ProductResponse> getProductsByCat(@Path("cid") int id);
 
 
+    @GET("api/product/category_product/{cid}")                      //cid=category id
+    Call<ProductResponse> getProductsByCat(@Path("cid") int id, @Query("page") int pageIndex);
+
+
     @GET("api/category/show_category")
     Call<CategoryResponse> getAllCategories();
 
@@ -84,29 +90,16 @@ public interface ApiInterface {
     Call<SliderResponse> getSliders();
 
 
+    @FormUrlEncoded
+    @POST("api/vendor/details")                                     // vid = vendor id
+    Call<VendorResponse> getVendor(@Field("vendorId") int vid);
+
+
     @Headers({"Content-Type: application/json", "Cache-Control: max-age=640000"})
     @POST("api/checkout/checkout")
     Call<CartRes> sendOrder(@Body Order order);
 
 
-//
-//    @GET("product/show_product")
-//    Call<Products> getAllProducts();
-//
-//
-//    @GET("category/show_category")
-//    Call<CategoryResponse> getAllCategories();
-
-
-
-    //////////////////////////*****///////////////////////
-
-
-//    @GET("getslider.php")
-//    Call<List<Slider>> getSlider();
-//
-//    @GET("getproductsview.php")
-//    Call<List<Product>> getProducts();
 
 
 }

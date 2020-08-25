@@ -95,6 +95,7 @@
                             android:textSize="15sp" />
 
                         <RadioButton
+                            android:id="@+id/rdbtn1"
                             android:layout_width="0dp"
                             android:layout_height="90dp"
                             android:layout_weight=".4"
@@ -125,6 +126,7 @@
                             android:textSize="15sp" />
 
                         <RadioButton
+                            android:id="@+id/rdbtn2"
                             android:layout_width="0dp"
                             android:layout_height="80dp"
                             android:layout_weight=".4" />
@@ -230,7 +232,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="30dp"
                                 android:ems="17"
-                                android:inputType="text" />
+                                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -425,6 +427,7 @@
                             android:textSize="15dp" />
 
                         <RadioButton
+                            android:id="@+id/rdbtn3"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -454,6 +457,7 @@
                             android:textSize="15dp" />
 
                         <RadioButton
+                            android:id="@+id/rdbtn4"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -484,6 +488,7 @@
                             android:textSize="15dp" />
 
                         <RadioButton
+                            android:id="@+id/rdbtn5"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

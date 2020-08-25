@@ -3,6 +3,7 @@ package com.wstcon.gov.bd.esellers.order.reviewModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.wstcon.gov.bd.esellers.product.productModel.Review;
 
 public class ReviewPostResponse {
 

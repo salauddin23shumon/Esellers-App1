@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,14 @@ public class SignInFragment extends Fragment {
             public void onClick(View v) {
                 email = emailET.getText().toString();
                 password = passwordET.getText().toString();
-                doSignIn(email, password);
+
+                if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    emailET.setError("Please enter valid email");
+                } else if (password.isEmpty() || password.length()<8) {
+                    passwordET.setError("Please enter password");
+                }else {
+                    doSignIn(email, password);
+                }
             }
         });
 

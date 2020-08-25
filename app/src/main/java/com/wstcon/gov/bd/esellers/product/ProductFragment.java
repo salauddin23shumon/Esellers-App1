@@ -53,7 +53,8 @@ public class ProductFragment extends Fragment {
     private TextView productTypeTV;
     private GridLayoutManager gridLayoutManager;
     private LinearLayout catLL, catImgLayout, titleLL;
-    private Category category;
+    private String catName;
+//    private Category category;
     private int cid;
 
     public static final int PAGE_START = 1;
@@ -79,8 +80,8 @@ public class ProductFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
 //            cid = bundle.getInt("catId");
-            category = (Category) bundle.getSerializable("category");
-            cid = category.getId();
+            catName = bundle.getString("categoryName");
+            cid = bundle.getInt("categoryId");
         }
         Log.e(TAG, "onAttach: id:" + cid + "cp: " + currentPage + "tp: " + TOTAL_PAGES);
     }
@@ -96,7 +97,7 @@ public class ProductFragment extends Fragment {
         catImgLayout = view.findViewById(R.id.imgLayout);
         productTypeTV = view.findViewById(R.id.productTypeTV);
         recyclerView.setHasFixedSize(true);
-        productTypeTV.setText(category.getCategoryName());
+        productTypeTV.setText(catName);
         setCategory();
 //        linearLayoutManager= new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         gridLayoutManager = new GridLayoutManager(context, 2);

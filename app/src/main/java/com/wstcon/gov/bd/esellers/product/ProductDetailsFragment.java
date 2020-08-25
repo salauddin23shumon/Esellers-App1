@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -84,6 +83,7 @@ public class ProductDetailsFragment extends Fragment {
         ratingBar=view.findViewById(R.id.rating);
 
         toolbar = ((MainActivity) getActivity()).findViewById(R.id.myToolbar);
+        toolbar.setTitle("Product Details");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +114,7 @@ public class ProductDetailsFragment extends Fragment {
                 cart.setProductName(product.getProductName());
                 cart.setProductImg(product.getProductImage());
                 cart.setProductQuantity(1);
+                cart.setProduct(product);
                 cart.setSize("");
                 cart.setColor("");
                 cart.setProductPrice(Double.parseDouble(product.getProductPrice()));

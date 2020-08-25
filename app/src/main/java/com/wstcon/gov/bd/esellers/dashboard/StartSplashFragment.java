@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,11 +36,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.wstcon.gov.bd.esellers.utility.Constant.BASE_URL;
+import static com.wstcon.gov.bd.esellers.utility.Utils.isNetworkAvailable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,11 +56,15 @@ public class StartSplashFragment extends Fragment {
     private int sliderSize = 0;
     private int catSize = 0;
     private Context context;
+    private GifImageView gifImageView;
+    private Button tryBtn;
 
 
     public StartSplashFragment() {
         // Required empty public constructor
     }
+
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -65,15 +73,6 @@ public class StartSplashFragment extends Fragment {
         query = new DatabaseQuery(context);
         action = (SplashAction) context;
 
-
-        if (query.doesDatabaseExist()) {
-            Log.e(TAG, "onCreateView: exist");
-            addData();
-
-        } else {
-            Log.e(TAG, "onCreateView: not exist");
-            getCategory();
-        }
     }
 
     @Override
@@ -82,8 +81,33 @@ public class StartSplashFragment extends Fragment {
         // Inflate the layout for this fragment
 
 
+        View view= inflater.inflate(R.layout.fragment_start_splash, container, false);
+        gifImageView=view.findViewById(R.id.loginGif);
+        tryBtn=view.findViewById(R.id.tryBtn);
 
-        return inflater.inflate(R.layout.fragment_start_splash, container, false);
+        if (isNetworkAvailable(context)) {
+
+            if (query.doesDatabaseExist()) {
+                Log.e(TAG, "onCreateView: exist");
+                if (query.getCatIconCount() > 0 && query.getSliderCount()>0)
+                    addData();
+                else {
+                    getCategory();
+//                    fetchSlider();
+                }
+
+            } else {
+                Log.e(TAG, "onCreateView: not exist");
+                getCategory();
+//                fetchSlider();
+            }
+        } else {
+            Toast.makeText(context, "No internet", Toast.LENGTH_SHORT).show();
+            gifImageView.setVisibility(View.GONE);
+            tryBtn.setVisibility(View.VISIBLE);
+        }
+
+        return view;
     }
 
     @Override
@@ -144,7 +168,7 @@ public class StartSplashFragment extends Fragment {
                 query.insertSlider(slider);
 
 
-                if (query.getSliderCount() == sliderSize && query.getCatIconCount()==catSize) {
+                if (query.getSliderCount() == sliderSize && query.getCatIconCount() == catSize) {
                     addData();
                 }
             }
@@ -234,12 +258,11 @@ public class StartSplashFragment extends Fragment {
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
                 List<Category> categoryList = response.body().getCategories();
                 catSize = categoryList.size();
-                Log.e(TAG, "getCategory: " + categoryList.size());
-                fetchSlider();
+                Log.e(TAG, "getCategory: size" + catSize);
                 for (Category c : categoryList) {
                     getCatIcon(c);
                 }
-
+                fetchSlider();
 //                if (query.getCatIconCount() < categoryList.size()) {
 //                    query.deleteCat();
 //                    for (Category c : categoryList) {
@@ -252,7 +275,7 @@ public class StartSplashFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CategoryResponse> call, Throwable t) {
-                Log.e(TAG, "onFailure: "+t.getLocalizedMessage() );
+                Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
 
             }
         });

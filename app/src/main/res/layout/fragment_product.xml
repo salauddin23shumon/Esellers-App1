@@ -12,6 +12,7 @@
         android:orientation="vertical"
         android:background="@drawable/cat_border"
         android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:id="@+id/catLayout">
 
         <RelativeLayout

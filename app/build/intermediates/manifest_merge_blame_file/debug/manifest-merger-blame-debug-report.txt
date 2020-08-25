@@ -29,7 +29,7 @@
 17-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:11:22-64
 18
 19    <application
-19-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:13:5-45:19
+19-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:13:5-51:19
 20        android:allowBackup="true"
 20-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:14:9-35
 21        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -47,67 +47,75 @@
 27-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:19:9-54
 28        android:supportsRtl="true"
 28-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:20:9-35
-29        android:testOnly="true"
-30        android:theme="@style/AppTheme"
-30-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:21:9-40
-31        android:usesCleartextTraffic="true" >
-31-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:22:9-44
-32        <activity android:name="com.wstcon.gov.bd.esellers.payment.PaymentActivity" />
-32-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:23:9-60
-32-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:23:19-58
-33        <activity
-33-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:24:9-27:48
-34            android:name="com.wstcon.gov.bd.esellers.cart.CartActivity"
-34-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:25:13-46
-35            android:configChanges="screenSize|orientation|keyboard"
-35-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:26:13-68
-36            android:theme="@style/AuthTheme" />
-36-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:27:13-45
+29        android:theme="@style/AppTheme"
+29-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:21:9-40
+30        android:usesCleartextTraffic="true" >
+30-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:22:9-44
+31        <activity
+31-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:23:9-24:58
+32            android:name="com.wstcon.gov.bd.esellers.userProfile.ProfileActivity"
+32-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:23:19-62
+33            android:theme="@style/AppTheme.NoActionBar" />
+33-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:24:13-56
+34        <activity
+34-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:25:9-27:59
+35            android:name="com.wstcon.gov.bd.esellers.order.OrderActivity"
+35-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:26:13-48
+36            android:theme="@style/AppTheme.NoActionBar" />
+36-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:27:13-56
 37        <activity
-37-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:28:9-31:48
-38            android:name="com.wstcon.gov.bd.esellers.userAuth.AuthActivity"
-38-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:29:13-50
+37-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:29:9-32:48
+38            android:name="com.wstcon.gov.bd.esellers.cart.CartActivity"
+38-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:30:13-46
 39            android:configChanges="screenSize|orientation|keyboard"
-39-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:30:13-68
+39-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:31:13-68
 40            android:theme="@style/AuthTheme" />
-40-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:31:13-45
+40-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:32:13-45
 41        <activity
-41-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:32:9-42:20
-42            android:name="com.wstcon.gov.bd.esellers.mainApp.MainActivity"
-42-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:33:13-49
+41-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:33:9-36:48
+42            android:name="com.wstcon.gov.bd.esellers.userAuth.AuthActivity"
+42-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:34:13-50
 43            android:configChanges="screenSize|orientation|keyboard"
-43-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:34:13-68
-44            android:theme="@style/AppTheme.NoActionBar" >
-44-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:35:13-56
-45            <intent-filter>
-45-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:36:13-41:29
-46                <action android:name="android.intent.action.MAIN" />
-46-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:37:17-69
-46-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:37:25-66
-47                <action android:name="android.intent.action.VIEW" />
-47-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:38:17-69
-47-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:38:25-66
-48
-49                <category android:name="android.intent.category.LAUNCHER" />
-49-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:40:17-77
-49-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:40:27-74
-50            </intent-filter>
-51        </activity>
-52        <activity
-52-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:43:9-44:58
-53            android:name="com.wstcon.gov.bd.esellers.product.ProductDetailsActivity"
-53-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:43:19-65
-54            android:theme="@style/AppTheme.NoActionBar" />
-54-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:44:13-56
-55
-56        <provider
-56-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:8:9-11:40
-57            android:name="com.squareup.picasso.PicassoProvider"
-57-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:9:13-64
-58            android:authorities="com.wstcon.gov.bd.esellers.com.squareup.picasso"
-58-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:10:13-72
-59            android:exported="false" />
-59-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\305d6876fe5a8fc1af8ff7fa8548d102\jetified-picasso-2.71828\AndroidManifest.xml:11:13-37
-60    </application>
-61
-62</manifest>
+43-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:35:13-68
+44            android:theme="@style/AuthTheme" />
+44-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:36:13-45
+45        <activity
+45-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:37:9-47:20
+46            android:name="com.wstcon.gov.bd.esellers.mainApp.MainActivity"
+46-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:38:13-49
+47            android:configChanges="screenSize|orientation|keyboard"
+47-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:39:13-68
+48            android:theme="@style/AppTheme.NoActionBar" >
+48-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:40:13-56
+49            <intent-filter>
+49-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:41:13-46:29
+50                <action android:name="android.intent.action.MAIN" />
+50-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:42:17-69
+50-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:42:25-66
+51                <action android:name="android.intent.action.VIEW" />
+51-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:43:17-69
+51-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:43:25-66
+52
+53                <category android:name="android.intent.category.LAUNCHER" />
+53-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:45:17-77
+53-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:45:27-74
+54            </intent-filter>
+55        </activity>
+56        <activity
+56-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:48:9-50:59
+57            android:name="com.wstcon.gov.bd.esellers.product.ProductDetailsActivity"
+57-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:49:13-59
+58            android:theme="@style/AppTheme.NoActionBar" />
+58-->E:\AndroidStudioProjects\Esellers\app\src\main\AndroidManifest.xml:50:13-56
+59
+60        <provider
+60-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\dedf4ed4e7edbb1b978ff4de33bad968\jetified-picasso-2.71828\AndroidManifest.xml:8:9-11:40
+61            android:name="com.squareup.picasso.PicassoProvider"
+61-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\dedf4ed4e7edbb1b978ff4de33bad968\jetified-picasso-2.71828\AndroidManifest.xml:9:13-64
+62            android:authorities="com.wstcon.gov.bd.esellers.com.squareup.picasso"
+62-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\dedf4ed4e7edbb1b978ff4de33bad968\jetified-picasso-2.71828\AndroidManifest.xml:10:13-72
+63            android:exported="false" />
+63-->[com.squareup.picasso:picasso:2.71828] C:\Users\PC-sss\.gradle\caches\transforms-2\files-2.1\dedf4ed4e7edbb1b978ff4de33bad968\jetified-picasso-2.71828\AndroidManifest.xml:11:13-37
+64    </application>
+65
+66</manifest>

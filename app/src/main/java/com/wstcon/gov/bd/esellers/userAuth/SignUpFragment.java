@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class SignUpFragment extends Fragment {
 
     private static final String TAG = "SignUpFragment ";
     private EditText  emailET,  passwordET, confirmET;
-    private String  email, password;
+    private String  email, password, confpass;
     private ProgressBar progressBar;
     private Button regBtn,closeBtn;
     private TextView logonTV;
@@ -71,7 +72,18 @@ public class SignUpFragment extends Fragment {
             public void onClick(View v) {
                 email = emailET.getText().toString();
                 password = passwordET.getText().toString();
-                doSignup(email, password);
+                confpass = confirmET.getText().toString();
+
+                if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    emailET.setError("Please enter valid email");
+                } else if (password.isEmpty()) {
+                    passwordET.setError("Please enter password");
+                }else if (!password.equals(confpass)){
+                    confirmET.setError("password not matched");
+                } else {
+                    doSignup(email, password);
+                }
+
             }
         });
 

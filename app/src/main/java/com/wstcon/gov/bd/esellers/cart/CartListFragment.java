@@ -34,6 +34,9 @@ import static android.content.Context.MODE_PRIVATE;
 
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.cartSet;
 import static com.wstcon.gov.bd.esellers.mainApp.MainActivity.grandTotalPlus;
+import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.ID;
+import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.LOGIN;
+import static com.wstcon.gov.bd.esellers.userAuth.SessionManager.PREF_NAME;
 
 
 /**
@@ -71,8 +74,8 @@ public class CartListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart_list, container, false);
 
-        prefs = context.getSharedPreferences("Session", MODE_PRIVATE);
-        id = prefs.getString("ID", "No ID defined");
+        prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        id = prefs.getString(ID, "No ID defined");
 
         toolbar = view.findViewById(R.id.toolbar);
         recyclerView = view.findViewById(R.id.cartRV);
@@ -97,11 +100,14 @@ public class CartListFragment extends Fragment {
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (cartSet.size() != 0) {
-                    action.onPlaceOrderClick(grandTotalPlus);
+                if (prefs.getBoolean(LOGIN, false)) {
+                    if (cartSet.size() != 0) {
+                        action.onPlaceOrderClick(grandTotalPlus);
+                    } else
+                        Toast.makeText(context, "u have no item in the list", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(context, "Please signIn to place order", Toast.LENGTH_SHORT).show();
                 }
-                else
-                    Toast.makeText(context, "u have no cart in the list", Toast.LENGTH_SHORT).show();
             }
         });
 

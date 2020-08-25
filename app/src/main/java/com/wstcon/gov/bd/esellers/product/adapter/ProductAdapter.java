@@ -62,8 +62,8 @@ public class ProductAdapter extends RecyclerView.Adapter implements PaginationLi
                 customView = inflater.inflate(R.layout.single_product_grid, parent, false);
                 return new ProductViewHolder(customView);
             case FOOTER_ITEM:
-                customView = inflater.inflate(R.layout.item_progress, parent, false);
-                return new LoadingVH(customView);
+                customView = inflater.inflate(R.layout.pagination_item_progress, parent, false);
+                return new PageLoadingVH(customView);
         }
 
         return null;
@@ -146,7 +146,6 @@ public class ProductAdapter extends RecyclerView.Adapter implements PaginationLi
     @Override
     public void add(Product product) {
         productList.add(product);
-
         notifyItemInserted(productList.size() - 1);
         Log.d(TAG, "add: " + productList.size());
     }
@@ -247,9 +246,9 @@ public class ProductAdapter extends RecyclerView.Adapter implements PaginationLi
     }
 
 
-    protected class LoadingVH extends RecyclerView.ViewHolder {
+    protected class PageLoadingVH extends RecyclerView.ViewHolder {
 
-        public LoadingVH(View itemView) {
+        public PageLoadingVH(View itemView) {
             super(itemView);
         }
     }

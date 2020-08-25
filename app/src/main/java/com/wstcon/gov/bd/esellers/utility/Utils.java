@@ -41,7 +41,7 @@ public class Utils {
     public static String getStringImage(Bitmap bitmap) {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
 
         byte[] imageByteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(imageByteArray, Base64.DEFAULT);

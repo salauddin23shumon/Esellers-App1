@@ -118,7 +118,21 @@ public class ProfileActivity extends AppCompatActivity {
                 email = emailET.getText().toString();
                 contact = contactET.getText().toString();
                 address = addressET.getText().toString();
-                updateProfile(name, email, contact, stringPhoto, address);
+
+                if (name.isEmpty()) {
+                    nameET.setError("Please enter name");
+                } else if (contact.isEmpty()) {
+                    contactET.setError("Please enter valid mobile number");
+                }else if (contact.length()<11){
+                    contactET.setError("mobile number must be 11 characters");
+                }else if (address.isEmpty()){
+                    addressET.setError("Please enter Address");
+                }else if (stringPhoto==null){
+                    Toast.makeText(ProfileActivity.this, "Please select photo", Toast.LENGTH_SHORT).show();
+                } else {
+                    updateProfile(name, email, contact, stringPhoto, address);
+                }
+
             }
         });
 
@@ -156,6 +170,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateProfile(String name, String email, String contact, final String stringPhoto, String address) {
+
 //        Log.e(TAG, "updateProfile: "+name+" "+email+" "+contact+" "+stringPhoto.length()+" "+address );
         Call<ProfileUpdateRes> call = RetrofitClient.getInstance(token).getApiInterface().updateProfile(name, email, contact, stringPhoto, address, Integer.parseInt(id));
         call.enqueue(new Callback<ProfileUpdateRes>() {

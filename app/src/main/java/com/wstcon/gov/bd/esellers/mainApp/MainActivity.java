@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.wstcon.gov.bd.esellers.R;
 import com.wstcon.gov.bd.esellers.cart.CartActivity;
@@ -32,6 +35,7 @@ import com.wstcon.gov.bd.esellers.interfaces.SeeProductDetails;
 import com.wstcon.gov.bd.esellers.interfaces.ShowHideIconListener;
 import com.wstcon.gov.bd.esellers.networking.RetrofitClient;
 import com.wstcon.gov.bd.esellers.order.OrderActivity;
+import com.wstcon.gov.bd.esellers.product.ProductDetailsControllerFragment;
 import com.wstcon.gov.bd.esellers.product.ProductDetailsFragment;
 import com.wstcon.gov.bd.esellers.product.productModel.Product;
 import com.wstcon.gov.bd.esellers.userAuth.SessionManager;
@@ -72,16 +76,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView header_authIV;
     private LinearLayout userLoginLinearLayout;
     private CircleImageView profile_img;
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
     private Fragment fragment;
     private List<VerticalModel> vmList = new ArrayList<>();
     private List<Category>categoryList=new ArrayList<>();
     private SharedPreferences prefs;
     private SessionManager sessionManager;
     private DatabaseQuery databaseQuery;
+
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+
+    Category catMan, catWomen, catKids, catCosmetics, catBag, catHome, catMobile;
 
     private Menu nav_profile_Menu, nav_order_Menu;
 
@@ -97,13 +104,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         sessionManager = new SessionManager(this);
         databaseQuery=new DatabaseQuery(this);
+
         categoryList.addAll(databaseQuery.getCategory());
+
+
 
         Log.e(TAG, "onCreate: called");
         prefs = this.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         drawer = findViewById(R.id.drawer_layout);
-
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -192,8 +201,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             header_authIV.setImageResource(R.drawable.ic_logout_white);
             emailTV.setText(preferences.getString(EMAIL, ""));
             if (preferences.getBoolean(STATUS, false)) {
+
+                RequestOptions myOptions = new RequestOptions()
+                        .centerCrop() // or centerCrop
+                        .override(195, 195);
+
                 nameTV.setText(preferences.getString(USER_NAME, ""));
                 profile_img.setImageBitmap(getBitmapImage(preferences.getString(PHOTO, "no photo")));
+
+//                Glide.with(this).load(preferences.getString(PHOTO, "no photo")).apply(myOptions).into(profile_img);
             }
         }
     }
@@ -241,9 +257,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.vmList = vmList;
         Bundle bundle = new Bundle();
         bundle.putSerializable("product", (Serializable) vmList);
-        fragment = new HomeFragment();
+        Fragment fragment = new HomeFragment();
         fragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment).commit();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
     @Override
@@ -291,6 +309,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
         switch (item.getItemId()) {
             case R.id.nav_home:
                 Bundle bundle = new Bundle();
@@ -300,37 +320,72 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
                 break;
             case R.id.nav_men:
-                onCatIconClick(categoryList.get(1));
+                for (Category c: databaseQuery.getCategory()) {
+                    if (c.getId() == 1)
+                        catMan = c;
+                }
+                onCatIconClick(catMan);
                 break;
             case R.id.nav_women:
-                onCatIconClick(categoryList.get(2));
+                for (Category c: databaseQuery.getCategory()) {
+                    if (c.getId() == 2)
+                        catWomen = c;
+                }
+                onCatIconClick(catWomen);
                 break;
             case R.id.nav_kids:
-                onCatIconClick(categoryList.get(3));
+                for (Category c: databaseQuery.getCategory()) {
+                    if (c.getId() == 3)
+                        catKids = c;
+                }
+                onCatIconClick(catKids);
                 break;
             case R.id.nav_cosmetics:
-                onCatIconClick(categoryList.get(4));
+                for (Category c: databaseQuery.getCategory()) {
+                    if (c.getId() == 4)
+                        catCosmetics = c;
+                }
+                onCatIconClick(catCosmetics);
                 break;
             case R.id.nav_bag:
-                onCatIconClick(categoryList.get(5));
+                for (Category c: databaseQuery.getCategory()) {
+                    if (c.getId() == 5)
+                        catBag = c;
+                }
+                onCatIconClick(catBag);
                 break;
             case R.id.nav_home_app:
-                onCatIconClick(categoryList.get(6));
+                for (Category c: databaseQuery.getCategory()) {
+                    if (c.getId() == 6)
+                        catHome = c;
+                }
+                onCatIconClick(catHome);
                 break;
-            case R.id.nav_mobile:
-                onCatIconClick(categoryList.get(7));
-                break;
+//            case R.id.nav_mobile:
+//                for (Category c: databaseQuery.getCategory()) {
+//                    if (c.getId() == 7)
+//                        catMobile = c;
+//                }
+//                onCatIconClick(catMobile);
+//                break;
             case R.id.nav_profile:
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 break;
 //            case R.id.nav_policy:
 //                Toast.makeText(this, "share", Toast.LENGTH_SHORT).show();
 //                break;
-            case R.id.nav_about:
-                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
-                break;
+//            case R.id.nav_about:
+//                Toast.makeText(this, "send", Toast.LENGTH_SHORT).show();
+//                break;
             case R.id.nav_order:
                 startActivity(new Intent(MainActivity.this, OrderActivity.class));
+                break;
+            case R.id.nav_cart:
+                if (cart_count < 1) {
+                    Toast.makeText(this, "there is no item in cart", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivity(new Intent(this, CartActivity.class));
+                }
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -341,7 +396,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onCatIconClick(Category category) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("category", category);
+//        bundle.putSerializable("category", category);
+        bundle.putInt("categoryId", category.getId());
+        bundle.putString("categoryName", category.getCategoryName());
         fragment = new ProductFragment();
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
@@ -353,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        startActivity(new Intent(MainActivity.this, ProductDetailsActivity.class).putExtra("product", model));
         Bundle bundle = new Bundle();
         bundle.putSerializable("product", model);
-        Fragment fragment = new ProductDetailsFragment();
+        Fragment fragment = new ProductDetailsControllerFragment();
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
 
@@ -363,6 +420,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void showHamburgerIcon() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         toggle.setDrawerIndicatorEnabled(true);
+        toolbar.setTitle("Esellers");
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     @Override

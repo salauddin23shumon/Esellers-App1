@@ -94,7 +94,16 @@ public class RatingFragment extends Fragment {
             public void onClick(View v) {
                 review=reviewET.getText().toString();
                 rating=ratingBar.getRating();
-                sendCustomerReview(Integer.parseInt(uid), productId,review,rating);
+
+                if (review.isEmpty()){
+                    reviewET.setError("please review this item");
+                }else if (rating<=0){
+                    Toast.makeText(context, "Please rate this item", Toast.LENGTH_SHORT).show();
+                }else {
+                    sendCustomerReview(Integer.parseInt(uid), productId,review,rating);
+                }
+
+
             }
         });
 
