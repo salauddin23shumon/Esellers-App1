@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             header_authIV.setImageResource(R.drawable.ic_logout_white);
             emailTV.setText(preferences.getString(EMAIL, ""));
             if (preferences.getBoolean(STATUS, false)) {
-
+                Log.d(TAG, "setDrawerView: "+preferences.getBoolean(STATUS, false));
                 RequestOptions myOptions = new RequestOptions()
                         .centerCrop() // or centerCrop
                         .override(195, 195);
@@ -210,7 +210,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 profile_img.setImageBitmap(getBitmapImage(preferences.getString(PHOTO, "no photo")));
 
 //                Glide.with(this).load(preferences.getString(PHOTO, "no photo")).apply(myOptions).into(profile_img);
-            }
+            }else
+                nameTV.setText("");
         }
     }
 

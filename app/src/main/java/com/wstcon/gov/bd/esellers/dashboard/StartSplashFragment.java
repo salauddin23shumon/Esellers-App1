@@ -85,6 +85,16 @@ public class StartSplashFragment extends Fragment {
         gifImageView=view.findViewById(R.id.loginGif);
         tryBtn=view.findViewById(R.id.tryBtn);
 
+
+        tryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tryBtn.setVisibility(View.GONE);
+                gifImageView.setVisibility(View.VISIBLE);
+                addData();
+            }
+        });
+
         if (isNetworkAvailable(context)) {
 
             if (query.doesDatabaseExist()) {
@@ -216,30 +226,44 @@ public class StartSplashFragment extends Fragment {
         call.enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
-                List<Product> products = response.body().getProducts();
-                Log.e(TAG, "onResponse: products size " + products.size());
-                for (Product p : products) {
-                    if (p.getProductStatusName().equals("Featured"))
-                        horizontalModels1.add(new HorizontalModel(p));
-                    else if (p.getProductStatusName().equals("Offer"))
-                        horizontalModels2.add(new HorizontalModel(p));
-                    else if (p.getProductStatusName().equals("Latest"))
-                        horizontalModels3.add(new HorizontalModel(p));
-                    else if (p.getProductStatusName().equals("Popular"))
-                        horizontalModels4.add(new HorizontalModel(p));
-                }
+               if (response.isSuccessful()) {
+                   if (response.body().getStatus() == 1) {
+                       List<Product> products = response.body().getProducts();
+                       Log.e(TAG, "onResponse: products size " + products.size());
+                       for (Product p : products) {
+                           if (p.getProductStatusName().equals("Featured"))
+                               horizontalModels1.add(new HorizontalModel(p));
+                           else if (p.getProductStatusName().equals("Offer"))
+                               horizontalModels2.add(new HorizontalModel(p));
+                           else if (p.getProductStatusName().equals("Latest"))
+                               horizontalModels3.add(new HorizontalModel(p));
+                           else if (p.getProductStatusName().equals("Popular"))
+                               horizontalModels4.add(new HorizontalModel(p));
+                       }
 
-                vmList.add(new VerticalModel(horizontalModels1));
-                vmList.add(new VerticalModel(horizontalModels2));
-                vmList.add(new VerticalModel(horizontalModels3));
-                vmList.add(new VerticalModel(horizontalModels4));
+                       vmList.add(new VerticalModel(horizontalModels1));
+                       vmList.add(new VerticalModel(horizontalModels2));
+                       vmList.add(new VerticalModel(horizontalModels3));
+                       vmList.add(new VerticalModel(horizontalModels4));
 
-                action.onSplashFinished(vmList);
+                       action.onSplashFinished(vmList);
+                   }else {
+                       Log.d(TAG, "onResponse: "+response.body().getMessage());
+                   }
+               }else {
+                   Log.d(TAG, "onResponse: "+response.code());
+                   gifImageView.setVisibility(View.GONE);
+                   tryBtn.setVisibility(View.VISIBLE);
+                   Toast.makeText(context, "Server busy... please try again", Toast.LENGTH_SHORT).show();
+               }
             }
 
             @Override
             public void onFailure(Call<ProductResponse> call, Throwable t) {
 
+                gifImageView.setVisibility(View.GONE);
+                tryBtn.setVisibility(View.VISIBLE);
+                Toast.makeText(context, "Please check internet connection ", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
             }
         });

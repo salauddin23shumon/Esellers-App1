@@ -134,9 +134,10 @@ public class RatingFragment extends Fragment {
             public void onResponse(Call<ReviewPostResponse> call, Response<ReviewPostResponse> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
-                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "your review have been saved", Toast.LENGTH_LONG).show();
+                        getFragmentManager().popBackStack();
                     } else
-                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
                 } else
                     Log.e(TAG, "onResponse: " + response.code());
             }

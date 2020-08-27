@@ -2,6 +2,7 @@ package com.wstcon.gov.bd.esellers.order.adapter;
 
 import android.content.Context;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +49,22 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         final CustomerOrder order=orderList.get(position);
+
+        switch (order.getOrderStatus()){
+            case "Delivered":
+                holder.statusTV.setBackgroundColor(Color.parseColor("#33cc33"));
+                break;
+            case "pending":
+                holder.statusTV.setBackgroundColor(Color.parseColor("#ff0000"));
+                break;
+            case "Shipped":
+                holder.statusTV.setBackgroundColor(Color.parseColor("#ffbf00"));
+                break;
+            case "In Process":
+                holder.statusTV.setBackgroundColor(Color.parseColor("#ff4000"));
+                break;
+        }
+
         holder.statusTV.setText(order.getOrderStatus());
         holder.dateTV.setText(order.getCreatedAt());
         holder.idTV.setText("#"+order.getId());
